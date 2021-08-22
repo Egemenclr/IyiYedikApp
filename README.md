@@ -1,10 +1,19 @@
 ![image](https://github.com/Egemenclr/IyiYedikApp/blob/main/FoodDelivery/gifs/logo.png)
-
-##  TECHNOLOGIES
+## Summary
+I tried to make a food ordering application for my education graduation project.
+##  Technologies
 1. Alamofire
 2. Core Data
 3. KingFisher
-4. Firebase
+4. Firebase Realtime Database and Storage
+5. MVVM
+
+## Features
++ Apple Login
++ Search Restaurants 
++ Compatibility with different screens
++ Unit & UI Tests
++ Favorites
 
 | Onboarding                                                                                        | Login             | Siparis |
 | -----------                                                                                       | ----------------- | --------|
