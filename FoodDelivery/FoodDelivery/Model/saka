@@ -1,0 +1,15 @@
+{
+  "CCV" : "000",
+  "expireDate" : "12\/22",
+  "surname" : "İnceler",
+  "adress" : {
+    "apartmentNumber" : "03",
+    "flat" : "01",
+    "title" : "Ev",
+    "adress" : "Muhittin mah. Reşit paşa Cad.",
+    "buildingNumber" : "09",
+    "description" : "Fırın yanı"
+  },
+  "name" : "Egemen",
+  "cardNumber" : "1111 1111 1111 1111"
+}

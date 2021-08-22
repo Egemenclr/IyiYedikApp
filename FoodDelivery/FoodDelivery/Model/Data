@@ -1,0 +1,307 @@
+[
+  {
+    "restaurant" : {
+      "category" : "Döner",
+      "menu" : [
+        {
+          "fiyat" : "22.0",
+          "malzemeler" : "Sos, Mayonez, Turşu",
+          "name" : "Et Döner Dürüm",
+          "icerik" : "Özel Hatay lavaş ekmeği, 60 gr. et döner, patates kızartması, turşu mayonez, isteğe göre özel sos "
+        },
+        {
+          "fiyat" : "30.0",
+          "malzemeler" : "Sos, Mayonez, Turşu",
+          "name" : "Jumbo Tavuk Döner Dürüm",
+          "icerik" : "Özel Hatay lavaş ekmeği, patates kızartması, turşu, mayonez, isteğe göre özel sos"
+        },
+        {
+          "fiyat" : "29.45",
+          "malzemeler" : "Sos, Mayonez, Turşu",
+          "name" : "Maxi Tavuk Döner Dürüm",
+          "icerik" : "\"Maxi tavuk döner dürüm, Patates kızartması, Pepsi Max (33 cl.)"
+        },
+        {
+          "fiyat" : "29.99",
+          "malzemeler" : "Çift lavaş, Sos, Mayonez, Turşu",
+          "name" : "Menu 1",
+          "icerik" : "Özel Hatay lavaş ekmeği, 60 gr. tavuk döner, patates kızartması, turşu, mayonez, isteğe göre özel sos"
+        },
+        {
+          "fiyat" : "15.0",
+          "malzemeler" : "Çift lavaş, Sos, Mayonez, Turşu",
+          "name" : "Tavuk Döner Dürüm",
+          "icerik" : "Özel Hatay lavaş ekmeği, 60 gr. tavuk döner, patates kızartması, turşu mayonez, isteğe göre özel sos"
+        }
+      ],
+      "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/hotdoner.png?alt=media&token=288bbb81-fa2e-4272-9385-75b542121f3b",
+      "puan" : {
+        "hiz" : 7.7000000000000002,
+        "lezzet" : 8.8000000000000007,
+        "servis" : 7.7000000000000002
+      },
+      "coordinates" : {
+        "longitude" : 27.798438399999998,
+        "latitude" : 41.161416500000001
+      },
+      "name" : "Hot Döner",
+      "yorumlar" : ""
+    }
+  },
+  {
+    "restaurant" : {
+      "category" : "Pilav",
+      "menu" : [
+        {
+          "fiyat" : "18.0",
+          "malzemeler" : "",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+          "name" : "Bol Tavuklu Pilav Menu",
+          "icerik" : "Duble Tavuklu Pilav, Hayrabolu Tatlısı, Ayran"
+        },
+        {
+          "fiyat" : "25.0",
+          "malzemeler" : "",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+          "name" : "Duble Tavuklu Pilav Menü",
+          "icerik" : "Duble Tavuklu Pilav, Hayrabolu Tatlısı, Ayran"
+        },
+        {
+          "fiyat" : "20.0",
+          "malzemeler" : "",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+          "name" : "Kavurmalı Pilav",
+          "icerik" : "Duble Tavuklu Pilav, Hayrabolu Tatlısı, Ayran"
+        },
+        {
+          "fiyat" : "15.0",
+          "malzemeler" : "",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+          "name" : "Tavuklu Pilav Menü",
+          "icerik" : ""
+        }
+      ],
+      "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/misspilav.png?alt=media&token=3df96331-0704-4db3-a30c-295a4443f84f",
+      "puan" : {
+        "hiz" : 8.9000000000000004,
+        "lezzet" : 8.8000000000000007,
+        "servis" : 8.8000000000000007
+      },
+      "coordinates" : {
+        "longitude" : 27.830063200000001,
+        "latitude" : 41.161416500000001
+      },
+      "name" : "Miss Pilav",
+      "yorumlar" : ""
+    }
+  },
+  {
+    "restaurant" : {
+      "category" : "Burger",
+      "menu" : [
+        {
+          "fiyat" : "40.0",
+          "malzemeler" : "",
+          "image" : "",
+          "name" : "Barbekü Burger Menü",
+          "icerik" : "Barbekü Burger, Patates Kızartması, İçecek"
+        },
+        {
+          "fiyat" : "39.0",
+          "malzemeler" : "",
+          "image" : "",
+          "name" : "Cheeseburger Menü",
+          "icerik" : "Cheeseburger, Patates Kızartması, İçecek"
+        },
+        {
+          "fiyat" : "38.0",
+          "malzemeler" : "",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/burger3.jpg?alt=media&token=62093e5d-a283-41bf-b2b3-4abe289f722a",
+          "name" : "Esas Burger Menu",
+          "icerik" : "Esas Burger, Patates Kızartması, İçecek"
+        },
+        {
+          "fiyat" : "48.0",
+          "malzemeler" : "",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/burger2.jpg?alt=media&token=0e7137d4-eafa-4cd9-b6c5-c39e260c8fbf",
+          "name" : "Kumru Burger Menu",
+          "icerik" : "Kumru Burger, Patates Kızartması, İçecek"
+        },
+        {
+          "fiyat" : "41.0",
+          "malzemeler" : "",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/burger2.jpg?alt=media&token=0e7137d4-eafa-4cd9-b6c5-c39e260c8fbf",
+          "name" : "Muhit Burger Menu",
+          "icerik" : "Muhit Burger, Patates Kızartması, İçecek"
+        }
+      ],
+      "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/burger1.jpg?alt=media&token=65f73970-3243-4623-bb92-c5e60dc8ced2",
+      "puan" : {
+        "hiz" : 8.5,
+        "lezzet" : 8.6999999999999993,
+        "servis" : 8.9000000000000004
+      },
+      "coordinates" : {
+        "longitude" : 28.127494500000001,
+        "latitude" : 41.161416500000001
+      },
+      "name" : "Muhit Burger",
+      "yorumlar" : ""
+    }
+  },
+  {
+    "restaurant" : {
+      "category" : "Dünya Mutfağı & Cafe",
+      "menu" : [
+        {
+          "fiyat" : "35.0",
+          "malzemeler" : "Domates, Marul, Kornişon Turşu",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/burger1.jpg?alt=media&token=65f73970-3243-4623-bb92-c5e60dc8ced2",
+          "name" : "CheeseBurger",
+          "icerik" : "Izgara dana burger, cheddar peyniri, Public burger sos"
+        },
+        {
+          "fiyat" : "45.0",
+          "malzemeler" : "Kıtır soğan, Domates, Marul, Kornişon Turşu",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/burger1.jpg?alt=media&token=65f73970-3243-4623-bb92-c5e60dc8ced2",
+          "name" : "Double Burger",
+          "icerik" : "Double ızgara dana burger, double cheddar peyniri, Public burger sos, kıtır soğan, domates, marul, kornişon turşu. Parmak patates kızartması, soğan halkası ile"
+        },
+        {
+          "fiyat" : "35.0",
+          "malzemeler" : "Mantar, Biber, Meksika Fasulyesi, Jalapeno Biberi, Cheddar Peyniri",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/burger1.jpg?alt=media&token=65f73970-3243-4623-bb92-c5e60dc8ced2",
+          "name" : "Etli Taco",
+          "icerik" : "Bonfile parçaları, mantar, biber, Meksika fasulyesi, özel baharat, jalapero biberi, özel soslu salata, cheddar peyniri. Parmak patates kızartması, soğan halkası ile"
+        },
+        {
+          "fiyat" : "35.0",
+          "malzemeler" : "Mısır, Parmesan Peyniri, Domates, Salatalık",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/burger1.jpg?alt=media&token=65f73970-3243-4623-bb92-c5e60dc8ced2",
+          "name" : "Tavuklu Sezar Salata",
+          "icerik" : "ceberg marul, ızgara tavuk, Sezar sos, parmesan peyniri, domates, salatalık"
+        },
+        {
+          "fiyat" : "30.0",
+          "malzemeler" : "Mantar, Biber, Meksika Fasulyesi, Jalapeno Biberi, Cheddar Peyniri",
+          "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/burger3.jpg?alt=media&token=62093e5d-a283-41bf-b2b3-4abe289f722a",
+          "name" : "Tavuklu Taco",
+          "icerik" : "Tavuk parçaları, mantar, biber, Meksika fasulyesi, özel baharat, jalapieno biberi, özel soslu salata, cheddar peyniri. Parmak patates kızartması, soğan halkası ile"
+        }
+      ],
+      "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/public.png?alt=media&token=fff4798d-433b-483b-b362-cce668884763",
+      "puan" : {
+        "hiz" : 8.5,
+        "lezzet" : 8.6999999999999993,
+        "servis" : 8.9000000000000004
+      },
+      "coordinates" : {
+        "longitude" : 27.813362300000001,
+        "latitude" : 41.155285900000003
+      },
+      "name" : "Public",
+      "yorumlar" : ""
+    }
+  },
+  {
+    "restaurant" : {
+      "category" : "Kebap & Türk Mutfağı",
+      "menu" : [
+        {
+          "fiyat" : "20.0",
+          "malzemeler" : "Soğan, acı",
+          "image" : "",
+          "name" : "Adana Dürüm",
+          "icerik" : "Domates, Maydanoz, isteğe göre soğan,"
+        },
+        {
+          "fiyat" : "32.0",
+          "malzemeler" : "Acı",
+          "image" : "",
+          "name" : "Adana Kebap",
+          "icerik" : "Meyhane pilavı, ezme salata, közlenmiş domates, közlenmiş yeşilbiber, soğan, maydanoz, haydari, tırnak pide ile"
+        },
+        {
+          "fiyat" : "35.0",
+          "malzemeler" : "Acı",
+          "image" : "",
+          "name" : "Et Şiş",
+          "icerik" : "Meyhane pilavı, ezme salata, közlenmiş domates, közlenmiş yeşilbiber, soğan, maydanoz, haydari, tırnak pide ile"
+        },
+        {
+          "fiyat" : "9.0",
+          "malzemeler" : "Acı",
+          "image" : "",
+          "name" : "Lahmacun",
+          "icerik" : "Kıvırcık marul, maydonoz, kırmızı lahana, limon ile"
+        },
+        {
+          "fiyat" : "32.0",
+          "malzemeler" : "Acı, soğan",
+          "image" : "",
+          "name" : "Urfa dürüm",
+          "icerik" : "Domates, maydanoz, isteğe göre soğan"
+        }
+      ],
+      "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/corlukebapevi.png?alt=media&token=c8434c8a-1819-4be8-818e-aaa88a5f77af",
+      "puan" : {
+        "hiz" : 9.3000000000000007,
+        "lezzet" : 8.9000000000000004,
+        "servis" : 9.0999999999999996
+      },
+      "coordinates" : {
+        "longitude" : 27.794689300000002,
+        "latitude" : 41.154688
+      },
+      "name" : "Çorlu Kebap Evi",
+      "yorumlar" : ""
+    }
+  },
+  {
+    "restaurant" : {
+      "category" : "Kebap & Türk Mutfağı",
+      "menu" : [
+        {
+          "fiyat" : "38.0",
+          "malzemeler" : "",
+          "image" : "",
+          "name" : "Adana Kebap",
+          "icerik" : "Bulgur pilavı veya pirinç pilavı, yeşil salata, közlenmiş domates, közlenmiş biber"
+        },
+        {
+          "fiyat" : "52.0",
+          "yorumlar" : "",
+          "image" : "",
+          "name" : "Alinazik Kebap",
+          "icerik" : "Bulgur pilavı veya pirinç pilavı, yeşil salata, közlenmiş domates, közlenmiş biber"
+        },
+        {
+          "fiyat" : "38.0",
+          "malzemeler" : "",
+          "image" : "",
+          "name" : "Urfa Kebap",
+          "icerik" : "Bulgur pilavı veya pirinç pilavı, yeşil salata, közlenmiş domates, közlenmiş biber"
+        },
+        {
+          "fiyat" : "50.0",
+          "malzemeler" : "",
+          "image" : "",
+          "name" : "Yoğurtlu Kuzu Şiş",
+          "icerik" : "Bulgur pilavı veya pirinç pilavı, yeşil salata, közlenmiş domates, közlenmiş biber"
+        }
+      ],
+      "image" : "https:\/\/firebasestorage.googleapis.com\/v0\/b\/fooddelivery-d4d0e.appspot.com\/o\/ozadana.png?alt=media&token=ba8d951d-11dc-4210-b79a-05080e5a1bf0",
+      "puan" : {
+        "hiz" : 8.4000000000000004,
+        "lezzet" : 8.8000000000000007,
+        "servis" : 8.9000000000000004
+      },
+      "coordinates" : {
+        "longitude" : 27.816977999999999,
+        "latitude" : 41.151388900000001
+      },
+      "name" : "Öz Adana Ocakbaşı",
+      "yorumlar" : ""
+    }
+  }
+]
