@@ -1,5 +1,5 @@
 import UIKit
-import Firebase
+import SafariServices
 
 class RestaurantDetailVC: UIViewController {
     
@@ -174,13 +174,12 @@ class RestaurantDetailVC: UIViewController {
             print("0")
             // open telephone
         case 1:
-            print("1")
-            let mapVC = MapVC(coordinate: restaurant.coordinates)
-            self.present(mapVC, animated: true)
-            // open map
+            let mapNC = UINavigationController(rootViewController: MapVC(coordinate: restaurant.coordinates))
+            self.present(mapNC, animated: true)
         case 2:
-            print("2")
-            // open safari web site
+            guard let url = URL(string: "https://www.yemeksepeti.com/") else { return }
+            let svc = SFSafariViewController(url: url)
+            present(svc, animated: true)
         default:
             break
         }

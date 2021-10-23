@@ -17,6 +17,7 @@ class MapVC: UIViewController {
         checkLocationServices()
         
     }
+    
     init() {
         super.init(nibName: nil, bundle: nil)
     }
