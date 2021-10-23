@@ -10,7 +10,7 @@ import UIKit
 // SF Symbols
 enum SFSymbols{
     static let order            = UIImage(named: "order")
-    static let magnifyingglass   = UIImage(systemName: "magnifyingglass")
+    static let magnifyingglass  = UIImage(systemName: "magnifyingglass")
     static let cart             = UIImage(systemName: "cart")
     static let basket           = UIImage(named: "basket")
     static let bookmark         = UIImage(systemName: "bookmark")
@@ -21,23 +21,27 @@ enum SFSymbols{
     static let eye              = UIImage(systemName: "eye")
     static let eyeSlash         = UIImage(systemName: "eye.slash")
     
-    static let phone = UIImage(systemName: "phone")
-    static let map = UIImage(systemName: "map")
+    static let phone    = UIImage(systemName: "phone")
+    static let map      = UIImage(systemName: "map")
     
-    static let hand = UIImage(systemName: "hand.thumbsup")
+    static let hand     = UIImage(systemName: "hand.thumbsup")
     static let handFill = UIImage(systemName: "hand.thumbsup.fill")
-    static let trash = UIImage(systemName: "trash")
+    static let trash    = UIImage(systemName: "trash")
     
 }
 
 // Fonts
 enum Fonts{
-    static let helvetica = UIFont(name: "Helvetica", size: 14)
-    static let helvetica_bold = UIFont(name: "HelveticaNeue-Bold", size: 14)
+    static let helvetica        = UIFont(name: "Helvetica", size: 14)
+    static let helvetica_bold   = UIFont(name: "HelveticaNeue-Bold", size: 14)
 }
 
 enum Images{
     static let emptyBasket = UIImage(named: "emptyBasket")
+}
+
+enum Colors{
+    static let grey10 = hexStringToUIColor(hex: "EAE9EB")
 }
 
 func hexStringToUIColor (hex:String) -> UIColor {
@@ -63,6 +67,3 @@ func hexStringToUIColor (hex:String) -> UIColor {
     )
 }
 
-enum Colors{
-    static let grey10 = hexStringToUIColor(hex: "EAE9EB")
-}

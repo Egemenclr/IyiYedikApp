@@ -1,12 +1,14 @@
 import UIKit
+import RxSwift
+import RxCocoa
 
 class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
     
+    private let bag = DisposeBag()
     
-    let searchController = UISearchController(searchResultsController: nil)
+    private let searchController = UISearchController(searchResultsController: nil)
     var comeFromSiparisVC: String?
-    
-    var collectionView: UICollectionView!
+    private var collectionView: UICollectionView!
     
     var viewModel: SearchRestaurantViewProtocol!{
         didSet{
@@ -21,16 +23,47 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
         
         configureSearchController()
         configureCollectionView()
+        
+        let restaurants = viewModel.restaurants.share(replay: 1)
+        
+        let searchString = searchController.searchBar.rx.text
+        let filteredUsers = Observable.combineLatest(searchString, restaurants) { str, restaurants in
+            return restaurants.filter { $0.restaurant.name.contains(str ?? "")}
+        }
+        
+        var tempObservable = Observable<[RestModel]>.empty()
+        filteredUsers.subscribe{ [weak self] text in
+            guard let self = self else { return }
+            self.collectionView.dataSource = nil
+            self.collectionView.delegate = nil
+            tempObservable = text.element!.count == 0 ? restaurants : filteredUsers
+            
+            tempObservable.bind(to: self.collectionView.rx
+                                .items(cellIdentifier: SearchRestaurantsCell.identifier,
+                                       cellType: SearchRestaurantsCell.self)) { row, restaurant, cell in
+                cell.configureUI(rest: restaurant)
+            }.disposed(by: self.bag)
+        }.disposed(by: bag)
+        
         viewModel.load()
+        
+         collectionView.rx.itemSelected
+             .subscribe { indexPath in
+                 guard let index = indexPath.element?.row else { return }
+                 
+                 tempObservable.subscribe { temp in
+                     guard temp.element!.count > 0,
+                        let restaurant = temp.element?[index].restaurant else { return }
+                     let restaurantVC = RestaurantDetailVC(restaurant: restaurant)
+                     self.present(restaurantVC, animated: true)
+                 }.dispose()
+             }.disposed(by: bag)
         
     }
     
     private func configureCollectionView(){
-        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollectonGridLayout())
         collectionView.backgroundColor = .systemBackground
-        collectionView.dataSource = self
-        collectionView.delegate   = self
         
         view.addSubview(collectionView)
         
@@ -45,7 +78,7 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
         ])
     }
     
-    func createCollectonGridLayout() -> UICollectionViewFlowLayout{
+    private func createCollectonGridLayout() -> UICollectionViewFlowLayout{
         let layout = UICollectionViewFlowLayout()
         let width  = view.frame.width-50
         layout.itemSize = CGSize(width: width, height: 85)
@@ -60,10 +93,10 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
         super.viewWillAppear(animated)
         self.searchController.searchBar.text = comeFromSiparisVC
     }
+    
     private func configureSearchController(){
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Yemek, mutfak veya restoran arayın"
-        searchController.searchBar.delegate = self
         navigationItem.searchController = searchController
         definesPresentationContext = true
     }
@@ -75,40 +108,4 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
     func reloadData() {
         collectionView.reloadData()
     }
-}
-
-extension SearchVC: UISearchBarDelegate{
-    func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
-    }
-    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
-        
-    }
-    
-    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
-        
-    }
-}
-
-extension SearchVC: UICollectionViewDelegate, UICollectionViewDataSource{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        viewModel.numberOfItems
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchRestaurantsCell.identifier, for: indexPath) as! SearchRestaurantsCell
-        guard let restaurant = viewModel?.restaurants[indexPath.row].restaurant else { return .init()}
-        
-        cell.configureUI(rest: restaurant)
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let restaurant = viewModel?.restaurants[indexPath.row].restaurant else { return }
-        let restaurantVC = RestaurantDetailVC(restaurant: restaurant)
-
-        //restaurantVC.viewModel = RestaurantMenuViewModel()
-        self.present(restaurantVC, animated: true)
-    }
-    
 }

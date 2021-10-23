@@ -4,9 +4,9 @@ import MapKit
 class MapVC: UIViewController {
     let mapView = MKMapView()
     
-    let locationManager = CLLocationManager()
-    var lastLocation: CLLocation?
-    var coordinate: Coordinate!
+    private let locationManager = CLLocationManager()
+    private var lastLocation: CLLocation?
+    private var coordinate: Coordinate!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,7 +21,7 @@ class MapVC: UIViewController {
         super.init(nibName: nil, bundle: nil)
     }
     
-    init(coordinate: Coordinate){
+    init(coordinate: Coordinate) {
         super.init(nibName: nil, bundle: nil)
         self.coordinate = coordinate
         
@@ -31,7 +31,7 @@ class MapVC: UIViewController {
         fatalError("init(coder:) has not been implemented")
     }
     
-    func getCoordinate(){
+    private func getCoordinate() {
         let lat = lastLocation?.coordinate.latitude
         let long = lastLocation?.coordinate.longitude
         let request = MKDirections.Request()
@@ -57,14 +57,15 @@ class MapVC: UIViewController {
         destinationAnnotation.coordinate = CLLocationCoordinate2D(latitude: coordinate.latitude, longitude: coordinate.longitude)
         self.mapView.showAnnotations([destinationAnnotation], animated: true )
     }
-    func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
+    
+    internal func mapView(_ mapView: MKMapView, rendererFor overlay: MKOverlay) -> MKOverlayRenderer {
         let renderer = MKPolylineRenderer(polyline: overlay as! MKPolyline)
         renderer.strokeColor = UIColor.systemBlue
         renderer.lineWidth = 4.0
         return renderer
     }
     
-    private func configureMapView(){
+    private func configureMapView() {
         view.addSubview(mapView)
         mapView.translatesAutoresizingMaskIntoConstraints = false
         
@@ -76,57 +77,57 @@ class MapVC: UIViewController {
         ])
     }
     
-    func setupLocationManager() {
-            locationManager.delegate = self
-            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    private func setupLocationManager() {
+        locationManager.delegate = self
+        locationManager.desiredAccuracy = kCLLocationAccuracyBest
+    }
+    
+    private func showUserLocationCenterMap() {
+        if let location = locationManager.location?.coordinate {
+            let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 100, longitudinalMeters: 100)
+            mapView.setRegion(region, animated: true)
         }
-        
-        func showUserLocationCenterMap() {
-            if let location = locationManager.location?.coordinate {
-                let region = MKCoordinateRegion.init(center: location, latitudinalMeters: 100, longitudinalMeters: 100)
-                mapView.setRegion(region, animated: true)
-            }
+    }
+    
+    private func checkLocationServices() {
+        if CLLocationManager.locationServicesEnabled() {
+            setupLocationManager()
+            checkLocationAuthorization()
+        } else {
+            //TODO: Kullanıcıya ayarlardan konum servisini açması istenebilir
         }
-        
-        func checkLocationServices() {
-            if CLLocationManager.locationServicesEnabled() {
-                setupLocationManager()
-                checkLocationAuthorization()
-            } else {
-                //TODO: Kullanıcıya ayarlardan konum servisini açması istenebilir
-            }
+    }
+    
+    private func checkLocationAuthorization() {
+        switch CLLocationManager.authorizationStatus() {
+        case .authorizedWhenInUse:
+            trackingLocation()
+        case .denied:
+            break
+        case .notDetermined:
+            locationManager.requestWhenInUseAuthorization()
+        case .authorizedAlways:
+            break
+        case .restricted:
+            break
         }
+    }
+    
+    
+    private func trackingLocation() {
+        mapView.showsUserLocation = true
+        showUserLocationCenterMap()
+        locationManager.startUpdatingLocation()
+        lastLocation = getCenterLocation(mapView: mapView)
         
-        func checkLocationAuthorization() {
-            switch CLLocationManager.authorizationStatus() {
-            case .authorizedWhenInUse:
-                trackingLocation()
-            case .denied:
-                break
-            case .notDetermined:
-                locationManager.requestWhenInUseAuthorization()
-            case .authorizedAlways:
-                break
-            case .restricted:
-                break
-            }
-        }
+    }
+    
+    private func getCenterLocation(mapView: MKMapView) -> CLLocation {
+        let latitude = mapView.centerCoordinate.latitude
+        let longitude = mapView.centerCoordinate.longitude
         
-        
-        func trackingLocation() {
-            mapView.showsUserLocation = true
-            showUserLocationCenterMap()
-            locationManager.startUpdatingLocation()
-            lastLocation = getCenterLocation(mapView: mapView)
-            
-        }
-        
-        func getCenterLocation(mapView: MKMapView) -> CLLocation {
-            let latitude = mapView.centerCoordinate.latitude
-            let longitude = mapView.centerCoordinate.longitude
-            
-            return CLLocation(latitude: latitude, longitude: longitude)
-        }
+        return CLLocation(latitude: latitude, longitude: longitude)
+    }
     
 }
 
@@ -140,13 +141,10 @@ extension MapVC: CLLocationManagerDelegate {
 
 extension MapVC: MKMapViewDelegate {
     
-    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {
-        
-    }
+    func mapView(_ mapView: MKMapView, regionDidChangeAnimated animated: Bool) {}
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        
         self.lastLocation = locations[0]
         getCoordinate()
-        
     }
 }

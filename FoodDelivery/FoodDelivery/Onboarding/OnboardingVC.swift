@@ -17,12 +17,12 @@ class OnboardingVC: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         
-        pageViewController.pageControllerDelegate = self
         pageViewController.setUI(with: returnViewControllers())
         configurePageVC()
         configurePageControl()
         
-        
+        #warning("page controle subscribtion tamamla")
+        configureButton()
     }
     
     private func returnViewControllers() -> [UIViewController]{
@@ -90,21 +90,5 @@ class OnboardingVC: UIViewController {
     @objc private func nextButtonClicked(){
         UserDefaults.standard.setValue(true, forKey: "firstLogin")
         self.present(LoginVC(), animated: true)
-    }
-}
-
-extension OnboardingVC: PageViewControllerDelegate{
-    func setupPageController(numberPages: Int) {
-        pageControl.numberOfPages = numberPages
-    }
-    
-    
-    func turnPageController(to index: Int) {
-        pageControl.currentPage = index
-        if pageControl.currentPage == 2{
-            configureButton()
-        }else{
-            nextButton.removeFromSuperview()
-        }
     }
 }

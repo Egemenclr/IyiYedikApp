@@ -16,11 +16,10 @@ class SearchRestaurantsCell: UICollectionViewCell {
     var detail: RestaurantMenuModel?
     var listIntex: Int?
     var reloadListeDelegate: ReloadListe?
+    
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureRestaurant()
-        
-
     }
     
     required init?(coder: NSCoder) {
@@ -32,17 +31,27 @@ class SearchRestaurantsCell: UICollectionViewCell {
         restaurant.setUI(restaurant: rest)
     }
     
-    func configureUI(rest: RestaModel){
+    private func configureContentView(){
         contentView.backgroundColor = hexStringToUIColor(hex: "F4F4F5")
         contentView.layer.masksToBounds = true
         contentView.layer.cornerRadius = 10
+    }
+    
+    func configureUI(rest: RestaModel){
+        configureContentView()
         restaurant.setUI(restaurant: rest)
     }
+    
     func configureUI(rest: RestaurantMenuModel, index: Int){
         self.detail = rest
         self.listIntex = index
         restaurant.setUI(restaurant: rest)
         configureButton()
+    }
+    
+    func configureUI(rest: RestModel){
+        configureContentView()
+        restaurant.setUI(restaurant: rest.restaurant)
     }
     
     private func configureButton(){

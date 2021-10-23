@@ -1,12 +1,17 @@
 import UIKit
+import RxSwift
+import RxCocoa
 
 class SiparisVC: UIViewController, GenreListViewModelDelegate {
     
-    let pageViewController  = RestaurantPageVC()
-    let pageControl = UIPageControl()
-    var initialPage = 0
-    var collectionView : UICollectionView!
-    let loadingView = LoadingView.shared
+    private let bag = DisposeBag()
+    
+    private let pageViewController  = RestaurantPageVC()
+    private let pageControl = UIPageControl()
+    private lazy var initialPage = 0
+    private var collectionView : UICollectionView!
+    private let loadingView = LoadingView.shared
+    
     var viewModel: RestaurantGenreViewModel!{
         didSet{
             viewModel.delegate = self
@@ -17,25 +22,45 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         hideKeyboardWhenTappedAround()
-        if !Connectivity.isConnectedToInternet{
-            let offlineVC = OfflineVC()
-            present(offlineVC, animated: true)
-        }
+        
+        Connectivity.isStillConnecting.subscribe{ value in
+            switch value {
+            case .success(_):
+                print("internetConnection: \(value)")
+            case .failure(_):
+                let offlineVC = OfflineVC()
+                self.present(offlineVC, animated: true)
+            }
+        }.disposed(by: bag)
+        
+        pageViewController.controllersObservable
+            .subscribe(onNext: { [weak self] controllers in
+                guard let self = self else { return }
+                self.pageControl.numberOfPages = controllers.count
+            }).disposed(by: bag)
+        
+        pageViewController.currentIndexObservable
+            .subscribe { [weak self] index in
+            guard let self = self else { return }
+            self.pageControl.currentPage = index.element ?? 0
+        }.disposed(by: bag)
+        
         
         loadingView.startLoading()
-        pageViewController.pageControllerDelegate = self
-        pageViewController.setUI(with: returnViewControllers())
+        
+        let pageViewControllerWidth = pageViewController.view.frame.size.width - 25
+        pageViewController.setUI(with: MockDatas().returnViewControllers(width: pageViewControllerWidth))
+        
         configurePageVC()
         configureCollectionView()
         viewModel.load()
         configurePageControl()
-        // protocol taşı
-        DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            self.loadingView.hideLoading()
-        }
+        
+        navigationController?.view.backgroundColor = .systemRed
+        
     }
     
-    func configurePageControl() {
+    private func configurePageControl() {
         // pageControl
         pageControl.frame = CGRect()
         pageControl.currentPageIndicatorTintColor = UIColor.black
@@ -53,36 +78,7 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
         ])
     }
     
-    private func returnViewControllers() -> [UIViewController]{
-        
-        let width = pageViewController.view.frame.size.width - 25
-        var controllers = [UIViewController]()
-        let viewC1 = UIViewController()
-        let viewC2 = UIViewController()
-        let viewC3 = UIViewController()
-        
-        let imageView = UIImageView(image: UIImage(named: "dominos"))
-        viewC1.view.addSubview(imageView)
-        imageView.frame = CGRect(x: 0, y: 0, width: width, height: 200)
-        imageView.contentMode = .scaleAspectFit
-        
-        let imageView2 = UIImageView(image: UIImage(named: "burgerking"))
-        viewC2.view.addSubview(imageView2)
-        imageView2.frame = CGRect(x: 0, y: 0, width: width, height: 200)
-        imageView2.contentMode = .scaleAspectFit
-        
-        let imageView3 = UIImageView(image: UIImage(named: "kfc"))
-        viewC3.view.addSubview(imageView3)
-        imageView3.frame = CGRect(x: 0, y: 0, width: width, height: 200)
-        imageView3.contentMode = .scaleAspectFit
     
-        
-        controllers.append(viewC1)
-        controllers.append(viewC2)
-        controllers.append(viewC3)
-        
-        return controllers
-    }
     
     func registerCell() {
         collectionView.register(CategoriesCell.self, forCellWithReuseIdentifier: CategoriesCell.identifier)
@@ -93,11 +89,16 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
     }
     
     private func configureCollectionView(){
-        
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollectonGridLayout())
         collectionView.backgroundColor = .systemBackground
-        collectionView.dataSource = self
-        collectionView.delegate   = self
+    
+        viewModel.restaurantsObservable
+            .bind(to: collectionView.rx.items(cellIdentifier: CategoriesCell.identifier, cellType: CategoriesCell.self)) { index, restaurant, cell in
+                cell.setUI(model: restaurant)
+                self.loadingView.hideLoading()
+            }.disposed(by: bag)
+            
+        
         view.addSubview(collectionView)
         
         collectionView.translatesAutoresizingMaskIntoConstraints = false
@@ -114,7 +115,7 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
         ])
     }
     
-    func createCollectonGridLayout() -> UICollectionViewFlowLayout{
+    private func createCollectonGridLayout() -> UICollectionViewFlowLayout{
         let layout = UICollectionViewFlowLayout()
         let width  = (view.frame.width - 4*10)/2
         let height = (view.frame.height)/3
@@ -128,7 +129,6 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
     }
     
     private func configurePageVC() {
-        
         view.addSubview(pageViewController.view)
         
         pageViewController.view.translatesAutoresizingMaskIntoConstraints = false
@@ -143,43 +143,14 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
     }
 }
 
-
-extension SiparisVC: UICollectionViewDataSource, UICollectionViewDelegate{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return viewModel.restaurants.count
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoriesCell.identifier, for: indexPath) as! CategoriesCell
-        
-        guard let restaurant = viewModel?.restaurants[indexPath.row] else {
-            return .init()
-        }
-        
-        cell.setUI(model: restaurant)
-        return cell
-        
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        guard let tabBar = self.tabBarController else { return }
-        let vc = tabBar.viewControllers?[1].children[0] as! SearchVC
-        
-        guard let title = viewModel?.restaurants[indexPath.row].name else { return }
-        vc.comeFromSiparisVC = title
-        tabBar.selectedIndex = 1
-        
-    }
-}
-
-extension SiparisVC: PageViewControllerDelegate{
-    func setupPageController(numberPages: Int) {
-        pageControl.numberOfPages = numberPages
-    }
-    
-    
-    func turnPageController(to index: Int) {
-        pageControl.currentPage = index
-    }
-}
+/*
+ func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+     guard let tabBar = self.tabBarController else { return }
+     let vc = tabBar.viewControllers?[1].children[0] as! SearchVC
+     
+     guard let title = viewModel?.restaurants[indexPath.row].name else { return }
+     vc.comeFromSiparisVC = title
+     tabBar.selectedIndex = 1
+     
+ }
+ */

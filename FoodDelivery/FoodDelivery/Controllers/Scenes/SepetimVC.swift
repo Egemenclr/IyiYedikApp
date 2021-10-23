@@ -1,19 +1,26 @@
 import UIKit
-
+import RxSwift
+import RxRelay
 
 class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
+    private let bag = DisposeBag()
     
-    let emptyView = EmptyViewState(image: Images.emptyBasket!, messageText: "Sepetinizde ürün bulunmamaktadır.", messageDesc: "Semtinizdeki restoranları listeleyebilirsiniz.")
+    // MARK: Constraints
+    private var compactConstraints: [NSLayoutConstraint] = []
+    private var regularConstraints: [NSLayoutConstraint] = []
+    private var sharedConstraints: [NSLayoutConstraint] = []
     
-    var collectionView : UICollectionView!
-    var basketList: [RestaurantMenuModel] = []
-    let resultCost = CustomTitleLabel(textAlignment: .left, fontSize: 16)
-    let paymentButton = CustomButton(backgroundColor: hexStringToUIColor(hex: "3C8D2F"), title: "Sipariş Ver")
+    private let emptyView = EmptyViewState(image: Images.emptyBasket!,
+                                   messageText: "Sepetinizde ürün bulunmamaktadır.",
+                                   messageDesc: "Semtinizdeki restoranları listeleyebilirsiniz.")
+    private var collectionView : UICollectionView!
+    private lazy var basketList    = BehaviorRelay<[RestaurantMenuModel]>(value: [])
+    private let resultCost    = CustomTitleLabel(textAlignment: .left, fontSize: 16)
+    private let paymentButton = CustomButton(backgroundColor: hexStringToUIColor(hex: "3C8D2F"), title: "Sipariş Ver")
     
     var viewModel: RestaurantMenuViewProtocol!{
         didSet{
             viewModel.delegate = self
-            self.basketList = viewModel.restaurants
         }
     }
     
@@ -23,9 +30,35 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
         view.backgroundColor = .systemBackground
         
         configureUI()
+        /*
+         let basketDriver = viewModel.restaurants.asDriver()
+         basketDriver.drive(collectionView.rx.items(cellIdentifier: SearchRestaurantsCell.identifier, cellType: SearchRestaurantsCell.self)) { index, model, cell in
+             
+             cell.configureUI(rest: model, index: index)
+             cell.reloadListeDelegate = self
+         }.disposed(by: bag)
+         */
+        setupConstraints()
+        NSLayoutConstraint.activate(sharedConstraints)
+        print(UIScreen.main.traitCollection)
+        layoutTrait(traitCollection: UIScreen.main.traitCollection)
+        
+        basketList.bind(to: collectionView.rx.items(cellIdentifier: SearchRestaurantsCell.identifier, cellType: SearchRestaurantsCell.self)) { index, model, cell in
+            cell.configureUI(rest: model, index: index)
+            cell.reloadListeDelegate = self
+        }.disposed(by: bag)
+        
+        basketList.skip(1)
+            .subscribe { order in
+            if order.element?.count == 0 {
+                self.configureEmptyView()
+            } else {
+                self.collectionView.reloadData()
+            }
+        }.disposed(by: bag)
     }
     
-    private func configureUI(){
+    private func configureUI() {
         configureCollectionView()
         configureResultCost()
         configurePaymentButton()
@@ -34,33 +67,88 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
-        viewModel.load()
-        self.basketList = viewModel.restaurants
+        viewModel.load { [weak self] list in
+            guard let self = self else { return }
+            self.basketList.accept(list)
+        }
         
-        self.reloadCollectionView()
         DispatchQueue.main.async {
             self.setCostLabel()
         }
     }
     
-    private func configureCollectionView(){
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollectonGridLayout())
-        
-        collectionView.backgroundColor = .systemBackground
-        collectionView.dataSource = self
-        collectionView.delegate   = self
-        
-        view.addSubview(collectionView)
-        
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
+    private func layoutTrait(traitCollection: UITraitCollection) {
+        if (!sharedConstraints[0].isActive) {
+           // activating shared constraints
+           NSLayoutConstraint.activate(sharedConstraints)
+        }
+        if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
+            if regularConstraints.count > 0 && regularConstraints[0].isActive {
+                NSLayoutConstraint.deactivate(regularConstraints)
+            }
+            // activating compact constraints
+            NSLayoutConstraint.activate(compactConstraints)
+        } else {
+            if compactConstraints.count > 0 && compactConstraints[0].isActive {
+                NSLayoutConstraint.deactivate(compactConstraints)
+            }
+            // activating regular constraints
+            NSLayoutConstraint.activate(regularConstraints)
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        layoutTrait(traitCollection: traitCollection)
+    }
+    
+    private func setupConstraints() {
+        sharedConstraints.append(contentsOf: [
             collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
             collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.90)
-            
         ])
+        
+        regularConstraints.append(contentsOf: [
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.90)
+        ])
+        
+        compactConstraints.append(contentsOf: [
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.90)
+        ])
+    }
+    
+    private func setCostLabel() {
+        basketList
+            .map{
+                $0.map{
+                    Double($0.adet ?? 1) * Double($0.cost)!
+                }
+                .reduce(0, { x, y in
+                    x+y
+                })
+            }
+            .map {
+                " Toplam: \($0) ₺"
+            }
+            .bind(to: resultCost.rx.text).disposed(by: bag)
+    }
+    
+    
+    private func configureCollectionView(){
+        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollectonGridLayout())
+        collectionView.backgroundColor = .systemBackground
+        view.addSubview(collectionView)
+        collectionView.translatesAutoresizingMaskIntoConstraints = false
+        
+        
     }
     
     func createCollectonGridLayout() -> UICollectionViewFlowLayout{
@@ -76,8 +164,7 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
         return layout
     }
     
-    func configureEmptyView(){
-        
+    private func configureEmptyView(){
         collectionView.backgroundView = emptyView
         emptyView.setButton(text: "RESTORANLARI LİSTELE", backgroundColor: .systemGreen)
         emptyView.button.addTarget(self, action: #selector(emptyButtonClicked), for: .touchUpInside)
@@ -99,7 +186,6 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
     }
     
     private func configurePaymentButton(){
-        
         let heightConstant: CGFloat = 50
         let heighteightConstraint = NSLayoutConstraint(item: paymentButton, attribute: .height, relatedBy: .equal, toItem: nil, attribute: .notAnAttribute, multiplier: 1, constant: heightConstant)
         paymentButton.addConstraints([heighteightConstraint])
@@ -109,7 +195,7 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
     }
     
     @objc private func openPaymentScreen(){
-        navigationController?.pushViewController(PaymentVC(list: basketList), animated: true)
+        navigationController?.pushViewController(PaymentVC(list: basketList.value), animated: true)
     }
    
     
@@ -133,59 +219,14 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
             stackView.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-}
-
-extension SepetimVC: UICollectionViewDataSource, UICollectionViewDelegate{
-    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        if basketList.count == 0 {
-            configureEmptyView()
-            paymentButton.isHidden = true
-            resultCost.isHidden = true
-            
-        }else{paymentButton.isHidden = false
-            resultCost.isHidden = false
-            collectionView.backgroundView = .none
-        }
-        
-        return basketList.count
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: SearchRestaurantsCell.identifier, for: indexPath) as! SearchRestaurantsCell
-        
-        let restaurant = basketList[indexPath.row]
-        
-        cell.configureUI(rest: restaurant, index: indexPath.row)
-        cell.reloadListeDelegate = self
-        return cell
-    }
-    
-    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-
-    }
     
     func registerCell() {
-        collectionView.register(SearchRestaurantsCell.self, forCellWithReuseIdentifier: SearchRestaurantsCell.identifier)
+        collectionView.register(SearchRestaurantsCell.self,
+                                forCellWithReuseIdentifier: SearchRestaurantsCell.identifier)
     }
     
     func reloadData() {
         collectionView.reloadData()
-    }
-    
-    private func setCostLabel(){
-        var result = 0.0
-        for item in self.basketList{
-            result += Double(item.adet ?? 1) * Double(item.cost)!
-        }
-        self.resultCost.text = " Toplam: \(result) TL"
-    }
-    
-    private func reloadCollectionView(){
-        DispatchQueue.main.async { [weak self] in
-            guard let self = self else { return }
-            self.collectionView.reloadData()
-            self.viewModel.load()
-        }
     }
 }
 
@@ -194,11 +235,11 @@ extension SepetimVC: ReloadListe{
         let alert = makeAlert(title: "Ürünü sil", message: "Silmek istediğinize emin misiniz?")
         alert.addAction(UIAlertAction(title: "Evet", style: .default, handler: { [weak self](handler) in
             guard let self = self else { return }
-            self.basketList.remove(at: listIndex)
             
-            self.setCostLabel()
+            var newValue = self.basketList.value
+            newValue.remove(at: listIndex)
+            self.basketList.accept(newValue)
             NetworkManager.shared.deleteFood(index: index)
-            self.reloadCollectionView()
             
         }))
         alert.addAction(UIAlertAction(title: "Hayır", style: .cancel, handler: { (handler) in

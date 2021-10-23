@@ -6,16 +6,14 @@
 //
 
 import UIKit
-
-protocol PageViewControllerDelegate: AnyObject {
-    func setupPageController(numberPages: Int)
-    func turnPageController(to index: Int)
-}
+import RxSwift
+import RxRelay
 
 final class RestaurantPageVC: UIPageViewController {
-
-    var controllers = [UIViewController]()
-    weak var pageControllerDelegate: PageViewControllerDelegate?
+    private let bag = DisposeBag()
+    
+    public var controllersObservable = BehaviorRelay<[UIViewController]>(value: [])
+    public var currentIndexObservable = PublishSubject<Int>()
 
     override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey: Any]? = nil) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -39,9 +37,9 @@ final class RestaurantPageVC: UIPageViewController {
     }
 
     func populatePageVCs(viewController: [UIViewController]) {
-        self.controllers = viewController
-        pageControllerDelegate!.setupPageController(numberPages: controllers.count)
-        guard let first = controllers.first else { return }
+        controllersObservable.accept(viewController)
+        
+        let first = controllersObservable.value[0]
         setViewControllers([first], direction: .forward, animated: true, completion: nil)
     }
     
@@ -49,38 +47,38 @@ final class RestaurantPageVC: UIPageViewController {
 
 extension RestaurantPageVC: UIPageViewControllerDelegate, UIPageViewControllerDataSource {
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerBefore viewController: UIViewController) -> UIViewController? {
-        guard let index = controllers.firstIndex(of: viewController), index > 0 else { return nil }
+        guard let index = controllersObservable.value.firstIndex(of: viewController), index > 0 else { return nil }
         let prev = index - 1
 
-        return controllers[prev]
+        return controllersObservable.value[prev]
     }
 
     func pageViewController(_ pageViewController: UIPageViewController, viewControllerAfter viewController: UIViewController) -> UIViewController? {
-        guard let index = controllers.firstIndex(of: viewController), index < (controllers.count - 1) else { return nil }
+        guard let index = controllersObservable.value.firstIndex(of: viewController), index < (controllersObservable.value.count - 1) else { return nil }
         let next = index + 1
         
-        return controllers[next]
+        return controllersObservable.value[next]
     }
 
     func presentationCount(for pageViewController: UIPageViewController) -> Int {
-        return controllers.count
+        return controllersObservable.value.count
     }
 
     func presentationIndex(for pageViewController: UIPageViewController) -> Int {
         guard let firstVC = pageViewController.viewControllers?.first else { return 0 }
-        guard let firstVCIndex = controllers.firstIndex(of: firstVC) else { return 0 }
+        guard let firstVCIndex = controllersObservable.value.firstIndex(of: firstVC) else { return 0 }
 
         return firstVCIndex
     }
     func pageViewController(_ pageViewController: UIPageViewController, willTransitionTo pendingViewControllers: [UIViewController]) {
-            pendingIndex = controllers.firstIndex(of: pendingViewControllers.first!)
+            pendingIndex = controllersObservable.value.firstIndex(of: pendingViewControllers.first!)
         
         }
     func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
         if completed {
             currentIndex = pendingIndex
             if let index = currentIndex {
-                pageControllerDelegate?.turnPageController(to: index)
+                currentIndexObservable.onNext(index)
             }
         }
     }

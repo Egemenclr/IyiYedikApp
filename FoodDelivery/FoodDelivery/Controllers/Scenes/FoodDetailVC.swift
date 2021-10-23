@@ -10,16 +10,16 @@ import Firebase
 
 class FoodDetailVC: UIViewController {
     
-    let foodName   = CustomBodyLabel(textAlignment: .left)
-    let foodDetil  = CustomTitleLabel(textAlignment: .left, fontSize: 14)
-    let divider    = DividerView()
-    let stepper    = UIStepper(frame: CGRect(x: 0, y: 0, width: 30, height: 50))
-    let countLabel = CustomTitleLabel(textAlignment: .left, fontSize: 14)
-    let costLabel  = CustomTitleLabel(textAlignment: .right, fontSize: 14)
-    let addBasket  = CustomButton(backgroundColor: .systemGreen, title: "Sepete Ekle")
+    private let foodName   = CustomBodyLabel(textAlignment: .left)
+    private let foodDetil  = CustomTitleLabel(textAlignment: .left, fontSize: 14)
+    private let divider    = DividerView()
+    private let stepper    = UIStepper(frame: CGRect(x: 0, y: 0, width: 30, height: 50))
+    private let countLabel = CustomTitleLabel(textAlignment: .left, fontSize: 14)
+    private let costLabel  = CustomTitleLabel(textAlignment: .right, fontSize: 14)
+    private let addBasket  = CustomButton(backgroundColor: .systemGreen, title: "Sepete Ekle")
     
     
-    var detail: RestaurantMenuModel?
+    private var detail: RestaurantMenuModel?
     override func viewDidLoad() {
         super.viewDidLoad()
         hideKeyboardWhenTappedAround()

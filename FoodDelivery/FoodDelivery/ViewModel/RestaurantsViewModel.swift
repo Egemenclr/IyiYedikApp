@@ -1,8 +1,10 @@
 import Foundation
+import RxSwift
+import RxRelay
 
 protocol SearchRestaurantViewProtocol {
     var delegate: SearchRestaurantViewModelDelegate? { get set }
-    var restaurants: [RestModel] { get }
+    var restaurants: BehaviorRelay<[RestModel]> { get }
     var numberOfItems: Int { get }
     func load()
 }
@@ -14,19 +16,20 @@ protocol SearchRestaurantViewModelDelegate: AnyObject {
 
 class RestaurantsViewModel: SearchRestaurantViewProtocol {
     weak var delegate: SearchRestaurantViewModelDelegate?
-    var restaurants: [RestModel] = []
+    
+    var restaurants = BehaviorRelay<[RestModel]>(value: [])
     
     init() {
         willChangeRestaurants { [weak self] (liste) in
             guard let self = self,
                 let list = liste else { return }
-            self.restaurants = list
+            self.restaurants.accept(list)
             //self.delegate?.reloadData()
         }
     }
     
     var numberOfItems: Int {
-        restaurants.count
+        restaurants.value.count
     }
     
     func load() {

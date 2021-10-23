@@ -1,31 +1,70 @@
 import Foundation
 import Alamofire
 import Firebase
+import RxSwift
 
 struct NetworkManager{
     static let shared = NetworkManager()
     
     private init (){}
+    fileprivate let bag = DisposeBag()
     
     let endpoint = ""
     
-    func getData<T: Decodable>(with url: String, method: HTTPMethod,type: T.Type, completion: @escaping (Result<T, NetworkError>) -> Void){
+    func getData<T: Decodable>(with url: String,
+                               method: HTTPMethod,
+                               type: T.Type,
+                               completion: @escaping (Single<[T]>) -> Void
+    ){
+        completion(
+            Single<[T]>.create { single in
+                let disposable = Disposables.create()
+                
+                let request = AF.request(endpoint + url, method: method)
+                request.responseDecodable(of: type) { response in
+                    
+                    guard response.error == nil else {
+                        single(.failure(NetworkError.connectionError))
+                        //completion(.failure(single.error()))
+                        return
+                    }
+                    
+                    guard let data = response.value else {
+                        //completion(.failure(.connectionError))
+                        single(.failure(NetworkError.connectionError))
+                        return
+                    }
+                    single(.success([data]))
+                    
+                    //completion(.success(data))
+                }
+                
+                return disposable
+            }
+        )
         
-        let request = AF.request(endpoint + url, method: method)
-        request.responseDecodable(of: type) { response in
-            guard response.error == nil else {
-                completion(.failure(.connectionError))
-                return
+        
+    }
+    
+    func getDataGeneric<T: Decodable>(with url: String, method: HTTPMethod,type: T.Type) -> Single<[T]> {
+        
+        return Single<[T]>.create { single in
+            let request = AF.request(endpoint + url, method: method) 
+            request.responseDecodable(of: type) { response in
+                
+                guard response.error == nil else {
+                    single(.failure(NetworkError.connectionError))
+                    return
+                }
+                
+                guard let data = response.value else {
+                    single(.failure(NetworkError.connectionError))
+                    return
+                }
+                single(.success([data]))
             }
-            
-            guard let data = response.value else {
-                completion(.failure(.connectionError))
-                return
-            }
-            
-            completion(.success(data))
+            return Disposables.create()
         }
-        
     }
     
     func getCategoriesFromFirebase(completion: @escaping ([RestaurantGenreModel]?) -> Void){
@@ -50,10 +89,11 @@ struct NetworkManager{
         }
         
     }
+    
     func getFirebase<T: Decodable>(entityName: String, type: T.Type, completion: @escaping (Result<[T], Error>) -> Void){
         let ref: DatabaseReference!
         ref = Database.database().reference()
-    
+        
         ref.child(entityName).getData { (err, snapshot) in
             guard err == nil else {
                 completion(.failure(err!))
@@ -66,50 +106,60 @@ struct NetworkManager{
         }
     }
     
-    func getFirebaseWithChild<T: Decodable>(entityName: String, child: String, child2 :String, type: T.Type, completion: @escaping (Result<[T], Error>) -> Void){
-        let ref: DatabaseReference!
-        ref = Database.database().reference()
-        
-        ref.child(entityName).child(child).child(child2).getData { (err, snapshot) in
-            if snapshot.exists() {
-               
-                guard err == nil else {
-                    completion(.failure(err!))
-                    return
-                }
-                let decoder = JSONDecoder()
-                guard let jsonData =  try? JSONSerialization.data(withJSONObject: snapshot.value!, options: .prettyPrinted) else { completion(.failure(err!)) ;return }
-                guard let json = try? decoder.decode([T].self, from: jsonData) else { return }
-
-                completion(.success(json))
-            }else{
-                completion(.failure(NetworkError.connectionError))
-            }
+    func getFirebaseWithChild<T: Decodable>(entityName: String, child: String, child2 :String, type: T.Type) -> Single<[T]> {
+        return Single<[T]>.create { single in
+            let ref: DatabaseReference!
+            ref = Database.database().reference()
             
+            ref.child(entityName).child(child).child(child2).getData { (err, snapshot) in
+                if snapshot.exists() {
+                    
+                    guard err == nil else {
+                        single(.failure(err!))
+                        return
+                    }
+                    let decoder = JSONDecoder()
+                    guard let jsonData =  try? JSONSerialization.data(withJSONObject: snapshot.value!, options: .prettyPrinted) else { single(.failure(err!)) ;return }
+                    guard let json = try? decoder.decode([T].self, from: jsonData) else { return }
+                    
+                    single(.success(json))
+                }else{
+                    single(.failure(NetworkError.connectionError))
+                }
+            }
+            return Disposables.create()
         }
+        
     }
     
-    func getFirebaseUser<T: Decodable>(entityName: String, child: String, type: T.Type, completion: @escaping (Result<T, Error>) -> Void){
-        let ref: DatabaseReference!
-        ref = Database.database().reference()
-        
-        ref.child(entityName).child(child).getData { (err, snapshot) in
-            if snapshot.exists() {
-               
-                guard err == nil else {
-                    completion(.failure(err!))
-                    return
+    func getFirebaseUser<T: Decodable>(entityName: String, child: String, type: T.Type) -> Single<T>{
+        return Single<T>.create { single in
+            let disposable = Disposables.create()
+            let ref: DatabaseReference!
+            ref = Database.database().reference()
+            
+            ref.child(entityName).child(child).getData { (err, snapshot) in
+                if snapshot.exists() {
+                    
+                    guard err == nil else {
+                        single(.failure(err!))
+                        return
+                    }
+                    let decoder = JSONDecoder()
+                    guard let jsonData =  try? JSONSerialization.data(withJSONObject: snapshot.value!,
+                                                                      options: .prettyPrinted) else { single(.failure(err!)) ;return }
+                    guard let json = try? decoder.decode(T.self, from: jsonData) else { return }
+                    
+                    single(.success(json))
+                }else{
+                    single(.failure(NetworkError.connectionError))
                 }
-                let decoder = JSONDecoder()
-                guard let jsonData =  try? JSONSerialization.data(withJSONObject: snapshot.value!, options: .prettyPrinted) else { completion(.failure(err!)) ;return }
-                guard let json = try? decoder.decode(T.self, from: jsonData) else { print("hey") ;return }
-
-                completion(.success(json))
-            }else{
-                completion(.failure(NetworkError.connectionError))
+                
             }
             
+            return disposable
         }
+        
     }
     
     
@@ -118,27 +168,28 @@ struct NetworkManager{
         var ref: DatabaseReference!
         ref = Database.database().reference()
         guard let uuid = Auth.auth().currentUser?.uid else { return }
-        NetworkManager.shared.getFirebaseWithChild(entityName: "Basket", child: uuid, child2: "items", type: RestaurantMenuModel.self) { (result) in
-            switch result{
+        
+        NetworkManager.shared.getFirebaseWithChild(entityName: "Basket", child: uuid, child2: "items", type: RestaurantMenuModel.self).subscribe { single in
+            switch single {
             case .success(let lists):
                 ref.child("Basket").child(uuid).child("items").updateChildValues([ String(lists.count): ["fiyat": restaurant.cost,
-                                                                                        "icerik": restaurant.desc,
-                                                                                        "malzemeler": restaurant.material,
-                                                                                        "id": String(lists.count),
-                                                                                        "adet": restaurant.adet!,
-                                                                                        "isDeleted": false,
-                                                                                        "name": restaurant.name]])
-            case .failure(let _):
+                                                                                                         "icerik": restaurant.desc,
+                                                                                                         "malzemeler": restaurant.material,
+                                                                                                         "id": String(lists.count),
+                                                                                                         "adet": restaurant.adet!,
+                                                                                                         "isDeleted": false,
+                                                                                                         "name": restaurant.name]])
+            case .failure( _):
                 ref.child("Basket").child(uuid).child("items").updateChildValues([ "0": ["fiyat": restaurant.cost,
-                                                                                        "icerik": restaurant.desc,
-                                                                                        "malzemeler": restaurant.material,
-                                                                                        "id": "0",
-                                                                                        "adet": restaurant.adet!,
-                                                                                        "isDeleted": false,
-                                                                                        "name": restaurant.name]])
+                                                                                         "icerik": restaurant.desc,
+                                                                                         "malzemeler": restaurant.material,
+                                                                                         "id": "0",
+                                                                                         "adet": restaurant.adet!,
+                                                                                         "isDeleted": false,
+                                                                                         "name": restaurant.name]])
                 
             }
-        }
+        }.disposed(by: bag)
     }
     
     func updateUser(name: String, surname: String, cardNumber: String, expireDate: String, CCV: String){
@@ -148,10 +199,10 @@ struct NetworkManager{
         
         guard let uuid = Auth.auth().currentUser?.uid else { return }
         ref.child("Users").child(uuid).updateChildValues(["name": name,
-                                                        "surname": surname,
-                                                        "cardNumber": cardNumber,
-                                                        "expireDate": expireDate,
-                                                        "CCV": CCV])
+                                                          "surname": surname,
+                                                          "cardNumber": cardNumber,
+                                                          "expireDate": expireDate,
+                                                          "CCV": CCV])
     }
     
     func updateAdres(title: String, adres: String, binaNo: String, kat: String, daire: String, tarif: String, completion: @escaping (Bool) -> Void){
@@ -160,11 +211,11 @@ struct NetworkManager{
         
         guard let uuid = Auth.auth().currentUser?.uid else { return }
         ref.child("Users").child(uuid).child("adress").updateChildValues(["title": title,
-                                                          "adressDesc": adres,
-                                                          "buildingNumber": binaNo,
-                                                          "flat": kat,
-                                                          "apartmentNumber": daire,
-                                                          "description": tarif])
+                                                                          "adressDesc": adres,
+                                                                          "buildingNumber": binaNo,
+                                                                          "flat": kat,
+                                                                          "apartmentNumber": daire,
+                                                                          "description": tarif])
         completion(true)
         
     }

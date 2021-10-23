@@ -6,17 +6,23 @@
 //
 
 import UIKit
+import RxSwift
 
 class PaymentVC: UIViewController {
-
+    private let bag = DisposeBag()
     
-    let cardNumber = CustomLoginTextFieldView()
-    let expireDate = CustomLoginTextFieldView()
-    let ccv = CustomLoginTextFieldView()
-    let paymentButton = CustomButton()
-    let textView = CustomTitleLabel(textAlignment: .left, fontSize: 14)
-    let adressDesc = UITextView()
-    var basketList: [RestaurantMenuModel] = []
+    // MARK: Constraints
+    private var compactConstraints: [NSLayoutConstraint] = []
+    private var regularConstraints: [NSLayoutConstraint] = []
+    private var sharedConstraints: [NSLayoutConstraint] = []
+    
+    private let cardNumber = CustomLoginTextFieldView()
+    private let expireDate = CustomLoginTextFieldView()
+    private let ccv = CustomLoginTextFieldView()
+    private let paymentButton = CustomButton()
+    private let textView = CustomTitleLabel(textAlignment: .left, fontSize: 14)
+    private let adressDesc = UITextView()
+    private var basketList: [RestaurantMenuModel] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -43,21 +49,21 @@ class PaymentVC: UIViewController {
     
     private func setUI(){
         
-        NetworkManager.shared.getFirebaseUser(entityName: "Users", child: AuthManager.shared.getUUID(), type: User.self) { [weak self] (result) in
+        NetworkManager.shared.getFirebaseUser(entityName: "Users",
+                                              child: AuthManager.shared.getUUID(),
+                                              type: User.self).subscribe{ [weak self] single in
             guard let self = self else { return }
-            switch result{
+            switch single{
             case .success(let user):
-                
                 self.cardNumber.textField.text = user.cardNumber
                 self.expireDate.textField.text = user.expireDate
                 self.ccv.textField.text = user.CCV
-                
                 self.adressDesc.text = "\(user.adress.adressDesc) Bina No:\(user.adress.buildingNumber) Kat:\(user.adress.flat) İç Kapı:\(user.adress.apartmentNumber) - \(user.adress.description)"
                 
             case .failure( _):
                 break
             }
-        }
+        }.disposed(by: bag)
     }
     
     private func configureUI(){
@@ -69,6 +75,30 @@ class PaymentVC: UIViewController {
         configurebutton()
     }
     
+    private func layoutTrait(traitCollection: UITraitCollection) {
+        if (!sharedConstraints[0].isActive) {
+           // activating shared constraints
+           NSLayoutConstraint.activate(sharedConstraints)
+        }
+        if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
+            if regularConstraints.count > 0 && regularConstraints[0].isActive {
+                NSLayoutConstraint.deactivate(regularConstraints)
+            }
+            // activating compact constraints
+            NSLayoutConstraint.activate(compactConstraints)
+        } else {
+            if compactConstraints.count > 0 && compactConstraints[0].isActive {
+                NSLayoutConstraint.deactivate(compactConstraints)
+            }
+            // activating regular constraints
+            NSLayoutConstraint.activate(regularConstraints)
+        }
+    }
+    
+    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
+        super.traitCollectionDidChange(previousTraitCollection)
+        layoutTrait(traitCollection: traitCollection)
+    }
     
     
     private func configureCardNumber(){
