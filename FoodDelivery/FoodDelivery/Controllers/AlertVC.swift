@@ -12,7 +12,7 @@ class AlertVC: UIViewController {
     let containerView   = CustomAlertView()
     let titleLabel      = CustomTitleLabel(textAlignment: .center, fontSize: 20)
     let messageLabel    = CustomBodyLabel(textAlignment: .center)
-    let actionButton    = CustomButton(backgroundColor: .systemPink, title: "Ok")
+    var actionButton    = CustomButton(backgroundColor: .systemPink, title: "Ok")
     let cancelButton   = CustomButton(backgroundColor: .systemRed, title: "Cancel")
     
     var alertTitle: String?

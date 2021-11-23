@@ -9,7 +9,7 @@ import UIKit
 
 class OnboardingVC: UIViewController {
     let pageViewController  = RestaurantPageVC()
-    let pageControl = UIPageControl()
+    //let pageControl = UIPageControl()
     var initialPage = 0
     
     let nextButton = CustomButton(backgroundColor: .systemOrange, title: "Devam")
@@ -19,7 +19,8 @@ class OnboardingVC: UIViewController {
         
         pageViewController.setUI(with: returnViewControllers())
         configurePageVC()
-        configurePageControl()
+        view.backgroundColor = .systemOrange
+        //configurePageControl()
         
         #warning("page controle subscribtion tamamla")
         configureButton()
@@ -57,30 +58,32 @@ class OnboardingVC: UIViewController {
         ])
     }
     
-    private func configurePageControl() {
-        // pageControl
-        pageControl.frame = CGRect()
-        pageControl.currentPageIndicatorTintColor = UIColor.orange
-        pageControl.pageIndicatorTintColor = UIColor.lightGray
-        
-        pageControl.currentPage = initialPage
-        pageViewController.view.addSubview(pageControl)
-        
-        pageControl.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            pageControl.bottomAnchor.constraint(equalTo: pageViewController.view.bottomAnchor, constant: -20),
-            pageControl.leadingAnchor.constraint(equalTo: pageViewController.view.leadingAnchor, constant: 20),
-            pageControl.trailingAnchor.constraint(equalTo: pageViewController.view.trailingAnchor, constant: -20),
-            pageControl.heightAnchor.constraint(equalToConstant: 20)
-        ])
-    }
+    /*
+     private func configurePageControl() {
+         // pageControl
+         pageControl.frame = CGRect()
+         pageControl.currentPageIndicatorTintColor = UIColor.orange
+         pageControl.pageIndicatorTintColor = UIColor.lightGray
+         
+         pageControl.currentPage = initialPage
+         pageViewController.view.addSubview(pageControl)
+         
+         pageControl.translatesAutoresizingMaskIntoConstraints = false
+         NSLayoutConstraint.activate([
+             pageControl.bottomAnchor.constraint(equalTo: pageViewController.view.bottomAnchor, constant: -20),
+             pageControl.leadingAnchor.constraint(equalTo: pageViewController.view.leadingAnchor, constant: 20),
+             pageControl.trailingAnchor.constraint(equalTo: pageViewController.view.trailingAnchor, constant: -20),
+             pageControl.heightAnchor.constraint(equalToConstant: 20)
+         ])
+     }
+     */
     
     private func configureButton(){
         view.addSubview(nextButton)
         
         nextButton.addTarget(self, action: #selector(nextButtonClicked), for: .touchUpInside)
         NSLayoutConstraint.activate([
-            nextButton.centerYAnchor.constraint(equalTo: pageControl.centerYAnchor),
+            nextButton.centerYAnchor.constraint(equalTo: pageViewController.view.centerYAnchor),
             nextButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
             nextButton.widthAnchor.constraint(equalToConstant: 50),
             nextButton.heightAnchor.constraint(equalToConstant: 35)

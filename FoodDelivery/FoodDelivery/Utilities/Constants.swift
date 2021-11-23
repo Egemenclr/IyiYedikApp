@@ -14,6 +14,7 @@ enum SFSymbols{
     static let cart             = UIImage(systemName: "cart")
     static let basket           = UIImage(named: "basket")
     static let bookmark         = UIImage(systemName: "bookmark")
+    static let bookmarkFill     = UIImage(systemName: "bookmark.fill")
     
     static let profile          = UIImage(systemName: "person.circle")
     static let airpods          = UIImage(systemName: "airpods")

@@ -27,31 +27,23 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
         let restaurants = viewModel.restaurants.share(replay: 1)
         
         let searchString = searchController.searchBar.rx.text
-        let filteredUsers = Observable.combineLatest(searchString, restaurants) { str, restaurants in
-            return restaurants.filter { $0.restaurant.name.contains(str ?? "")}
-        }
+        let filteredUsers = Observable
+            .combineLatest(searchString, restaurants) { str, restaurants in
+            return restaurants.filter { $0.restaurant.name.hasPrefix(str!)}
+            }
         
-        var tempObservable = Observable<[RestModel]>.empty()
-        filteredUsers.subscribe{ [weak self] text in
-            guard let self = self else { return }
-            self.collectionView.dataSource = nil
-            self.collectionView.delegate = nil
-            tempObservable = text.element!.count == 0 ? restaurants : filteredUsers
-            
-            tempObservable.bind(to: self.collectionView.rx
-                                .items(cellIdentifier: SearchRestaurantsCell.identifier,
-                                       cellType: SearchRestaurantsCell.self)) { row, restaurant, cell in
-                cell.configureUI(rest: restaurant)
-            }.disposed(by: self.bag)
-        }.disposed(by: bag)
+        filteredUsers
+            .bind(to: self.collectionView.rx
+                    .items(cellIdentifier: SearchRestaurantsCell.identifier,
+                                   cellType: SearchRestaurantsCell.self)) { row, restaurant, cell in
+            cell.configureUI(rest: restaurant)
+        }.disposed(by: self.bag)
         
-        viewModel.load()
-        
-         collectionView.rx.itemSelected
-             .subscribe { indexPath in
+         collectionView.rx
+            .itemSelected.subscribe { indexPath in
                  guard let index = indexPath.element?.row else { return }
                  
-                 tempObservable.subscribe { temp in
+                 filteredUsers.subscribe { temp in
                      guard temp.element!.count > 0,
                         let restaurant = temp.element?[index].restaurant else { return }
                      let restaurantVC = RestaurantDetailVC(restaurant: restaurant)
@@ -63,6 +55,7 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
     
     private func configureCollectionView(){
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollectonGridLayout())
+        collectionView.register(SearchRestaurantsCell.self, forCellWithReuseIdentifier: SearchRestaurantsCell.identifier)
         collectionView.backgroundColor = .systemBackground
         
         view.addSubview(collectionView)

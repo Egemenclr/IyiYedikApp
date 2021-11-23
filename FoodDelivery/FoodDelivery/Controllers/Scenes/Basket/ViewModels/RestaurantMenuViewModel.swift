@@ -54,7 +54,6 @@ class RestaurantMenuViewModel: RestaurantMenuViewProtocol {
                  let list = liste else { return }
              self.restaurants.accept(list)
              completion(list)
-             print("viewModel \(list)")
          }
     }
     

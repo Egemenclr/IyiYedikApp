@@ -63,6 +63,8 @@ class CustomRestaurant: UIView {
     }
         
     func configureInnerStackView(){
+        restaurantName.textColor = .lightGray
+        restaurantDesc.textColor = .lightGray
         innerStackView.addArrangedSubview(restaurantName)
         innerStackView.addArrangedSubview(restaurantDesc)
         innerStackView.axis = .vertical

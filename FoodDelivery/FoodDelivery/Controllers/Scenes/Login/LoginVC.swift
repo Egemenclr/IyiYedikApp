@@ -1,14 +1,15 @@
 import UIKit
 import GoogleSignIn
+import RxSwift
 
 class LoginVC: UIViewController {
-    
+    private let bag = DisposeBag()
     enum Theme{
         case light, dark
     }
     
     let imageView = UIImageView()
-    
+    #warning("textfield constant ayarla")
     let epostaSection   = CustomLoginTextFieldView()
     let passwordSection = CustomLoginTextFieldView()
     let signInButton    = CustomButton(backgroundColor: .orange, title: "GİRİŞ YAP")
@@ -32,6 +33,17 @@ class LoginVC: UIViewController {
         
         configureUI()
         configureLabels()
+        
+        Observable
+            .combineLatest(
+                epostaSection.textField.rx.text.orEmpty,
+                passwordSection.textField.rx.text.orEmpty
+            )
+            .map{ username, password in
+                return username.contains("@") && password.count > 3
+            }
+            .bind(to: signInButton.rx.isEnabled)
+            .disposed(by: bag)
     }
     
     

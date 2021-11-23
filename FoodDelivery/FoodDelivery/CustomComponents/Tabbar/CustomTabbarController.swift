@@ -14,11 +14,12 @@ class CustomTabbarController: UITabBarController {
         
         delegate = self
         
-        viewControllers = [createSiparisNC(), createDiscoverNC(), createSepetimVC(), createProfileNC()]
+        viewControllers = [createSiparisNC(), createDiscoverNC(), createSepetimVC(), createProfileNC(), createSandbox()]
         UINavigationBar.appearance().barTintColor = .systemRed
+        UINavigationBar.appearance().backgroundColor = .systemRed
         UINavigationBar.appearance().tintColor = .white
+        
     }
-    
     
     func createSiparisNC() -> UINavigationController{
         let siparisVC = SiparisVC()
@@ -52,6 +53,14 @@ class CustomTabbarController: UITabBarController {
         profileVC.tabBarItem = UITabBarItem(title: "Profil", image: SFSymbols.profile, tag: 4)
         
         return UINavigationController(rootViewController: profileVC)
+    }
+    
+    private func createSandbox() -> UINavigationController{
+        let sandboxVC = SandBoxVC()
+        sandboxVC.title = "Sandbox"
+        sandboxVC.tabBarItem = UITabBarItem(title: "Profil", image: SFSymbols.profile, tag: 4)
+        
+        return UINavigationController(rootViewController: sandboxVC)
     }
 }
 

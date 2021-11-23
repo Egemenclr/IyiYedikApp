@@ -1,13 +1,20 @@
 import UIKit
+import RxSwift
+import RxCocoa
 
-class LoadingView {
+class LoadingView: UIView {
     
     var activityIndicator: UIActivityIndicatorView = UIActivityIndicatorView()
-    static let shared = LoadingView()
     var blurView: UIVisualEffectView = UIVisualEffectView()
     
-    private init() {
+    override init(frame: CGRect) {
+        super.init(frame: frame)
         configure()
+        startLoading()
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     func configure() {
@@ -30,20 +37,33 @@ class LoadingView {
         blurView.removeFromSuperview()
         activityIndicator.stopAnimating()
     }
-}
-
-protocol LoadingShowable where Self: UIViewController {
-    func showLoading()
-    func hideLoading()
-}
-
-extension LoadingShowable {
     
-    func showLoading() {
-        LoadingView.shared.startLoading()
+    func showLoadingView() -> Single<Void> {
+        return Single.create { [weak self] single in
+            guard let self = self else { return Disposables.create {} }
+            self.startLoading()
+            return Disposables.create()
+        }
     }
     
-    func hideLoading() {
-        LoadingView.shared.hideLoading()
+    func hideLoadingView() -> Single<Void> {
+        return Single.create { [weak self] single in
+            guard let self = self else { return Disposables.create {} }
+            self.hideLoading()
+            return Disposables.create()
+        }
+    }
+}
+
+
+extension Reactive where Base == LoadingView {
+    var hideAnimate: Binder<Bool> {
+        Binder(base) { target, message in
+            print("burda")
+            target.hideLoadingView()
+                .asObservable()
+                .subscribe()
+                .disposed(by: DisposeBag())
+        }
     }
 }

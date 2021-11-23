@@ -7,10 +7,9 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
     private let bag = DisposeBag()
     
     private let pageViewController  = RestaurantPageVC()
-    private let pageControl = UIPageControl()
     private lazy var initialPage = 0
     private var collectionView : UICollectionView!
-    private let loadingView = LoadingView.shared
+    private let loadingView = LoadingView()
     
     var viewModel: RestaurantGenreViewModel!{
         didSet{
@@ -33,52 +32,33 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
             }
         }.disposed(by: bag)
         
-        pageViewController.controllersObservable
-            .subscribe(onNext: { [weak self] controllers in
-                guard let self = self else { return }
-                self.pageControl.numberOfPages = controllers.count
-            }).disposed(by: bag)
-        
-        pageViewController.currentIndexObservable
-            .subscribe { [weak self] index in
-            guard let self = self else { return }
-            self.pageControl.currentPage = index.element ?? 0
-        }.disposed(by: bag)
-        
-        
         loadingView.startLoading()
         
+        viewModel.isLoading
+            .filter { $0 }
+            .do(onNext: { _ in self.loadingView.hideLoading() })
+            .asDriver(onErrorJustReturn: false)
+            .drive(loadingView.activityIndicator.rx.isHidden)
+            .disposed(by: bag)
+            
+        //self.loadingView.hideLoading()
         let pageViewControllerWidth = pageViewController.view.frame.size.width - 25
         pageViewController.setUI(with: MockDatas().returnViewControllers(width: pageViewControllerWidth))
         
         configurePageVC()
         configureCollectionView()
         viewModel.load()
-        configurePageControl()
         
         navigationController?.view.backgroundColor = .systemRed
         
+        //DatabaseManager.shared.save(Favories(name: "Muhit Burger"))
+        //print(DatabaseManager.shared.favorites)
+        //DatabaseManager.shared.find(Favories(name: "q"))
+        let damn = DatabaseManager.shared.favorites.filter{
+            $0.restaurantName.prefix(0) == "q"
+        }
+        print(damn)
     }
-    
-    private func configurePageControl() {
-        // pageControl
-        pageControl.frame = CGRect()
-        pageControl.currentPageIndicatorTintColor = UIColor.black
-        pageControl.pageIndicatorTintColor = UIColor.lightGray
-        
-        pageControl.currentPage = initialPage
-        pageViewController.view.addSubview(pageControl)
-        
-        pageControl.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate([
-            pageControl.bottomAnchor.constraint(equalTo: pageViewController.view.bottomAnchor, constant: -20),
-            pageControl.leadingAnchor.constraint(equalTo: pageViewController.view.leadingAnchor, constant: 20),
-            pageControl.trailingAnchor.constraint(equalTo: pageViewController.view.trailingAnchor, constant: -20),
-            pageControl.heightAnchor.constraint(equalToConstant: 20)
-        ])
-    }
-    
-    
     
     func registerCell() {
         collectionView.register(CategoriesCell.self, forCellWithReuseIdentifier: CategoriesCell.identifier)
@@ -95,7 +75,7 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
         viewModel.restaurantsObservable
             .bind(to: collectionView.rx.items(cellIdentifier: CategoriesCell.identifier, cellType: CategoriesCell.self)) { index, restaurant, cell in
                 cell.setUI(model: restaurant)
-                self.loadingView.hideLoading()
+                //self.loadingView.hideLoading()
             }.disposed(by: bag)
             
         
@@ -141,6 +121,8 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
             
         ])
     }
+    
+    
 }
 
 /*
@@ -154,3 +136,10 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
      
  }
  */
+
+extension Driver {
+    static func pipe() -> (observer: AnyObserver<Element>, driver: Driver<Element>) {
+        let subject = PublishSubject<Element>()
+        return (subject.asObserver(), subject.asDriver(onErrorDriveWith: .never()))
+    }
+}

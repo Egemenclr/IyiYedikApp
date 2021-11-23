@@ -1,6 +1,7 @@
 import Foundation
 import RxSwift
 import RxRelay
+import RxCocoa
 
 protocol GenreListViewProtocol {
     var delegate: GenreListViewModelDelegate? { get set }
@@ -16,7 +17,8 @@ protocol GenreListViewModelDelegate: AnyObject {
 }
 
 class RestaurantGenreViewModel: GenreListViewProtocol {
-    
+    //var isLoading: Driver<Bool> = Observable.just(false).asDriver(onErrorDriveWith: .never())
+    var isLoading = PublishSubject<Bool>()
     var restaurantsObservable = BehaviorRelay<[RestaurantGenreModel]>(value: [])
 
     weak var delegate: GenreListViewModelDelegate?
@@ -26,6 +28,7 @@ class RestaurantGenreViewModel: GenreListViewProtocol {
             guard let self = self,
                 let list = liste else { return }
             self.restaurantsObservable.accept(list)
+            self.isLoading.on(.next(true))
             self.delegate?.reloadData()
         }
     }

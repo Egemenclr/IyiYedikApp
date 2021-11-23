@@ -11,8 +11,6 @@ class CustomLoginTextFieldView: UIView {
 
     }
     
-    
-
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
@@ -33,13 +31,13 @@ class CustomLoginTextFieldView: UIView {
 
         headerText.translatesAutoresizingMaskIntoConstraints = false
 
-        headerText.textColor = .secondaryLabel
+        headerText.textColor = .label
 
         headerText.font = Fonts.helvetica
         NSLayoutConstraint.activate([
-            headerText.topAnchor.constraint(equalTo: self.topAnchor, constant: 10),
-            headerText.leadingAnchor.constraint(equalTo: self.leadingAnchor, constant: 10),
-            headerText.trailingAnchor.constraint(equalTo: self.trailingAnchor, constant: -10),
+            headerText.topAnchor.constraint(equalTo: self.topAnchor),
+            headerText.leadingAnchor.constraint(equalTo: self.leadingAnchor),
+            headerText.trailingAnchor.constraint(equalTo: self.trailingAnchor),
             headerText.heightAnchor.constraint(equalToConstant: 20)
         ])
     }
@@ -49,10 +47,11 @@ class CustomLoginTextFieldView: UIView {
 
         textField.translatesAutoresizingMaskIntoConstraints = false
         textField.borderStyle = .roundedRect
+        textField.textColor = .lightGray
         textField.backgroundColor = .white
 
         NSLayoutConstraint.activate([
-            textField.topAnchor.constraint(equalTo: headerText.bottomAnchor, constant: 5),
+            textField.topAnchor.constraint(equalTo: headerText.bottomAnchor, constant: 10),
             textField.leadingAnchor.constraint(equalTo: headerText.leadingAnchor),
             textField.trailingAnchor.constraint(equalTo: headerText.trailingAnchor),
             textField.heightAnchor.constraint(equalToConstant: 40)

@@ -17,7 +17,6 @@ class AddressVC: UIViewController {
     let cancelButton = UIButton()
     let okButton     = UIButton()
     
-    var updateDelegate: UpdateUIProtocol?
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.75)
@@ -140,14 +139,12 @@ class AddressVC: UIViewController {
         cancelButton.setTitleColor(.white, for: .normal)
         cancelButton.layer.cornerRadius      = 10
         cancelButton.titleLabel?.font        = UIFont.preferredFont(forTextStyle: .headline)
-        cancelButton.addTarget(self, action: #selector(cancelButtonClicked), for: .touchUpInside)
         
         okButton.setTitle("Kaydet", for: .normal)
         okButton.backgroundColor = .systemGreen
         okButton.setTitleColor(.white, for: .normal)
         okButton.layer.cornerRadius      = 10
         okButton.titleLabel?.font        = UIFont.preferredFont(forTextStyle: .headline)
-        okButton.addTarget(self, action: #selector(okButtonClicked), for: .touchUpInside)
         
         let padding = CGFloat(10)
         let buttonWidth = (300-4*padding)/2
@@ -163,10 +160,12 @@ class AddressVC: UIViewController {
             okButton.heightAnchor.constraint(equalToConstant: 40),
         ])
     }
+}
+
+extension AddressVC {
+    func cancelButtonClicked() { dismiss(animated: true) }
     
-    @objc func cancelButtonClicked(){ dismiss(animated: true) }
-    
-    @objc func okButtonClicked(){
+    func okButtonClicked(completion: @escaping (AddressModel) -> Void) {
         guard let title = adresBaslik.text,
               let adres = adres.text,
               let binaNo = bina.text,
@@ -181,18 +180,13 @@ class AddressVC: UIViewController {
                 alert.addAction(UIAlertAction(title: "Tamam", style: .default, handler: { (handler) in
                     DispatchQueue.main.asyncAfter(deadline: .now()) {
                         self.dismiss(animated: true)
-                        self.updateDelegate?.update()
+                        let adres = AddressModel(title: title, adressDesc: adres, buildingNumber: binaNo, flat: kat, apartmentNumber: daire, description: tarif)
+                        completion(adres)
                     }
                 }))
                 self.present(alert, animated: true)
                 
             }
         }
-        
     }
-}
-
-
-protocol UpdateUIProtocol{
-    func update()
 }

@@ -6,9 +6,7 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
     private let bag = DisposeBag()
     
     // MARK: Constraints
-    private var compactConstraints: [NSLayoutConstraint] = []
-    private var regularConstraints: [NSLayoutConstraint] = []
-    private var sharedConstraints: [NSLayoutConstraint] = []
+    
     
     private let emptyView = EmptyViewState(image: Images.emptyBasket!,
                                    messageText: "Sepetinizde ürün bulunmamaktadır.",
@@ -38,10 +36,7 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
              cell.reloadListeDelegate = self
          }.disposed(by: bag)
          */
-        setupConstraints()
-        NSLayoutConstraint.activate(sharedConstraints)
-        print(UIScreen.main.traitCollection)
-        layoutTrait(traitCollection: UIScreen.main.traitCollection)
+        
         
         basketList.bind(to: collectionView.rx.items(cellIdentifier: SearchRestaurantsCell.identifier, cellType: SearchRestaurantsCell.self)) { index, model, cell in
             cell.configureUI(rest: model, index: index)
@@ -77,54 +72,6 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
         }
     }
     
-    private func layoutTrait(traitCollection: UITraitCollection) {
-        if (!sharedConstraints[0].isActive) {
-           // activating shared constraints
-           NSLayoutConstraint.activate(sharedConstraints)
-        }
-        if traitCollection.horizontalSizeClass == .compact && traitCollection.verticalSizeClass == .regular {
-            if regularConstraints.count > 0 && regularConstraints[0].isActive {
-                NSLayoutConstraint.deactivate(regularConstraints)
-            }
-            // activating compact constraints
-            NSLayoutConstraint.activate(compactConstraints)
-        } else {
-            if compactConstraints.count > 0 && compactConstraints[0].isActive {
-                NSLayoutConstraint.deactivate(compactConstraints)
-            }
-            // activating regular constraints
-            NSLayoutConstraint.activate(regularConstraints)
-        }
-    }
-    
-    override func traitCollectionDidChange(_ previousTraitCollection: UITraitCollection?) {
-        super.traitCollectionDidChange(previousTraitCollection)
-        layoutTrait(traitCollection: traitCollection)
-    }
-    
-    private func setupConstraints() {
-        sharedConstraints.append(contentsOf: [
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 5),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
-            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.90)
-        ])
-        
-        regularConstraints.append(contentsOf: [
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.90)
-        ])
-        
-        compactConstraints.append(contentsOf: [
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.90)
-        ])
-    }
-    
     private func setCostLabel() {
         basketList
             .map{
@@ -144,17 +91,24 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
     
     private func configureCollectionView(){
         collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollectonGridLayout())
+        
         collectionView.backgroundColor = .systemBackground
         view.addSubview(collectionView)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
         
+        NSLayoutConstraint.activate([
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
+            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.90)
+        ])
         
     }
     
     func createCollectonGridLayout() -> UICollectionViewFlowLayout{
         let layout = UICollectionViewFlowLayout()
         let width  = (view.frame.width) - 50
-        let height = (view.frame.height)/10
+        let height = CGFloat(95)
         layout.itemSize = CGSize(width: width, height: height)
         layout.minimumInteritemSpacing = 5
         

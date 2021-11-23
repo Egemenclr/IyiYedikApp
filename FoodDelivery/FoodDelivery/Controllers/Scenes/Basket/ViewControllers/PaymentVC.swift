@@ -194,9 +194,9 @@ class PaymentVC: UIViewController {
     
     @objc func completePayment(){
         self.dismiss(animated: true)
-        LoadingView.shared.startLoading()
+        //LoadingView.shared.startLoading()
         DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {
-            LoadingView.shared.hideLoading()
+            //LoadingView.shared.hideLoading()
             let toastMessage = self.makeAlert(title: "Ödeme Başarılı ✅", message: "Afiyet olsun🌭🍕🍔")
             self.present(toastMessage, animated: true) {
                 DispatchQueue.main.asyncAfter(deadline: .now() + 2.0) {

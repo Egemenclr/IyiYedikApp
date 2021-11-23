@@ -8,14 +8,15 @@ class RestaurantDetailVC: UIViewController {
     let favoriImage = UIImageView()
     let restaurantName = CustomTitleLabel(textAlignment: .left, fontSize: 24)
     let ratingStackView = UIStackView()
+    let infoRestaurantStackView = UIStackView()
     let descriptionLabel = CustomTitleLabel(textAlignment: .left, fontSize: 14)
     let openHours = CustomTitleLabel(textAlignment: .left, fontSize: 14)
     let infoStackView = UIStackView()
     let divider = DividerView()
     
     let speedRating = CustomRatingView(title: "Hız", rating: "1.0", backgroundColor: .systemGreen)
-    let serviceRating = CustomRatingView(title: "Servis", rating: "1.0", backgroundColor: .green)
-    let lezzetRating = CustomRatingView(title: "Lezzet", rating: "1.0", backgroundColor: .green)
+    let serviceRating = CustomRatingView(title: "Servis", rating: "1.0", backgroundColor: .systemGreen)
+    let lezzetRating = CustomRatingView(title: "Lezzet", rating: "1.0", backgroundColor: .systemGreen)
     // popular chosies collectionview
     
     // menu collectionView
@@ -59,7 +60,7 @@ class RestaurantDetailVC: UIViewController {
         configureRatingsStackView(hiz: "1.0", servis: "1.0", lezzet: "1.0")
         configureRestaurantName()
         configureDescriptionLabel()
-        configureOpenHoursLabel()
+        
         configureInfoStackView()
         configureDivider()
         
@@ -106,6 +107,7 @@ class RestaurantDetailVC: UIViewController {
         ratingStackView.axis = .horizontal
         ratingStackView.alignment = .center
         ratingStackView.distribution = .fillEqually
+        ratingStackView.spacing = 5.0
         ratingStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -117,26 +119,39 @@ class RestaurantDetailVC: UIViewController {
     }
     
     private func configureDescriptionLabel(){
-        view.addSubview(descriptionLabel)
         descriptionLabel.text = restaurant.category
+        openHours.text = "Çalışma saatleri: 10:00 - 23:30"
+        let favoriteButton = UIButton()
+        favoriteButton.setImage(SFSymbols.bookmark, for: .normal)
+        favoriteButton.addTarget(self, action: #selector(clickFavoriteButton), for: .touchUpInside)
+        
+        view.addSubview(infoRestaurantStackView)
+        infoRestaurantStackView.axis = .horizontal
+        infoRestaurantStackView.distribution = .fillProportionally
+        
+        let restaurantStackView = UIStackView()
+        restaurantStackView.addArrangedSubview(descriptionLabel)
+        restaurantStackView.addArrangedSubview(openHours)
+        restaurantStackView.axis = .vertical
+        restaurantStackView.spacing = 5.0
+        restaurantStackView.alignment = .leading
+        
+        infoRestaurantStackView.addArrangedSubview(restaurantStackView)
+        infoRestaurantStackView.addArrangedSubview(favoriteButton)
+        infoRestaurantStackView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
-            descriptionLabel.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
-            descriptionLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            descriptionLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            descriptionLabel.heightAnchor.constraint(equalToConstant: 20)
+            infoRestaurantStackView.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 10),
+            infoRestaurantStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
+            infoRestaurantStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
+            infoRestaurantStackView.heightAnchor.constraint(equalToConstant: 35)
         ])
+        
     }
     
-    private func configureOpenHoursLabel(){
-        view.addSubview(openHours)
-        openHours.text = "10:00 - 23:30"
-        NSLayoutConstraint.activate([
-            openHours.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor, constant: 5),
-            openHours.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 10),
-            openHours.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -10),
-            openHours.heightAnchor.constraint(equalToConstant: 20)
-        ])
+    @objc private func clickFavoriteButton(_ button: UIButton){
+        button.setImage(SFSymbols.bookmarkFill, for: .normal)
     }
+    
     
     
     private func configureInfoStackView(){
@@ -161,7 +176,7 @@ class RestaurantDetailVC: UIViewController {
         infoStackView.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
-            infoStackView.topAnchor.constraint(equalTo: openHours.bottomAnchor, constant: 10),
+            infoStackView.topAnchor.constraint(equalTo: infoRestaurantStackView.bottomAnchor, constant: 10),
             infoStackView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
             infoStackView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20),
             infoStackView.heightAnchor.constraint(equalToConstant: 50)
@@ -219,7 +234,7 @@ class RestaurantDetailVC: UIViewController {
     func createCollectonGridLayout() -> UICollectionViewFlowLayout{
         let layout = UICollectionViewFlowLayout()
         let width  = (view.frame.width) - 50
-        let height = (view.frame.height)/10
+        let height = CGFloat(95)
         layout.itemSize = CGSize(width: width, height: height)
         layout.minimumInteritemSpacing = 5
         
