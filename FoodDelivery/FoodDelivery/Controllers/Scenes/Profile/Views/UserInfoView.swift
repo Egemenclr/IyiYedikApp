@@ -115,7 +115,7 @@ class UserInfoView: UIView {
         
                 
         let subStackView = UIStackView(arrangedSubviews: [expireDate, ccv])
-        subStackView.alignment = .leading
+        subStackView.alignment = .fill
         subStackView.spacing = 5
         subStackView.axis = .horizontal
         subStackView.distribution = .fillEqually
