@@ -25,14 +25,31 @@ extension UIViewController{
         view.endEditing(true)
     }
     
-    func showAlert() -> Single<Void> {
+    func showAlert(
+        title: String? = "Uyarı",
+        message: String? = "",
+        positiveButtonTitle: String,
+        negativeButtonTitle: String = "Vazgeç"
+    ) -> Single<Bool> {
         return Single.create(subscribe: { [weak self] single -> Disposable in
             guard let self = self else { return Disposables.create() }
-            let alertController = UIAlertController(title: "Güncelleme Başarılı ✅", message: "Bilgilerin güncel olduğunu düşünüyorsan gönül rahatlığıyla sipariş verebilirsin.", preferredStyle: .alert)
-            let okButtonAction = UIAlertAction(title: "Tamam", style: .default) { _ in
-                single(.success(()))
+            
+            let alertController = UIAlertController(title: title,
+                                                    message: message,
+                                                    preferredStyle: .alert
+            )
+            
+            let okButtonAction = UIAlertAction(title: positiveButtonTitle,
+                                               style: .default) { _ in
+                single(.success(true))
             }
             alertController.addAction(okButtonAction)
+            let cancelButtonAction = UIAlertAction(title: negativeButtonTitle,
+                                                   style: .cancel) { _ in
+                single(.success(false))
+            }
+            alertController.addAction(cancelButtonAction)
+            
             self.present(alertController, animated: true, completion: nil)
             return Disposables.create {
                 alertController.dismiss(animated: false, completion: nil)

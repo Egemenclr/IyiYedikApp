@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class EmptyViewState: UIView {
     let imageView = UIImageView()
@@ -96,5 +98,13 @@ extension EmptyViewState{
     func setButton(text: String, backgroundColor: UIColor){
         button.setTitle(text, for: .normal)
         button.backgroundColor = backgroundColor
+    }
+}
+
+// MARK: - Rx + EmptyView
+
+extension Reactive where Base == EmptyViewState {
+    var buttonTapped: ControlEvent<Void> {
+        base.button.rx.tap
     }
 }

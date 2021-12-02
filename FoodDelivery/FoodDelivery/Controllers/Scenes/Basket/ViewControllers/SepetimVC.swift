@@ -1,26 +1,25 @@
 import UIKit
 import RxSwift
 import RxRelay
+import RxCocoa
 
-class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
-    private let bag = DisposeBag()
+class SepetimVC: UIViewController {
+    fileprivate let bag = DisposeBag()
     
-    // MARK: Constraints
-    
-    
-    private let emptyView = EmptyViewState(image: Images.emptyBasket!,
-                                   messageText: "Sepetinizde ürün bulunmamaktadır.",
-                                   messageDesc: "Semtinizdeki restoranları listeleyebilirsiniz.")
+    private lazy var emptyView = EmptyViewState(image: Images.emptyBasket!,
+                                           messageText: "Sepetinizde ürün bulunmamaktadır.",
+                                           messageDesc: "Semtinizdeki restoranları listeleyebilirsiniz."
+    )
     private var collectionView : UICollectionView!
-    private lazy var basketList    = BehaviorRelay<[RestaurantMenuModel]>(value: [])
     private let resultCost    = CustomTitleLabel(textAlignment: .left, fontSize: 16)
-    private let paymentButton = CustomButton(backgroundColor: hexStringToUIColor(hex: "3C8D2F"), title: "Sipariş Ver")
-    
-    var viewModel: RestaurantMenuViewProtocol!{
-        didSet{
-            viewModel.delegate = self
-        }
-    }
+    fileprivate let paymentButton = CustomButton(
+        backgroundColor: hexStringToUIColor(hex: "3C8D2F"),
+        title: "Sipariş Ver"
+    )
+    private let (trashButtonTappedObserver, trashButtonTappedEvent) = Observable<Int>.pipe()
+    fileprivate let (popupDeleteObserver, popupDeleteEvent) = Observable<Void>.pipe()
+    fileprivate let (viewDidAppearObserver, viewDidAppearEvent) = Observable<Void>.pipe()
+    private let (emptyButtonObserver, emptyButtonEvent) = Observable<Void>.pipe()
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,51 +27,75 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
         view.backgroundColor = .systemBackground
         
         configureUI()
-        /*
-         let basketDriver = viewModel.restaurants.asDriver()
-         basketDriver.drive(collectionView.rx.items(cellIdentifier: SearchRestaurantsCell.identifier, cellType: SearchRestaurantsCell.self)) { index, model, cell in
-             
-             cell.configureUI(rest: model, index: index)
-             cell.reloadListeDelegate = self
-         }.disposed(by: bag)
-         */
         
+        let inputs = BasketViewModelInput(
+            orderButtonTapped: rx.orderButtonTapped.asObservable(),
+            orderDeleteButtonTapped: trashButtonTappedEvent,
+            emptyButtonTapped: emptyView.rx.buttonTapped.asObservable(),
+            deleteOrder: popupDeleteEvent,
+            viewWillAppear: viewDidAppearEvent,
+            bag: bag
+        )
         
-        basketList.bind(to: collectionView.rx.items(cellIdentifier: SearchRestaurantsCell.identifier, cellType: SearchRestaurantsCell.self)) { index, model, cell in
+        let viewModel = BasketViewModel(inputs)
+        let outputs = viewModel.outputs(inputs)
+        
+        outputs.foods.drive(collectionView.rx.items(cellIdentifier: SearchRestaurantsCell.identifier, cellType: SearchRestaurantsCell.self)) { index, model, cell in
             cell.configureUI(rest: model, index: index)
-            cell.reloadListeDelegate = self
+            
+            cell.rx.trashButtonClicked
+                .observe(on: MainScheduler.asyncInstance)
+                .subscribe (onNext: {
+                    guard let id = Int(model.id ?? "0") else { return }
+                    self.trashButtonTappedObserver.onNext(id)
+                }).disposed(by: cell.disposeBag)
+            
         }.disposed(by: bag)
         
-        basketList.skip(1)
+        outputs.foods
+            .skip(1)
+            .asObservable()
             .subscribe { order in
-            if order.element?.count == 0 {
-                self.configureEmptyView()
-            } else {
-                self.collectionView.reloadData()
-            }
-        }.disposed(by: bag)
+                if order.element?.count == 0 {
+                    self.configureEmptyView()
+                } else {
+                    self.restoreCollectionView()
+                }
+            }.disposed(by: bag)
+        
+        outputs
+            .showAlert
+            .drive(rx.showDeleteAlert)
+            .disposed(by: bag)
+        
+        outputs
+            .showPayment
+            .drive(rx.showPaymentVC)
+            .disposed(by: bag)
+        
+        setCostLabel(outputs.foods.asObservable())
+        
+        outputs
+            .showEmptyView
+            .filter{$0}
+            .drive(rx.showEmptyState)
+            .disposed(by: bag)
+            
     }
     
     private func configureUI() {
         configureCollectionView()
+        configureStackView()
         configureResultCost()
         configurePaymentButton()
-        configureStackView()
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        viewModel.load { [weak self] list in
-            guard let self = self else { return }
-            self.basketList.accept(list)
-        }
-        
-        DispatchQueue.main.async {
-            self.setCostLabel()
-        }
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        viewDidAppearObserver.onNext(())
     }
     
-    private func setCostLabel() {
+    private func setCostLabel(_ basketList: Observable<[RestaurantMenuModel]>) {
         basketList
             .map{
                 $0.map{
@@ -82,9 +105,7 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
                     x+y
                 })
             }
-            .map {
-                " Toplam: \($0) ₺"
-            }
+            .map { " Toplam: \($0) ₺" }
             .bind(to: resultCost.rx.text).disposed(by: bag)
     }
     
@@ -94,15 +115,16 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
         
         collectionView.backgroundColor = .systemBackground
         view.addSubview(collectionView)
+        collectionView.register(SearchRestaurantsCell.self, forCellWithReuseIdentifier: SearchRestaurantsCell.identifier)
+    
+        let constant = CGFloat(5)
         collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
         NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 15),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
-            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.90)
+            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: constant),
+            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: constant),
+            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -constant),
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -4*constant-50)
         ])
-        
     }
     
     func createCollectonGridLayout() -> UICollectionViewFlowLayout{
@@ -121,13 +143,11 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
     private func configureEmptyView(){
         collectionView.backgroundView = emptyView
         emptyView.setButton(text: "RESTORANLARI LİSTELE", backgroundColor: .systemGreen)
-        emptyView.button.addTarget(self, action: #selector(emptyButtonClicked), for: .touchUpInside)
-        
     }
     
-    @objc func emptyButtonClicked(){
-        guard let tabBar = self.tabBarController else { return }
-        tabBar.selectedIndex = 1
+    private func restoreCollectionView() {
+        self.collectionView.backgroundView = nil
+        self.collectionView.reloadData()
     }
     
     private func configureResultCost(){
@@ -145,13 +165,7 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
         paymentButton.addConstraints([heighteightConstraint])
         paymentButton.layer.cornerRadius = 0
         paymentButton.titleLabel?.font = Fonts.helvetica?.withSize(16)
-        paymentButton.addTarget(self, action: #selector(openPaymentScreen), for: .touchUpInside)
     }
-    
-    @objc private func openPaymentScreen(){
-        navigationController?.pushViewController(PaymentVC(list: basketList.value), animated: true)
-    }
-   
     
     private func configureStackView(){
         let stackView = UIStackView(arrangedSubviews: [resultCost, paymentButton])
@@ -173,32 +187,54 @@ class SepetimVC: UIViewController, RestaurantMenuViewModelDelegate {
             stackView.heightAnchor.constraint(equalToConstant: 50)
         ])
     }
-    
-    func registerCell() {
-        collectionView.register(SearchRestaurantsCell.self,
-                                forCellWithReuseIdentifier: SearchRestaurantsCell.identifier)
+}
+
+
+// MARK: - Rx + SepetimVC
+extension Reactive where Base == SepetimVC {
+    var orderButtonTapped: ControlEvent<Void> {
+        base.paymentButton.rx.tap
     }
     
-    func reloadData() {
-        collectionView.reloadData()
+    var showDeleteAlert: Binder<String> {
+        Binder(base) { target, message in
+            let alertObservable = target.showAlert(
+                message: message,
+                positiveButtonTitle: "Evet",
+                negativeButtonTitle: "Hayır"
+            )
+            
+            alertObservable
+                .asObservable()
+                .filter { $0 }
+                .subscribe(onNext: { [weak target] _ in
+                    target?.popupDeleteObserver.onNext(())
+                })
+                .disposed(by: target.bag)
+        }
+    }
+    
+    var showPaymentVC: Binder<[RestaurantMenuModel]> {
+        Binder(base) { target, orderList in
+            let paymentVC = PaymentVC(list: orderList)
+            target.show(paymentVC, sender: nil)
+        }
+    }
+    
+    var showEmptyState: Binder<Bool> {
+        Binder(base) { target, arg  in
+            guard let tabBar = target.tabBarController else { return }
+            tabBar.selectedIndex = 1
+        }
     }
 }
 
-extension SepetimVC: ReloadListe{
-    func reload(index: Int, listIndex: Int) {
-        let alert = makeAlert(title: "Ürünü sil", message: "Silmek istediğinize emin misiniz?")
-        alert.addAction(UIAlertAction(title: "Evet", style: .default, handler: { [weak self](handler) in
-            guard let self = self else { return }
-            
-            var newValue = self.basketList.value
-            newValue.remove(at: listIndex)
-            self.basketList.accept(newValue)
-            NetworkManager.shared.deleteFood(index: index)
-            
-        }))
-        alert.addAction(UIAlertAction(title: "Hayır", style: .cancel, handler: { (handler) in
-            self.dismiss(animated: true)
-        }))
-        self.present(alert, animated: true)
+// MARK: - Rx + UICollectionView
+extension Reactive where Base: UICollectionView {
+    public func modelAndIndexSelected<T>(_ modelType: T.Type) -> ControlEvent<(T, IndexPath)> {
+        ControlEvent(events: Observable.zip(
+            self.modelSelected(modelType),
+            self.itemSelected
+        ))
     }
 }

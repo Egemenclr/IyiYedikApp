@@ -11,7 +11,7 @@
 		5F262CEA26C1BF7100F09634 /* CustomRestaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F262CE926C1BF7100F09634 /* CustomRestaurant.swift */; };
 		5F262CF226C1CC5700F09634 /* SearchRestaurantsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F262CF126C1CC5700F09634 /* SearchRestaurantsCell.swift */; };
 		5F40675726C819FA00B919CC /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F40675626C819FA00B919CC /* EmptyView.swift */; };
-		5F5D43DB26C452BF00495370 /* RestaurantMenuViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D43DA26C452BF00495370 /* RestaurantMenuViewModel.swift */; };
+		5F5D43DB26C452BF00495370 /* BasketViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D43DA26C452BF00495370 /* BasketViewModel.swift */; };
 		5F5D43E026C471FB00495370 /* FoodDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D43DF26C471FB00495370 /* FoodDetailVC.swift */; };
 		5F5D43E826C4750F00495370 /* DividerView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F5D43E726C4750F00495370 /* DividerView.swift */; };
 		5F7A5A1026C019A50018868E /* RestaurantGenreViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7A5A0F26C019A50018868E /* RestaurantGenreViewModel.swift */; };
@@ -76,6 +76,7 @@
 		B55F7E44271575B90079F68C /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F7E43271575B90079F68C /* Weather.swift */; };
 		B561A122271EDF190016C5CF /* SandBoxVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B561A121271EDF190016C5CF /* SandBoxVC.swift */; };
 		B5B5593B273D2DED00A8B6FD /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */; };
+		B5DAF43D2757708F001C30A0 /* Observable+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -100,7 +101,7 @@
 		5F262CE926C1BF7100F09634 /* CustomRestaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRestaurant.swift; sourceTree = "<group>"; };
 		5F262CF126C1CC5700F09634 /* SearchRestaurantsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRestaurantsCell.swift; sourceTree = "<group>"; };
 		5F40675626C819FA00B919CC /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
-		5F5D43DA26C452BF00495370 /* RestaurantMenuViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantMenuViewModel.swift; sourceTree = "<group>"; };
+		5F5D43DA26C452BF00495370 /* BasketViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BasketViewModel.swift; sourceTree = "<group>"; };
 		5F5D43DF26C471FB00495370 /* FoodDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FoodDetailVC.swift; sourceTree = "<group>"; };
 		5F5D43E726C4750F00495370 /* DividerView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DividerView.swift; sourceTree = "<group>"; };
 		5F7A5A0F26C019A50018868E /* RestaurantGenreViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantGenreViewModel.swift; sourceTree = "<group>"; };
@@ -161,6 +162,7 @@
 		B55F7E43271575B90079F68C /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		B561A121271EDF190016C5CF /* SandBoxVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandBoxVC.swift; sourceTree = "<group>"; };
 		B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
+		B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -371,6 +373,7 @@
 			children = (
 				5FEEA1E726B85CA7005D54D6 /* UIViewController+Ext.swift */,
 				5F7FA72126BDDEDB00FF7A8B /* UIButton+Ext.swift */,
+				B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -567,7 +570,7 @@
 		B519332127395CBD00E786CC /* ViewModels */ = {
 			isa = PBXGroup;
 			children = (
-				5F5D43DA26C452BF00495370 /* RestaurantMenuViewModel.swift */,
+				5F5D43DA26C452BF00495370 /* BasketViewModel.swift */,
 			);
 			path = ViewModels;
 			sourceTree = "<group>";
@@ -770,6 +773,7 @@
 				5FEEA21926B85E08005D54D6 /* CustomTitleLabel.swift in Sources */,
 				5FC6863426D265FE00B30FB9 /* PaymentVC.swift in Sources */,
 				5FC6864126D280F900B30FB9 /* AddressVC.swift in Sources */,
+				B5DAF43D2757708F001C30A0 /* Observable+Ext.swift in Sources */,
 				5F9D11DC26C305FC00DEFE1F /* CustomDetailView.swift in Sources */,
 				5FE5CA4D26BEFBB800F4B720 /* CategoriesCell.swift in Sources */,
 				5F9D11CD26C2F30000DEFE1F /* RestaurantDetailVC.swift in Sources */,
@@ -790,7 +794,7 @@
 				B561A122271EDF190016C5CF /* SandBoxVC.swift in Sources */,
 				5F7A5A1026C019A50018868E /* RestaurantGenreViewModel.swift in Sources */,
 				5FEEA1F226B85CF7005D54D6 /* CustomAlertView.swift in Sources */,
-				5F5D43DB26C452BF00495370 /* RestaurantMenuViewModel.swift in Sources */,
+				5F5D43DB26C452BF00495370 /* BasketViewModel.swift in Sources */,
 				5F7FA71A26BDDA8900FF7A8B /* CustomLoginTextFieldView.swift in Sources */,
 				5FEEA22826B85F03005D54D6 /* OfflineVC.swift in Sources */,
 				B55F7E44271575B90079F68C /* Weather.swift in Sources */,

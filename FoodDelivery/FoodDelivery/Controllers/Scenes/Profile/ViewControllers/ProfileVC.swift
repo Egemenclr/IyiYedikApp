@@ -67,7 +67,7 @@ class ProfileVC: UIViewController {
             .skip(1)
             .drive(rx.displayPopup)
             .disposed(by: bag)
-    
+        
         viewModelOutputs
             .isLoading
             .distinctUntilChanged()
@@ -87,8 +87,8 @@ class ProfileVC: UIViewController {
             .filter{$0}
             .drive(rx.logOut)
             .disposed(by: bag)
-            
-
+        
+        
     }
     
     private func configureScrollViewAndInfoView() {
@@ -109,7 +109,12 @@ class ProfileVC: UIViewController {
 extension Reactive where Base == ProfileVC {
     var displayPopup: Binder<Void> {
         Binder(base) { target, message in
-            target.showAlert()
+            target.showAlert(
+                title: ButtonConstants.successUpdateTitle,
+                message: ButtonConstants.successUpdateMessage,
+                positiveButtonTitle: ButtonConstants.okButtonTitle,
+                negativeButtonTitle: ButtonConstants.cancelButtonTitle
+            )
                 .asObservable()
                 .subscribe()
                 .disposed(by: base.bag)
@@ -175,4 +180,8 @@ private enum ButtonConstants {
     static let updateAdress = "Adres Güncelle"
     static let updateInfo = "Bilgilerimi Güncelle"
     static let logout = "Çıkış yap"
+    static let successUpdateTitle = "Güncelleme Başarılı ✅"
+    static let successUpdateMessage = "Bilgilerin güncel olduğunu düşünüyorsan gönül rahatlığıyla sipariş verebilirsin."
+    static let okButtonTitle = "Tamam"
+    static let cancelButtonTitle = "İptal"
 }

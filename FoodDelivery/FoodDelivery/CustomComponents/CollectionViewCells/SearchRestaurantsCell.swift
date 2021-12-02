@@ -6,6 +6,8 @@
 //
 
 import UIKit
+import RxSwift
+import RxCocoa
 
 class SearchRestaurantsCell: UICollectionViewCell {
     static let identifier = "SearchRestaurantsCell"
@@ -15,8 +17,9 @@ class SearchRestaurantsCell: UICollectionViewCell {
     
     var detail: RestaurantMenuModel?
     var listIntex: Int?
-    var reloadListeDelegate: ReloadListe?
+    private(set) var disposeBag = DisposeBag()
     
+    let (buttonTappedObservable, buttonTappedEvent) = Observable<Void>.pipe()
     override init(frame: CGRect) {
         super.init(frame: frame)
         configureRestaurant()
@@ -58,7 +61,6 @@ class SearchRestaurantsCell: UICollectionViewCell {
         contentView.addSubview(button)
         button.translatesAutoresizingMaskIntoConstraints = false
         button.setImage(SFSymbols.trash, for: .normal)
-        button.addTarget(self, action: #selector(trashButtonClicked), for: .touchUpInside)
         
         NSLayoutConstraint.activate([
             button.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
@@ -81,14 +83,15 @@ class SearchRestaurantsCell: UICollectionViewCell {
         ])
     }
     
-    @objc func trashButtonClicked(){
-        
-        guard let index = Int((detail?.id)!) else { return }
-        reloadListeDelegate?.reload(index: index, listIndex: listIntex!)
+    override func prepareForReuse() {
+        super.prepareForReuse()
+              disposeBag = DisposeBag()
     }
 }
 
-
-protocol ReloadListe{
-    func reload(index: Int, listIndex: Int)
+ // MARK: - Rx + SearchRestaurantsCell
+extension Reactive where Base == SearchRestaurantsCell {
+    var trashButtonClicked: ControlEvent<Void> {
+        base.button.rx.tap
+    }
 }

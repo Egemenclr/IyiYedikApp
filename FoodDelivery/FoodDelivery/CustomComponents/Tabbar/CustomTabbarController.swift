@@ -40,7 +40,6 @@ class CustomTabbarController: UITabBarController {
     
     func createSepetimVC() -> UINavigationController{
         let sepetimVC = SepetimVC()
-        sepetimVC.viewModel = RestaurantMenuViewModel()
         sepetimVC.title = "Sepetim"
         sepetimVC.tabBarItem = UITabBarItem(title: "Sepetim", image: SFSymbols.basket, tag: 2)
         
