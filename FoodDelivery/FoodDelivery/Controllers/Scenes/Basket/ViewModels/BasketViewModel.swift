@@ -31,12 +31,13 @@ struct BasketViewModelOutput {
 
 final class BasketViewModel {
     let basketList = BehaviorRelay<[RestaurantMenuModel]>(value: [])
+    let willDeleteIndex = BehaviorRelay<Int>(value: 0)
     init(_ inputs: BasketViewModelInput) {
         
         inputs
             .orderDeleteButtonTapped
             .subscribe { id in
-                deleteOrder(inputs, self.basketList, id)
+                self.willDeleteIndex.accept(id)
             } onError: { err in
                 #warning("make alert")
             }.disposed(by: inputs.bag)
@@ -48,6 +49,8 @@ final class BasketViewModel {
             } onError: { err in
                 print(err)
             }.disposed(by: inputs.bag)
+        
+        deleteOrder(inputs, self.basketList, willDeleteIndex)
         
     }
     
@@ -94,11 +97,11 @@ func showDeleteAlert(
 private func deleteOrder(
     _ inputs: BasketViewModelInput,
     _ basketList: BehaviorRelay<[RestaurantMenuModel]>,
-    _ index: Int) {
+    _ index: BehaviorRelay<Int>) {
         inputs
             .deleteOrder
-            .subscribe { _ in
-                NetworkManager.shared.deleteFood(index: index)
+            .subscribe { element in
+                NetworkManager.shared.deleteFood(index: index.value)
                 getRestaurants(basketList, inputs.bag)
             } onError: { err in
                 print(err)
