@@ -101,6 +101,7 @@ xcuserdata
 ## Gcc Patch
 /*.gcno
 *.DS_Store
+*.plist
 ### Xcode Patch ###
 *.xcodeproj/*
 !*.xcodeproj/project.pbxproj

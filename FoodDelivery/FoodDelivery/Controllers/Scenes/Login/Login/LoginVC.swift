@@ -1,15 +1,15 @@
 import UIKit
 import GoogleSignIn
 import RxSwift
+import RxCocoa
 
 class LoginVC: UIViewController {
-    private let bag = DisposeBag()
+    fileprivate let bag = DisposeBag()
     enum Theme{
         case light, dark
     }
     
     let imageView = UIImageView()
-    #warning("textfield constant ayarla")
     let epostaSection   = CustomLoginTextFieldView()
     let passwordSection = CustomLoginTextFieldView()
     let signInButton    = CustomButton(backgroundColor: .orange, title: "GİRİŞ YAP")
@@ -34,16 +34,32 @@ class LoginVC: UIViewController {
         configureUI()
         configureLabels()
         
-        Observable
-            .combineLatest(
-                epostaSection.textField.rx.text.orEmpty,
-                passwordSection.textField.rx.text.orEmpty
-            )
-            .map{ username, password in
-                return username.contains("@") && password.count > 3
-            }
-            .bind(to: signInButton.rx.isEnabled)
+        let inputs = LoginViewModelInput(
+            username: epostaSection.textField.rx.text.orEmpty.asObservable(),
+            password: passwordSection.textField.rx.text.orEmpty.asObservable(),
+            loginButtonTapped: rx.loginButtonTapped.asObservable(),
+            disposeBag: bag
+        )
+        
+        let viewModel = LoginViewModel(inputs)
+        let outputs = viewModel.outputs(inputs)
+        
+        outputs
+            .showSiparisVC
+            .skip(1)
+            .drive(rx.showSiparisVC)
             .disposed(by: bag)
+            
+        outputs
+            .showError
+            .drive(rx.showError)
+            .disposed(by: bag)
+        
+        outputs
+            .isLoginValid
+            .drive(signInButton.rx.isEnabled)
+            .disposed(by: bag)
+       
     }
     
     
@@ -81,8 +97,8 @@ class LoginVC: UIViewController {
         
         NSLayoutConstraint.activate([
             epostaSection.topAnchor.constraint(equalTo: imageView.bottomAnchor, constant: 30),
-            epostaSection.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-            epostaSection.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            epostaSection.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 15),
+            epostaSection.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -15),
             epostaSection.heightAnchor.constraint(equalToConstant: 80)
         ])
     }
@@ -122,8 +138,6 @@ class LoginVC: UIViewController {
         view.addSubview(divider)
         
         divider.translatesAutoresizingMaskIntoConstraints = false
-        signInButton.addTarget(self, action: #selector(signInButtonClicked), for: .touchUpInside)
-        
         
         NSLayoutConstraint.activate([
             signInButton.topAnchor.constraint(equalTo: passwordSection.bottomAnchor, constant: 20),
@@ -137,21 +151,7 @@ class LoginVC: UIViewController {
             divider.heightAnchor.constraint(equalToConstant: 2)
         ])
     }
-    
-    @objc private func signInButtonClicked(){
-        guard let email = epostaSection.textField.text,
-              let pass = passwordSection.textField.text else { return }
-        AuthManager.shared.logIn(email, pass) { (success) in
-            if success{
-                UserDefaults.standard.set(true, forKey: "userLoggedIn")
-                let tabbar = CustomTabbarController()
-                tabbar.modalPresentationStyle = .fullScreen
-                self.present(tabbar, animated: true)
-                
-            }
-        }
-        
-    }
+
 
     private func configureGoogleButton(){
         view.addSubview(googleButton)
@@ -227,4 +227,49 @@ class LoginVC: UIViewController {
         }
     }
     
+}
+
+extension Reactive where Base == LoginVC {
+    var loginButtonTapped: ControlEvent<Void> {
+        base.signInButton.rx.tap
+    }
+    
+    var googleButtonTapped: ControlEvent<Void> {
+        base.googleButton.rx.tap
+    }
+    
+    var showSiparisVC: Binder<Bool> {
+        Binder(base) { target, success in
+            if success {
+                UserDefaults.standard.set(true, forKey: "userLoggedIn")
+                let tabbar = CustomTabbarController()
+                tabbar.modalPresentationStyle = .fullScreen
+                target.self.present(tabbar, animated: true)
+            }
+        }
+    }
+    
+    var showError: Binder<String> {
+        Binder(base) { target, errorMessage in
+            target.showAlert(
+                title: ErrorMessage.failHeader,
+                message: errorMessage,
+                positiveButtonTitle: ButtonConstants.ok,
+                negativeButtonTitle: ButtonConstants.cancel
+            )
+                .subscribe()
+                .disposed(by: target.bag)
+        }
+    }
+}
+
+private enum ErrorMessage {
+    static let failHeader       = "Hata"
+    static let emailFailed      = "Email adresiniz sistemimiz ile eşleşmiyor."
+    static let passwordFailed   = "Şifreniz doğru değil"
+}
+
+private enum ButtonConstants {
+    static let ok = "Tamam"
+    static let cancel = "İptal"
 }

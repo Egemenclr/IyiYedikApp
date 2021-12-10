@@ -75,6 +75,7 @@
 		B55F4A61273DA70300068D77 /* ProfileViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F4A60273DA70300068D77 /* ProfileViewModel.swift */; };
 		B55F7E44271575B90079F68C /* Weather.swift in Sources */ = {isa = PBXBuildFile; fileRef = B55F7E43271575B90079F68C /* Weather.swift */; };
 		B561A122271EDF190016C5CF /* SandBoxVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B561A121271EDF190016C5CF /* SandBoxVC.swift */; };
+		B571510227621E07001DF411 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571510127621E07001DF411 /* LoginViewModel.swift */; };
 		B5B5593B273D2DED00A8B6FD /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */; };
 		B5DAF43D2757708F001C30A0 /* Observable+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */; };
 /* End PBXBuildFile section */
@@ -161,6 +162,7 @@
 		B55F4A60273DA70300068D77 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		B55F7E43271575B90079F68C /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
 		B561A121271EDF190016C5CF /* SandBoxVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SandBoxVC.swift; sourceTree = "<group>"; };
+		B571510127621E07001DF411 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -353,7 +355,7 @@
 		5FED922726BB03F7001F2271 /* Login */ = {
 			isa = PBXGroup;
 			children = (
-				5FED922826BB0416001F2271 /* LoginVC.swift */,
+				B571510027621DF5001DF411 /* Login */,
 				5FED923026BB0425001F2271 /* RegisterVC.swift */,
 			);
 			path = Login;
@@ -592,6 +594,15 @@
 			path = ViewModels;
 			sourceTree = "<group>";
 		};
+		B571510027621DF5001DF411 /* Login */ = {
+			isa = PBXGroup;
+			children = (
+				5FED922826BB0416001F2271 /* LoginVC.swift */,
+				B571510127621E07001DF411 /* LoginViewModel.swift */,
+			);
+			path = Login;
+			sourceTree = "<group>";
+		};
 		B5B55939273D2DD800A8B6FD /* Views */ = {
 			isa = PBXGroup;
 			children = (
@@ -764,6 +775,7 @@
 				B55F4A61273DA70300068D77 /* ProfileViewModel.swift in Sources */,
 				5FC6864626D2894B00B30FB9 /* UserModel.swift in Sources */,
 				5F262CE526C1BE6400F09634 /* RestaurantsViewModel.swift in Sources */,
+				B571510227621E07001DF411 /* LoginViewModel.swift in Sources */,
 				5F262CF226C1CC5700F09634 /* SearchRestaurantsCell.swift in Sources */,
 				5FED923126BB0425001F2271 /* RegisterVC.swift in Sources */,
 				5FF4727326C852B100AD63CE /* AuthManager.swift in Sources */,

@@ -74,6 +74,7 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
     
         viewModel.restaurantsObservable
             .bind(to: collectionView.rx.items(cellIdentifier: CategoriesCell.identifier, cellType: CategoriesCell.self)) { index, restaurant, cell in
+                cell.accessibilityHint = "egemen"
                 cell.setUI(model: restaurant)
                 //self.loadingView.hideLoading()
             }.disposed(by: bag)
@@ -90,7 +91,7 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
             collectionView.topAnchor.constraint(equalTo: pageViewController.view.bottomAnchor),
             collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
             collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
-            collectionView.heightAnchor.constraint(equalToConstant: collectionViewHeight)
+            collectionView.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: -5)
             
         ])
     }
