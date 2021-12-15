@@ -8,12 +8,18 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
     
     private let searchController = UISearchController(searchResultsController: nil)
     var comeFromSiparisVC: String?
-    private var collectionView: UICollectionView!
+    
+    private var viewSource = SearchListView(with: CGSize(width: UIScreen.main.bounds.size.width - 50,
+                                                         height: 85))
     
     var viewModel: SearchRestaurantViewProtocol!{
         didSet{
             viewModel.delegate = self
         }
+    }
+    
+    override func loadView() {
+        configureViewSource()
     }
     
     override func viewDidLoad() {
@@ -22,7 +28,6 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
         view.backgroundColor = .systemBackground
         
         configureSearchController()
-        configureCollectionView()
         
         let restaurants = viewModel.restaurants.share(replay: 1)
         
@@ -33,13 +38,13 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
             }
         
         filteredUsers
-            .bind(to: self.collectionView.rx
+            .bind(to: self.viewSource.collectionView.rx
                     .items(cellIdentifier: SearchRestaurantsCell.identifier,
                                    cellType: SearchRestaurantsCell.self)) { row, restaurant, cell in
             cell.configureUI(rest: restaurant)
         }.disposed(by: self.bag)
         
-         collectionView.rx
+        viewSource.collectionView.rx
             .itemSelected.subscribe { indexPath in
                  guard let index = indexPath.element?.row else { return }
                  
@@ -53,33 +58,8 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
         
     }
     
-    private func configureCollectionView(){
-        collectionView = UICollectionView(frame: .zero, collectionViewLayout: createCollectonGridLayout())
-        collectionView.register(SearchRestaurantsCell.self, forCellWithReuseIdentifier: SearchRestaurantsCell.identifier)
-        collectionView.backgroundColor = .systemBackground
-        
-        view.addSubview(collectionView)
-        
-        collectionView.translatesAutoresizingMaskIntoConstraints = false
-        
-        NSLayoutConstraint.activate([
-            collectionView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 10),
-            collectionView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 5),
-            collectionView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -5),
-            collectionView.heightAnchor.constraint(equalTo: view.heightAnchor, multiplier: 0.8)
-            
-        ])
-    }
-    
-    private func createCollectonGridLayout() -> UICollectionViewFlowLayout{
-        let layout = UICollectionViewFlowLayout()
-        let width  = view.frame.width-50
-        layout.itemSize = CGSize(width: width, height: 85)
-        layout.minimumInteritemSpacing = 5
-        layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
-        layout.scrollDirection = .vertical
-        
-        return layout
+    private func configureViewSource(){
+        view = viewSource
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -95,10 +75,10 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
     }
     
     func registerCell() {
-        collectionView.register(SearchRestaurantsCell.self, forCellWithReuseIdentifier: SearchRestaurantsCell.identifier)
+        viewSource.collectionView.register(SearchRestaurantsCell.self, forCellWithReuseIdentifier: SearchRestaurantsCell.identifier)
     }
     
     func reloadData() {
-        collectionView.reloadData()
+        viewSource.collectionView.reloadData()
     }
 }

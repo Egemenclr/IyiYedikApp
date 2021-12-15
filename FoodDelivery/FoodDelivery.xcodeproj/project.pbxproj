@@ -75,6 +75,8 @@
 		B5B5593B273D2DED00A8B6FD /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */; };
 		B5DAF43D2757708F001C30A0 /* Observable+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */; };
 		B5F387A52769DC7000477CBC /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = B5F387A42769DC7000477CBC /* Common */; };
+		B5F387A9276A014900477CBC /* SearchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F387A8276A014900477CBC /* SearchListView.swift */; };
+		B5F387AB276A217400477CBC /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F387AA276A217400477CBC /* UIView+Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -159,6 +161,8 @@
 		B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Ext.swift"; sourceTree = "<group>"; };
 		B5F387A32769DBC000477CBC /* Common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Common; path = ../../../../Desktop/Common; sourceTree = "<group>"; };
+		B5F387A8276A014900477CBC /* SearchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListView.swift; sourceTree = "<group>"; };
+		B5F387AA276A217400477CBC /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -361,6 +365,7 @@
 				5FEEA1E726B85CA7005D54D6 /* UIViewController+Ext.swift */,
 				5F7FA72126BDDEDB00FF7A8B /* UIButton+Ext.swift */,
 				B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */,
+				B5F387AA276A217400477CBC /* UIView+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -517,6 +522,7 @@
 		B519331B27395A4F00E786CC /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				B5F387A7276A012F00477CBC /* Views */,
 				B519331D27395A6B00E786CC /* ViewModels */,
 				B519331C27395A5B00E786CC /* ViewControllers */,
 			);
@@ -607,6 +613,14 @@
 			isa = PBXGroup;
 			children = (
 				B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */,
+			);
+			path = Views;
+			sourceTree = "<group>";
+		};
+		B5F387A7276A012F00477CBC /* Views */ = {
+			isa = PBXGroup;
+			children = (
+				B5F387A8276A014900477CBC /* SearchListView.swift */,
 			);
 			path = Views;
 			sourceTree = "<group>";
@@ -767,6 +781,8 @@
 				5FEEA23326B8664F005D54D6 /* SepetimVC.swift in Sources */,
 				5FEEA20A26B85DDA005D54D6 /* CustomBodyLabel.swift in Sources */,
 				5FCA693D26B705D200B0D192 /* RestaurantPageVC.swift in Sources */,
+				B5F387AB276A217400477CBC /* UIView+Ext.swift in Sources */,
+				B5F387A9276A014900477CBC /* SearchListView.swift in Sources */,
 				B50535B82768A45A00A8A428 /* RegisterVC.swift in Sources */,
 				5FCD1F7526CAE0F800FAFB04 /* MapVC.swift in Sources */,
 				5F9D11D326C2FD7100DEFE1F /* CustomRatingView.swift in Sources */,
