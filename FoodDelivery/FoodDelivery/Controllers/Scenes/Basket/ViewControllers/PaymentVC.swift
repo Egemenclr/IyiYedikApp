@@ -7,6 +7,7 @@
 
 import UIKit
 import RxSwift
+import Common
 
 class PaymentVC: UIViewController {
     private let bag = DisposeBag()
@@ -49,7 +50,7 @@ class PaymentVC: UIViewController {
     
     private func setUI(){
         
-        NetworkManager.shared.getFirebaseUser(entityName: "Users",
+        NetworkLayer.getFirebaseUser(entityName: "Users",
                                               child: AuthManager.shared.getUUID(),
                                               type: User.self).subscribe{ [weak self] single in
             guard let self = self else { return }
@@ -215,7 +216,8 @@ class PaymentVC: UIViewController {
     private func deleteBasketItemsAndNavigate(){
         for item in self.basketList{
             guard let index = Int(item.id!) else { return }
-            NetworkManager.shared.deleteFood(index: index)
+            NetworkLayer.deleteFood(index: index)
+            
         }
         self.basketList.removeAll()
         

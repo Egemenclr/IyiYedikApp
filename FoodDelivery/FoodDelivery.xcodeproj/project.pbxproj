@@ -19,7 +19,6 @@
 		5F7FA72226BDDEDB00FF7A8B /* UIButton+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F7FA72126BDDEDB00FF7A8B /* UIButton+Ext.swift */; };
 		5F84E4D226C1A82900740DBE /* CustomTabbarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F84E4D126C1A82900740DBE /* CustomTabbarController.swift */; };
 		5F9873F326CC446B00E09865 /* Kingfisher in Frameworks */ = {isa = PBXBuildFile; productRef = 5F9873F226CC446B00E09865 /* Kingfisher */; };
-		5F9D11C826C2EE2700DEFE1F /* RestaurantModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9D11C726C2EE2700DEFE1F /* RestaurantModel.swift */; };
 		5F9D11CD26C2F30000DEFE1F /* RestaurantDetailVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9D11CC26C2F30000DEFE1F /* RestaurantDetailVC.swift */; };
 		5F9D11D326C2FD7100DEFE1F /* CustomRatingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9D11D226C2FD7100DEFE1F /* CustomRatingView.swift */; };
 		5F9D11DC26C305FC00DEFE1F /* CustomDetailView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F9D11DB26C305FC00DEFE1F /* CustomDetailView.swift */; };
@@ -40,14 +39,10 @@
 		5FCA698426B70CB600B0D192 /* ProfileVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCA698326B70CB600B0D192 /* ProfileVC.swift */; };
 		5FCA698B26B70D1500B0D192 /* Constants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCA698A26B70D1500B0D192 /* Constants.swift */; };
 		5FCA699026B70D2900B0D192 /* Helper.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCA698F26B70D2900B0D192 /* Helper.swift */; };
-		5FCA699F26B710F400B0D192 /* NetworkManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCA699E26B710F400B0D192 /* NetworkManager.swift */; };
 		5FCD1F7526CAE0F800FAFB04 /* MapVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FCD1F7426CAE0F800FAFB04 /* MapVC.swift */; };
 		5FD99B0926CD134E00502CA7 /* LoadingView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FD99B0826CD134E00502CA7 /* LoadingView.swift */; };
 		5FE5CA4D26BEFBB800F4B720 /* CategoriesCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE5CA4C26BEFBB800F4B720 /* CategoriesCell.swift */; };
-		5FE5CA5626BF00D300F4B720 /* RestaurantGenreModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FE5CA5526BF00D300F4B720 /* RestaurantGenreModel.swift */; };
 		5FED922926BB0416001F2271 /* LoginVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FED922826BB0416001F2271 /* LoginVC.swift */; };
-		5FED923126BB0425001F2271 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FED923026BB0425001F2271 /* RegisterVC.swift */; };
-		5FEEA1E226B85C73005D54D6 /* ApiConstants.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEEA1E126B85C73005D54D6 /* ApiConstants.swift */; };
 		5FEEA1E826B85CA7005D54D6 /* UIViewController+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEEA1E726B85CA7005D54D6 /* UIViewController+Ext.swift */; };
 		5FEEA1F226B85CF7005D54D6 /* CustomAlertView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEEA1F126B85CF7005D54D6 /* CustomAlertView.swift */; };
 		5FEEA1FB26B85D52005D54D6 /* AlertVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5FEEA1FA26B85D52005D54D6 /* AlertVC.swift */; };
@@ -67,6 +62,7 @@
 		B5003DCB27382D4E00971696 /* RealmSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B5003DCA27382D4E00971696 /* RealmSwift */; };
 		B5003DCD27382D4E00971696 /* Realm in Frameworks */ = {isa = PBXBuildFile; productRef = B5003DCC27382D4E00971696 /* Realm */; };
 		B5003DD027382EBA00971696 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5003DCF27382EBA00971696 /* DatabaseManager.swift */; };
+		B50535B82768A45A00A8A428 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50535B72768A45A00A8A428 /* RegisterVC.swift */; };
 		B5075EFA274B883C00883C5C /* OtherVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5075EF9274B883C00883C5C /* OtherVC.swift */; };
 		B55019CC2714320F001B92DB /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B55019CB2714320F001B92DB /* RxCocoa */; };
 		B55019CE2714320F001B92DB /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = B55019CD2714320F001B92DB /* RxRelay */; };
@@ -78,6 +74,7 @@
 		B571510227621E07001DF411 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571510127621E07001DF411 /* LoginViewModel.swift */; };
 		B5B5593B273D2DED00A8B6FD /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */; };
 		B5DAF43D2757708F001C30A0 /* Observable+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */; };
+		B5F387A52769DC7000477CBC /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = B5F387A42769DC7000477CBC /* Common */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -109,7 +106,6 @@
 		5F7FA71926BDDA8900FF7A8B /* CustomLoginTextFieldView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomLoginTextFieldView.swift; sourceTree = "<group>"; };
 		5F7FA72126BDDEDB00FF7A8B /* UIButton+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIButton+Ext.swift"; sourceTree = "<group>"; };
 		5F84E4D126C1A82900740DBE /* CustomTabbarController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomTabbarController.swift; sourceTree = "<group>"; };
-		5F9D11C726C2EE2700DEFE1F /* RestaurantModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantModel.swift; sourceTree = "<group>"; };
 		5F9D11CC26C2F30000DEFE1F /* RestaurantDetailVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantDetailVC.swift; sourceTree = "<group>"; };
 		5F9D11D226C2FD7100DEFE1F /* CustomRatingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRatingView.swift; sourceTree = "<group>"; };
 		5F9D11DB26C305FC00DEFE1F /* CustomDetailView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomDetailView.swift; sourceTree = "<group>"; };
@@ -136,14 +132,10 @@
 		5FCA698326B70CB600B0D192 /* ProfileVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileVC.swift; sourceTree = "<group>"; };
 		5FCA698A26B70D1500B0D192 /* Constants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Constants.swift; sourceTree = "<group>"; };
 		5FCA698F26B70D2900B0D192 /* Helper.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Helper.swift; sourceTree = "<group>"; };
-		5FCA699E26B710F400B0D192 /* NetworkManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NetworkManager.swift; sourceTree = "<group>"; };
 		5FCD1F7426CAE0F800FAFB04 /* MapVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MapVC.swift; sourceTree = "<group>"; };
 		5FD99B0826CD134E00502CA7 /* LoadingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingView.swift; sourceTree = "<group>"; };
 		5FE5CA4C26BEFBB800F4B720 /* CategoriesCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesCell.swift; sourceTree = "<group>"; };
-		5FE5CA5526BF00D300F4B720 /* RestaurantGenreModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantGenreModel.swift; sourceTree = "<group>"; };
 		5FED922826BB0416001F2271 /* LoginVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginVC.swift; sourceTree = "<group>"; };
-		5FED923026BB0425001F2271 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
-		5FEEA1E126B85C73005D54D6 /* ApiConstants.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ApiConstants.swift; sourceTree = "<group>"; };
 		5FEEA1E726B85CA7005D54D6 /* UIViewController+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIViewController+Ext.swift"; sourceTree = "<group>"; };
 		5FEEA1F126B85CF7005D54D6 /* CustomAlertView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomAlertView.swift; sourceTree = "<group>"; };
 		5FEEA1FA26B85D52005D54D6 /* AlertVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AlertVC.swift; sourceTree = "<group>"; };
@@ -157,6 +149,7 @@
 		5FEEAE3926C96CCF00D020B9 /* OnboardingView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OnboardingView.swift; sourceTree = "<group>"; };
 		5FF4727226C852B100AD63CE /* AuthManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AuthManager.swift; sourceTree = "<group>"; };
 		B5003DCF27382EBA00971696 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
+		B50535B72768A45A00A8A428 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		B5075EF9274B883C00883C5C /* OtherVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherVC.swift; sourceTree = "<group>"; };
 		B55019EB2714418B001B92DB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B55F4A60273DA70300068D77 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -165,6 +158,7 @@
 		B571510127621E07001DF411 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Ext.swift"; sourceTree = "<group>"; };
+		B5F387A32769DBC000477CBC /* Common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Common; path = ../../../../Desktop/Common; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -175,6 +169,7 @@
 				B55019CC2714320F001B92DB /* RxCocoa in Frameworks */,
 				5FEEAE5426C99A3E00D020B9 /* FirebaseDatabase in Frameworks */,
 				B55019CE2714320F001B92DB /* RxRelay in Frameworks */,
+				B5F387A52769DC7000477CBC /* Common in Frameworks */,
 				B5003DCB27382D4E00971696 /* RealmSwift in Frameworks */,
 				B5003DCD27382D4E00971696 /* Realm in Frameworks */,
 				5FEEAE5A26C99AEC00D020B9 /* Alamofire in Frameworks */,
@@ -233,10 +228,12 @@
 		5FCA692C26B705D200B0D192 = {
 			isa = PBXGroup;
 			children = (
+				B50535B92768A52100A8A428 /* Packages */,
 				5FCA693726B705D200B0D192 /* FoodDelivery */,
 				5FCA695126B705D300B0D192 /* FoodDeliveryTests */,
 				5FCA695C26B705D300B0D192 /* FoodDeliveryUITests */,
 				5FCA693626B705D200B0D192 /* Products */,
+				B50535BB2768A7E200A8A428 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -292,7 +289,6 @@
 			children = (
 				B5003DCE27382EAD00971696 /* Database */,
 				5FF4727126C852A500AD63CE /* Auth */,
-				5FEEA1E026B85C63005D54D6 /* Network */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -300,8 +296,6 @@
 		5FCA696F26B70B3E00B0D192 /* Model */ = {
 			isa = PBXGroup;
 			children = (
-				5FE5CA5526BF00D300F4B720 /* RestaurantGenreModel.swift */,
-				5F9D11C726C2EE2700DEFE1F /* RestaurantModel.swift */,
 				5FC6864526D2894B00B30FB9 /* UserModel.swift */,
 				B55F7E43271575B90079F68C /* Weather.swift */,
 			);
@@ -356,18 +350,9 @@
 			isa = PBXGroup;
 			children = (
 				B571510027621DF5001DF411 /* Login */,
-				5FED923026BB0425001F2271 /* RegisterVC.swift */,
+				B50535B72768A45A00A8A428 /* RegisterVC.swift */,
 			);
 			path = Login;
-			sourceTree = "<group>";
-		};
-		5FEEA1E026B85C63005D54D6 /* Network */ = {
-			isa = PBXGroup;
-			children = (
-				5FCA699E26B710F400B0D192 /* NetworkManager.swift */,
-				5FEEA1E126B85C73005D54D6 /* ApiConstants.swift */,
-			);
-			path = Network;
 			sourceTree = "<group>";
 		};
 		5FEEA1E626B85C98005D54D6 /* Extensions */ = {
@@ -463,6 +448,21 @@
 				B5003DCF27382EBA00971696 /* DatabaseManager.swift */,
 			);
 			path = Database;
+			sourceTree = "<group>";
+		};
+		B50535B92768A52100A8A428 /* Packages */ = {
+			isa = PBXGroup;
+			children = (
+				B5F387A32769DBC000477CBC /* Common */,
+			);
+			name = Packages;
+			sourceTree = "<group>";
+		};
+		B50535BB2768A7E200A8A428 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			name = Frameworks;
 			sourceTree = "<group>";
 		};
 		B5075EF6274B881500883C5C /* Other */ = {
@@ -638,6 +638,7 @@
 				B55019CF2714320F001B92DB /* RxSwift */,
 				B5003DCA27382D4E00971696 /* RealmSwift */,
 				B5003DCC27382D4E00971696 /* Realm */,
+				B5F387A42769DC7000477CBC /* Common */,
 			);
 			productName = FoodDelivery;
 			productReference = 5FCA693526B705D200B0D192 /* FoodDelivery.app */;
@@ -766,7 +767,7 @@
 				5FEEA23326B8664F005D54D6 /* SepetimVC.swift in Sources */,
 				5FEEA20A26B85DDA005D54D6 /* CustomBodyLabel.swift in Sources */,
 				5FCA693D26B705D200B0D192 /* RestaurantPageVC.swift in Sources */,
-				5F9D11C826C2EE2700DEFE1F /* RestaurantModel.swift in Sources */,
+				B50535B82768A45A00A8A428 /* RegisterVC.swift in Sources */,
 				5FCD1F7526CAE0F800FAFB04 /* MapVC.swift in Sources */,
 				5F9D11D326C2FD7100DEFE1F /* CustomRatingView.swift in Sources */,
 				5FEEA1E826B85CA7005D54D6 /* UIViewController+Ext.swift in Sources */,
@@ -777,7 +778,6 @@
 				5F262CE526C1BE6400F09634 /* RestaurantsViewModel.swift in Sources */,
 				B571510227621E07001DF411 /* LoginViewModel.swift in Sources */,
 				5F262CF226C1CC5700F09634 /* SearchRestaurantsCell.swift in Sources */,
-				5FED923126BB0425001F2271 /* RegisterVC.swift in Sources */,
 				5FF4727326C852B100AD63CE /* AuthManager.swift in Sources */,
 				B5B5593B273D2DED00A8B6FD /* UserInfoView.swift in Sources */,
 				5FEEAE3426C96A8D00D020B9 /* OnboardingVC.swift in Sources */,
@@ -794,11 +794,9 @@
 				5FEEA20426B85D95005D54D6 /* CustomButton.swift in Sources */,
 				5FCA694326B705D200B0D192 /* FoodDelivery.xcdatamodeld in Sources */,
 				5F84E4D226C1A82900740DBE /* CustomTabbarController.swift in Sources */,
-				5FE5CA5626BF00D300F4B720 /* RestaurantGenreModel.swift in Sources */,
 				5FEEAE3A26C96CCF00D020B9 /* OnboardingView.swift in Sources */,
 				5FCA693926B705D200B0D192 /* AppDelegate.swift in Sources */,
 				5F5D43E026C471FB00495370 /* FoodDetailVC.swift in Sources */,
-				5FCA699F26B710F400B0D192 /* NetworkManager.swift in Sources */,
 				B5003DD027382EBA00971696 /* DatabaseManager.swift in Sources */,
 				5F5D43E826C4750F00495370 /* DividerView.swift in Sources */,
 				5FCA698426B70CB600B0D192 /* ProfileVC.swift in Sources */,
@@ -812,7 +810,6 @@
 				B55F7E44271575B90079F68C /* Weather.swift in Sources */,
 				5F262CEA26C1BF7100F09634 /* CustomRestaurant.swift in Sources */,
 				5FCA697A26B70C9300B0D192 /* SearchVC.swift in Sources */,
-				5FEEA1E226B85C73005D54D6 /* ApiConstants.swift in Sources */,
 				5F40675726C819FA00B919CC /* EmptyView.swift in Sources */,
 				5FCA699026B70D2900B0D192 /* Helper.swift in Sources */,
 				5FCA698B26B70D1500B0D192 /* Constants.swift in Sources */,
@@ -1251,6 +1248,10 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B55019CA2714320F001B92DB /* XCRemoteSwiftPackageReference "RxSwift" */;
 			productName = RxSwift;
+		};
+		B5F387A42769DC7000477CBC /* Common */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = Common;
 		};
 /* End XCSwiftPackageProductDependency section */
 

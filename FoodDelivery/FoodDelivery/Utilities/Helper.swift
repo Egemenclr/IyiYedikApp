@@ -1,6 +1,7 @@
 import UIKit
 import Alamofire
 import RxSwift
+import enum Common.NetworkError
 
 struct Connectivity{
     

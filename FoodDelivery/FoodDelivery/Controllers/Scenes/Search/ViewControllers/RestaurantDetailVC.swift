@@ -1,5 +1,7 @@
 import UIKit
 import SafariServices
+import struct Common.RestaurantMenuModel
+import struct Common.RestaModel
 
 class RestaurantDetailVC: UIViewController {
     

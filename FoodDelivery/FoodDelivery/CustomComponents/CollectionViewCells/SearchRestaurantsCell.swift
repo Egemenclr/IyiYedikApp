@@ -8,6 +8,10 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import struct Common.RestaurantMenuModel
+import struct Common.RestaModel
+import struct Common.RestModel
+
 
 class SearchRestaurantsCell: UICollectionViewCell {
     static let identifier = "SearchRestaurantsCell"

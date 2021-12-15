@@ -2,6 +2,7 @@ import Foundation
 import RxSwift
 import RxRelay
 import RxCocoa
+import Common
 
 protocol GenreListViewProtocol {
     var delegate: GenreListViewModelDelegate? { get set }
@@ -43,7 +44,7 @@ class RestaurantGenreViewModel: GenreListViewProtocol {
     
     func willChangeRestaurants(completion: @escaping ([RestaurantGenreModel]?) -> Void){
         
-        NetworkManager.shared.getFirebase(entityName: "Categories", type: RestaurantGenreModel.self) { (result) in
+        NetworkLayer.getFirebase(entityName: "Categories", type: RestaurantGenreModel.self) { (result) in
              switch result{
              case .success(let lists):
                  completion(lists)

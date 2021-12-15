@@ -2,6 +2,7 @@ import Foundation
 import RxSwift
 import RxRelay
 import RxCocoa
+import Common
 
 protocol SearchRestaurantViewProtocol {
     var delegate: SearchRestaurantViewModelDelegate? { get set }
@@ -34,7 +35,7 @@ class RestaurantsViewModel: SearchRestaurantViewProtocol {
     
     func willChangeRestaurants(completion: @escaping ([RestModel]?) -> Void){
         
-        NetworkManager.shared.getFirebase(entityName: "Restaurants", type: RestModel.self) { (result) in
+        NetworkLayer.getFirebase(entityName: "Restaurants", type: RestModel.self) { (result) in
             switch result{
             case .success(let lists):
                 completion(lists)

@@ -10,6 +10,7 @@ import FirebaseAuth
 import RxSwift
 import RxCocoa
 import UIKit
+import Common
 
 // MARK: - IO Model
 struct ProfileViewModelInput {
@@ -144,7 +145,8 @@ private func getUserInfo (
 -> BehaviorRelay<User?> {
     guard let uuid = Auth.auth().currentUser?.uid else { return BehaviorRelay<User?>(value: User.empty) }
     let element = BehaviorRelay<User?>(value: User.empty)
-    NetworkManager.shared.getFirebaseUser(entityName: "Users",
+    
+    NetworkLayer.getFirebaseUser(entityName: "Users",
                                           child: uuid,
                                           type: User.self)
         .subscribe { single in
@@ -170,5 +172,5 @@ private func updateUserInfo(_ user: User) {
     let expireDate = user.expireDate
     let ccv = user.CCV
     
-    NetworkManager.shared.updateUser(name: name, surname: surname, cardNumber: cardNumber, expireDate: expireDate, CCV: ccv)
+    NetworkLayer.updateUser(name: name, surname: surname, cardNumber: cardNumber, expireDate: expireDate, CCV: ccv)
 }

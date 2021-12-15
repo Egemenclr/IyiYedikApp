@@ -10,6 +10,7 @@ import FirebaseAuth
 import RxSwift
 import RxRelay
 import RxCocoa
+import Common
 
 
 // MARK: - IO Models
@@ -68,7 +69,8 @@ func getRestaurants(
     _ orderList: BehaviorRelay<[RestaurantMenuModel]>,
     _ bag: DisposeBag) {
         guard let uuid = Auth.auth().currentUser?.uid else { return }
-        NetworkManager.shared.getFirebaseWithChild(entityName: "Basket",
+        
+        NetworkLayer.getFirebaseWithChild(entityName: "Basket",
                                                    child: uuid,
                                                    child2: "items",
                                                    type: RestaurantMenuModel.self)
@@ -101,7 +103,7 @@ private func deleteOrder(
         inputs
             .deleteOrder
             .subscribe { element in
-                NetworkManager.shared.deleteFood(index: index.value)
+                NetworkLayer.deleteFood(index: index.value)
                 getRestaurants(basketList, inputs.bag)
             } onError: { err in
                 print(err)

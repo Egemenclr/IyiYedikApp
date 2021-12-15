@@ -1,5 +1,6 @@
 import UIKit
 import MapKit
+import struct Common.Coordinate
 
 class MapVC: UIViewController {
     let mapView = MKMapView()

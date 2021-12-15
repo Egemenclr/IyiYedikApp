@@ -7,6 +7,7 @@
 
 import UIKit
 import Kingfisher
+import struct Common.RestaurantGenreModel
 
 class CategoriesCell: UICollectionViewCell {
     static let identifier = "RestaurantCell"

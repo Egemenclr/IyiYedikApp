@@ -7,6 +7,8 @@
 
 import UIKit
 import Firebase
+import RxSwift
+import Common
 
 class FoodDetailVC: UIViewController {
     
@@ -142,7 +144,7 @@ class FoodDetailVC: UIViewController {
     
     @objc func addBasketButton(){
         detail!.adet = Int(stepper.value)
-        NetworkManager.shared.updateBasket(entityName: "Basket", restaurant: detail!)
+        NetworkLayer.updateBasket(entityName: "Basket", restaurant: detail!, bag: DisposeBag())
 
         guard let alert = returnCustomAlertOnMainThread(title: "Ürün başarıyla eklendi. 👍🏻", message: "Sepetinizi inceleyebilirsiniz.", buttonTitle: "Tamam") else { return }
         alert.actionButton.addTarget(self, action: #selector(dismissAlert), for: .touchUpInside)

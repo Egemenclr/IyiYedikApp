@@ -2,6 +2,7 @@ import UIKit
 import RxSwift
 import RxRelay
 import RxCocoa
+import struct Common.RestaurantMenuModel
 
 class SepetimVC: UIViewController {
     fileprivate let bag = DisposeBag()

@@ -1,4 +1,7 @@
 import UIKit
+import struct Common.RestaurantModel
+import struct Common.RestaurantMenuModel
+import struct Common.RestaModel
 
 class CustomRestaurant: UIView {
 

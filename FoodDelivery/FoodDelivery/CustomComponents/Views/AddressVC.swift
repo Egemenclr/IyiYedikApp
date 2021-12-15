@@ -5,6 +5,7 @@
 //  Created by Egemen Inceler on 22.08.2021.
 //
 import UIKit
+import Common
 
 class AddressVC: UIViewController {
     let containerView = UIView()
@@ -173,7 +174,13 @@ extension AddressVC {
               let daire = daire.text,
               let tarif = tarif.text else { return }
         
-        NetworkManager.shared.updateAdres(title: title, adres: adres, binaNo: binaNo, kat: kat, daire: daire, tarif: tarif) { [weak self] (success) in
+        NetworkLayer.updateAdres(title: title,
+                                 adres: adres,
+                                 binaNo: binaNo,
+                                 kat: kat,
+                                 daire: daire,
+                                 tarif: tarif)
+        { [weak self] (success) in
             guard let self = self else { return }
             if success{
                 let alert = self.makeAlert(title: "", message: "Güncelleme Başarılı ✅")
