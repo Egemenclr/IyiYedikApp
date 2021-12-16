@@ -9,8 +9,7 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
     private let searchController = UISearchController(searchResultsController: nil)
     var comeFromSiparisVC: String?
     
-    private var viewSource = SearchListView(with: CGSize(width: UIScreen.main.bounds.size.width - 50,
-                                                         height: 85))
+    private var viewSource = SearchListView(with: .home)
     
     var viewModel: SearchRestaurantViewProtocol!{
         didSet{
@@ -80,5 +79,26 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
     
     func reloadData() {
         viewSource.collectionView.reloadData()
+    }
+}
+
+enum CollectionViewSize {
+    case home
+    case category
+    
+    var itemSize: CGSize {
+        let screenWidth = UIScreen.main.bounds.size.width
+        let screenHeight = UIScreen.main.bounds.size.height
+        switch self {
+        case .home:
+            let width = screenWidth - 50
+            let height = CGFloat(85)
+            return CGSize(width: width, height: height)
+            
+        case .category:
+            let width = (screenWidth - 4*10)/2
+            let height = (screenHeight)/3
+            return CGSize(width: width, height: height)
+        }
     }
 }

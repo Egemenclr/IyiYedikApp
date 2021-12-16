@@ -1,47 +1,48 @@
 //
-//  SearchListView.swift
+//  CategoryListView.swift
 //  FoodDelivery
 //
-//  Created by Egemen İnceler on 15.12.2021.
+//  Created by Egemen İnceler on 16.12.2021.
 //
 
 import UIKit
 
-class SearchListView: UIView {
+class CategoryListView: UIView {
     
-    private lazy var flowLayout: UICollectionViewFlowLayout = {
+    lazy var flowLayout: UICollectionViewFlowLayout = {
         let layout = UICollectionViewFlowLayout()
         layout.itemSize = itemSize
         layout.minimumInteritemSpacing = 5
         layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
         layout.scrollDirection = .vertical
-        
         return layout
     }()
     
     private(set) lazy var collectionView: UICollectionView = {
-        let cView = UICollectionView(frame: .zero, collectionViewLayout: flowLayout)
+        let cView = UICollectionView(frame: .zero,
+                                     collectionViewLayout: flowLayout)
         cView.backgroundColor = .systemBackground
-        cView.register(
-            SearchRestaurantsCell.self,
-            forCellWithReuseIdentifier: SearchRestaurantsCell.identifier
-        )
+        cView.register(CategoriesCell.self,
+                       forCellWithReuseIdentifier: CategoriesCell.identifier)
         cView.translatesAutoresizingMaskIntoConstraints = false
         return cView
     }()
+
+    var itemSize: CGSize
     
-    let itemSize: CGSize
-    
-    init(with size: CollectionViewSize) {
-        self.itemSize = size.itemSize
+    init(size: CollectionViewSize) {
+        itemSize = size.itemSize
         super.init(frame: .zero)
         
         addSubview(collectionView)
-        NSLayoutConstraint.activate(collectionView.alignFitEdges())
-        
+        collectionView.alignFitEdges().forEach { constraint in
+            constraint.isActive = true
+        }
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
+    
+    
 }

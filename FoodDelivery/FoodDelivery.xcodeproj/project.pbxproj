@@ -77,6 +77,7 @@
 		B5F387A52769DC7000477CBC /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = B5F387A42769DC7000477CBC /* Common */; };
 		B5F387A9276A014900477CBC /* SearchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F387A8276A014900477CBC /* SearchListView.swift */; };
 		B5F387AB276A217400477CBC /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F387AA276A217400477CBC /* UIView+Ext.swift */; };
+		B5F387AE276B3DF200477CBC /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F387AD276B3DF200477CBC /* CategoryListView.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -163,6 +164,7 @@
 		B5F387A32769DBC000477CBC /* Common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Common; path = ../../../../Desktop/Common; sourceTree = "<group>"; };
 		B5F387A8276A014900477CBC /* SearchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListView.swift; sourceTree = "<group>"; };
 		B5F387AA276A217400477CBC /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
+		B5F387AD276B3DF200477CBC /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -497,6 +499,7 @@
 		B5193318273959DA00E786CC /* Siparis */ = {
 			isa = PBXGroup;
 			children = (
+				B5F387AC276B3DC600477CBC /* View */,
 				B5193319273959F200E786CC /* ViewControllers */,
 				B519331A273959FE00E786CC /* ViewModels */,
 			);
@@ -623,6 +626,14 @@
 				B5F387A8276A014900477CBC /* SearchListView.swift */,
 			);
 			path = Views;
+			sourceTree = "<group>";
+		};
+		B5F387AC276B3DC600477CBC /* View */ = {
+			isa = PBXGroup;
+			children = (
+				B5F387AD276B3DF200477CBC /* CategoryListView.swift */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -789,6 +800,7 @@
 				5FEEA1E826B85CA7005D54D6 /* UIViewController+Ext.swift in Sources */,
 				5F7FA72226BDDEDB00FF7A8B /* UIButton+Ext.swift in Sources */,
 				5FCA697526B70C8700B0D192 /* SiparisVC.swift in Sources */,
+				B5F387AE276B3DF200477CBC /* CategoryListView.swift in Sources */,
 				B55F4A61273DA70300068D77 /* ProfileViewModel.swift in Sources */,
 				5FC6864626D2894B00B30FB9 /* UserModel.swift in Sources */,
 				5F262CE526C1BE6400F09634 /* RestaurantsViewModel.swift in Sources */,

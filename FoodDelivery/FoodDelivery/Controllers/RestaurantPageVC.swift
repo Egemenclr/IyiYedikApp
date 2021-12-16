@@ -13,7 +13,6 @@ final class RestaurantPageVC: UIPageViewController {
     private let bag = DisposeBag()
     
     public var controllersObservable = BehaviorRelay<[UIViewController]>(value: [])
-    public var currentIndexObservable = PublishSubject<Int>()
 
     override init(transitionStyle style: UIPageViewController.TransitionStyle, navigationOrientation: UIPageViewController.NavigationOrientation, options: [UIPageViewController.OptionsKey: Any]? = nil) {
         super.init(transitionStyle: .scroll, navigationOrientation: .horizontal, options: nil)
@@ -30,6 +29,11 @@ final class RestaurantPageVC: UIPageViewController {
         super.viewDidLoad()
         delegate = self
         dataSource = self
+        
+        view.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate([
+            view.heightAnchor.constraint(equalToConstant: 220)
+        ])
     }
 
     func setUI(with VCs: [UIViewController]) {
@@ -74,13 +78,5 @@ extension RestaurantPageVC: UIPageViewControllerDelegate, UIPageViewControllerDa
             pendingIndex = controllersObservable.value.firstIndex(of: pendingViewControllers.first!)
         
         }
-    func pageViewController(_ pageViewController: UIPageViewController, didFinishAnimating finished: Bool, previousViewControllers: [UIViewController], transitionCompleted completed: Bool) {
-        if completed {
-            currentIndex = pendingIndex
-            if let index = currentIndex {
-                currentIndexObservable.onNext(index)
-            }
-        }
-    }
     
 }

@@ -13,7 +13,6 @@ protocol GenreListViewProtocol {
 }
 
 protocol GenreListViewModelDelegate: AnyObject {
-    func registerCell()
     func reloadData()
 }
 
@@ -38,7 +37,6 @@ class RestaurantGenreViewModel: GenreListViewProtocol {
     }
     
     func load() {
-        delegate?.registerCell()
         delegate?.reloadData()
     }
     
