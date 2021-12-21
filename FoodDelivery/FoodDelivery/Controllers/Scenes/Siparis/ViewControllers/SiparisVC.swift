@@ -7,15 +7,19 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
     private let bag = DisposeBag()
     
     private let pageViewController  = RestaurantPageVC()
-    private lazy var initialPage = 0
     private let loadingView = LoadingView()
-    private let viewSource = CategoryListView(size: .category)
-    private let viewStackView = UIStackView()
+    private let containerView = CategoryListView(size: .category)
+    lazy var viewSource = SiparisView()
     
     var viewModel: RestaurantGenreViewModel!{
         didSet{
             viewModel.delegate = self
         }
+    }
+    
+    // MARK: - Lifecycle
+    override func loadView() {
+        view = viewSource
     }
 
     override func viewDidLoad() {
@@ -58,37 +62,27 @@ class SiparisVC: UIViewController, GenreListViewModelDelegate {
         let damn = DatabaseManager.shared.favorites.filter{
             $0.restaurantName.prefix(0) == "q"
         }
-        print(damn)
     }
     
     func reloadData() {
-        viewSource.collectionView.reloadData()
+        containerView.collectionView.reloadData()
     }
     
     private func configureCollectionView(){
     
         viewModel.restaurantsObservable
-            .bind(to: viewSource.collectionView.rx.items(cellIdentifier: CategoriesCell.identifier, cellType: CategoriesCell.self)) { index, restaurant, cell in
+            .bind(to: containerView.collectionView.rx.items(cellIdentifier: CategoriesCell.identifier, cellType: CategoriesCell.self)) { index, restaurant, cell in
                 cell.accessibilityHint = "egemen"
                 cell.setUI(model: restaurant)
             }.disposed(by: bag)
     }
     
     private func configureViewStackView(){
-        view.addSubview(viewStackView)
         [
             pageViewController.view,
-            viewSource
-        ].forEach {viewStackView.addArrangedSubview($0)}
-        viewStackView.distribution = .fill
-        viewStackView.alignment = .fill
-        viewStackView.spacing = 5
-        viewStackView.axis = .vertical
-        viewStackView.translatesAutoresizingMaskIntoConstraints = false
-        NSLayoutConstraint.activate(viewStackView.alignFitEdges())
+            containerView
+        ].forEach {viewSource.stackView.addArrangedSubview($0)}
     }
-    
-    
 }
 
 /*

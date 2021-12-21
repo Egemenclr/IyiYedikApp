@@ -25,6 +25,7 @@ class CategoryListView: UIView {
         cView.register(CategoriesCell.self,
                        forCellWithReuseIdentifier: CategoriesCell.identifier)
         cView.translatesAutoresizingMaskIntoConstraints = false
+        cView.isScrollEnabled = false
         return cView
     }()
 
@@ -38,6 +39,19 @@ class CategoryListView: UIView {
         collectionView.alignFitEdges().forEach { constraint in
             constraint.isActive = true
         }
+        let height = calculateHeight(itemCount: 8)
+        NSLayoutConstraint.activate([
+            collectionView.heightAnchor.constraint(equalToConstant: height)
+        ])
+    }
+    
+    func calculateHeight(itemCount: UInt) -> CGFloat {
+        guard itemCount > 0 else { return 0 }
+        let columnCount = 2
+        let itemSpacing = 5.0
+        let rowCount = Int(ceil(Double(itemCount) / Double(columnCount)))
+        let totalVerticalSpacing = itemSpacing * CGFloat(rowCount - 1)
+        return (CGFloat(rowCount) * itemSize.height) + totalVerticalSpacing
     }
     
     required init?(coder: NSCoder) {
