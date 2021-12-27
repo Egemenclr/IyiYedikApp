@@ -64,6 +64,7 @@
 		B5003DD027382EBA00971696 /* DatabaseManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5003DCF27382EBA00971696 /* DatabaseManager.swift */; };
 		B50535B82768A45A00A8A428 /* RegisterVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B50535B72768A45A00A8A428 /* RegisterVC.swift */; };
 		B5075EFA274B883C00883C5C /* OtherVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5075EF9274B883C00883C5C /* OtherVC.swift */; };
+		B53644632779CD4500564D31 /* SiparisRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53644622779CD4500564D31 /* SiparisRouter.swift */; };
 		B53765572770B7D10076B333 /* SiparisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53765562770B7D10076B333 /* SiparisView.swift */; };
 		B55019CC2714320F001B92DB /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B55019CB2714320F001B92DB /* RxCocoa */; };
 		B55019CE2714320F001B92DB /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = B55019CD2714320F001B92DB /* RxRelay */; };
@@ -155,6 +156,7 @@
 		B5003DCF27382EBA00971696 /* DatabaseManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DatabaseManager.swift; sourceTree = "<group>"; };
 		B50535B72768A45A00A8A428 /* RegisterVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RegisterVC.swift; sourceTree = "<group>"; };
 		B5075EF9274B883C00883C5C /* OtherVC.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = OtherVC.swift; sourceTree = "<group>"; };
+		B53644622779CD4500564D31 /* SiparisRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiparisRouter.swift; sourceTree = "<group>"; };
 		B53765562770B7D10076B333 /* SiparisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiparisView.swift; sourceTree = "<group>"; };
 		B55019EB2714418B001B92DB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B55F4A60273DA70300068D77 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
@@ -501,6 +503,7 @@
 		B5193318273959DA00E786CC /* Siparis */ = {
 			isa = PBXGroup;
 			children = (
+				B53644622779CD4500564D31 /* SiparisRouter.swift */,
 				B5F387AC276B3DC600477CBC /* View */,
 				B5193319273959F200E786CC /* ViewControllers */,
 				B519331A273959FE00E786CC /* ViewModels */,
@@ -793,6 +796,7 @@
 			files = (
 				5FED922926BB0416001F2271 /* LoginVC.swift in Sources */,
 				5FEEA23326B8664F005D54D6 /* SepetimVC.swift in Sources */,
+				B53644632779CD4500564D31 /* SiparisRouter.swift in Sources */,
 				5FEEA20A26B85DDA005D54D6 /* CustomBodyLabel.swift in Sources */,
 				5FCA693D26B705D200B0D192 /* RestaurantPageVC.swift in Sources */,
 				B5F387AB276A217400477CBC /* UIView+Ext.swift in Sources */,

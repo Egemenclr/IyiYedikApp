@@ -29,7 +29,7 @@ final class RestaurantPageVC: UIPageViewController {
         super.viewDidLoad()
         delegate = self
         dataSource = self
-        
+        view.backgroundColor = .systemGray
         view.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
             view.heightAnchor.constraint(equalToConstant: 220)

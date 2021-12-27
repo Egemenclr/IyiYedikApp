@@ -25,8 +25,6 @@ class CustomTabbarController: UITabBarController {
         let siparisVC = SiparisVC()
         siparisVC.title = "Sipariş"
         siparisVC.tabBarItem = UITabBarItem(title: "Sipariş", image: SFSymbols.order, tag: 0)
-        let viewModel = RestaurantGenreViewModel()
-        siparisVC.viewModel = viewModel
         return UINavigationController(rootViewController: siparisVC)
     }
     

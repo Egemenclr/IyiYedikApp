@@ -8,6 +8,7 @@
 import UIKit
 import Kingfisher
 import struct Common.RestaurantGenreModel
+import RxSwift
 
 class CategoriesCell: UICollectionViewCell {
     static let identifier = "RestaurantCell"
@@ -16,6 +17,7 @@ class CategoriesCell: UICollectionViewCell {
     let uiview = UIView()
     let restaurantName = CustomSecondaryLabel(fontSize: 14, textAlignment: .left)
     let favoriteButton = CustomButton()
+    private(set) var disposeBag = DisposeBag()
     
     override init(frame: CGRect) {
         super.init(frame: frame)
@@ -107,5 +109,10 @@ class CategoriesCell: UICollectionViewCell {
         gradient.endPoint = CGPoint(x: 0.0, y: 0.0)
         gradient.frame = CGRect(x: 0.0, y: 0.0, width: contentView.frame.size.width, height: height)
         return gradient
+    }
+    
+    override func prepareForReuse() {
+        super.prepareForReuse()
+        disposeBag = DisposeBag()
     }
 }
