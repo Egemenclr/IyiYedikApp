@@ -1,21 +1,21 @@
+//
+//  CategoriesViewController.swift
+//  FoodDelivery
+//
+//  Created by Egemen İnceler on 28.12.2021.
+//
+
 import UIKit
 import RxSwift
 import RxCocoa
 
-class SiparisVC: UIViewController {
+class CategoriesViewController: UIViewController {
     
     private let bag = DisposeBag()
     
-    private let pageViewController  = RestaurantPageVC()
     private let loadingView = LoadingView()
-    private let containerView = CategoryListView(size: .category)
-    lazy var viewSource = SiparisView()
+    let containerView = CategoriesListView(size: .category)
     
-    // MARK: - Lifecycle
-    override func loadView() {
-        view = viewSource
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -53,9 +53,6 @@ class SiparisVC: UIViewController {
                 self.present(offlineVC, animated: true)
             }
         }.disposed(by: bag)
-        
-        let pageViewControllerWidth = pageViewController.view.frame.size.width
-        pageViewController.setUI(with: MockDatas().returnViewControllers(width: pageViewControllerWidth))
                 
         configureViewStackView()
         
@@ -70,10 +67,16 @@ class SiparisVC: UIViewController {
         }
     }
     
-    private func configureViewStackView(){
-        [
-            pageViewController.view,
-            containerView
-        ].forEach {viewSource.stackView.addArrangedSubview($0)}
+    private func configureViewStackView() {
+        view.addSubview(containerView)
+        containerView.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.activate(containerView.alignFitEdges())
+//        containerView.translatesAutoresizingMaskIntoConstraints = false
+//        NSLayoutConstraint.activate([
+//            containerView.topAnchor.constraint(equalTo: view.topAnchor),
+//            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+//            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+//            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
+//        ])
     }
 }

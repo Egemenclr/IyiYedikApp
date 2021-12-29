@@ -22,7 +22,7 @@ class CustomTabbarController: UITabBarController {
     }
     
     func createSiparisNC() -> UINavigationController{
-        let siparisVC = SiparisVC()
+        let siparisVC = BaseViewController()
         siparisVC.title = "Sipariş"
         siparisVC.tabBarItem = UITabBarItem(title: "Sipariş", image: SFSymbols.order, tag: 0)
         return UINavigationController(rootViewController: siparisVC)
