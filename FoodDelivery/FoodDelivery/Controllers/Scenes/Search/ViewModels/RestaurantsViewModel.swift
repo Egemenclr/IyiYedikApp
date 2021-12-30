@@ -4,85 +4,80 @@ import RxRelay
 import RxCocoa
 import Common
 
-protocol SearchRestaurantViewProtocol {
-    var delegate: SearchRestaurantViewModelDelegate? { get set }
-    var restaurants: BehaviorRelay<[RestModel]> { get }
-    var numberOfItems: Int { get }
+struct SearchRestaurantViewModelInput {
+    let indexSelected: Observable<IndexPath>
+    let searchString: Observable<String>
 }
 
-protocol SearchRestaurantViewModelDelegate: AnyObject {
-    func registerCell()
-    func reloadData()
+struct SearchRestaurantViewModelOutput {
+    let isLoading: Driver<Bool>
+    var restaurant: Driver<[RestModel]> = .never()
+    let showRestaurantDetail: Driver<RestaModel>
 }
 
-class RestaurantsViewModel: SearchRestaurantViewProtocol {
-    weak var delegate: SearchRestaurantViewModelDelegate?
-    
-    var restaurants = BehaviorRelay<[RestModel]>(value: [])
-    
-    init() {
-        willChangeRestaurants { [weak self] (liste) in
-            guard let self = self,
-                let list = liste else { return }
-            self.restaurants.accept(list)
-            //self.delegate?.reloadData()
-        }
-    }
-    
-    var numberOfItems: Int {
-        restaurants.value.count
-    }
-    
-    func willChangeRestaurants(completion: @escaping ([RestModel]?) -> Void){
+final class SearchRestaurantViewModel {
+    let isLoading = BehaviorSubject<Bool>(value: true)
+    let restaurants = BehaviorRelay<[RestModel]>(value: [])
+    let filteredRestaurants = BehaviorRelay<[RestModel]>(value: [])
+    init(_ inputs: SearchRestaurantViewModelInput) {
         
-        NetworkLayer.getFirebase(entityName: "Restaurants", type: RestModel.self) { (result) in
-            switch result{
-            case .success(let lists):
-                completion(lists)
-            case .failure(let error):
-                print(error)
-                completion(nil)
-            }
-        }
+    }
+    
+    func outputs (
+        _ inputs: SearchRestaurantViewModelInput
+    ) -> SearchRestaurantViewModelOutput {
+        return SearchRestaurantViewModelOutput(
+            isLoading: isLoadingOutput(isLoading),
+            restaurant: getRestaurantList(isLoading,
+                                          restaurants,
+                                          filteredRestaurants,
+                                          inputs.searchString),
+            showRestaurantDetail: showDetail(inputs,
+                                             filteredRestaurants)
+        )
     }
 }
-/*
- struct SearchRestaurantViewModelInput {
-     let isLoading: Observable<Bool> = .never()
-     var restaurants: Observable<[RestModel]> = .never()
- }
 
- struct SearchRestaurantViewModelOutput {
-     let isLoading: Driver<Bool>
-     var restaurant: Driver<[RestModel]> = .never()
- }
+func getRestaurantList(
+    _ isLoading: BehaviorSubject<Bool>,
+    _ restaurants: BehaviorRelay<[RestModel]>,
+    _ filteredList: BehaviorRelay<[RestModel]>,
+    _ text: Observable<String>
+) -> Driver<[RestModel]> {
+    NetworkLayer.getFirebase(entityName: "Restaurants", type: RestModel.self) { (result) in
+        switch result{
+        case .success(let lists):
+            restaurants.accept(lists)
+            isLoading.on(.next(false))
+        case .failure(let error):
+            print(error)
+            restaurants.accept([])
+        }
+    }
+    let filtered = Observable
+        .combineLatest(text, restaurants) { str, restaurants in
+            return restaurants.filter { $0.restaurant.name.hasPrefix(str)}
+        }.map { model -> [RestModel] in
+            filteredList.accept(model)
+            return model
+        }
+    return filtered.asDriver(onErrorJustReturn: [])
+}
 
- typealias SearchRestaurantViewModel = (SearchRestaurantViewModelInput) -> SearchRestaurantViewModelOutput
+func isLoadingOutput(
+    _ isLoading: BehaviorSubject<Bool>
+) -> Driver<Bool> {
+    isLoading
+        .distinctUntilChanged()
+        .asDriver(onErrorJustReturn: true)
+}
 
- func searchRestaurantViewModel(
-     _ inputs: SearchRestaurantViewModelInput
- ) -> SearchRestaurantViewModelOutput {
-     return SearchRestaurantViewModelOutput(
-         isLoading: inputs.isLoading.asDriver(onErrorDriveWith: .never()),
-         restaurant: getRestaurants(inputs)
-     )
- }
-
- private func getRestaurants(
-     _ inputs: SearchRestaurantViewModelInput
- ) -> Driver<[RestModel]> {
-     return Single<[RestModel]>.create { single in
-         NetworkManager.shared.getFirebase(entityName: "Restaurants", type: RestModel.self) { (result) in
-             switch result{
-             case .success(let lists):
-                 single(.success(lists))
-                 break
-             case .failure(_):
-                 single(.failure(NetworkError.connectionError))
-             }
-         }
-         return Disposables.create()
-     }
-     .asDriver(onErrorDriveWith: .never())
- }
- */
+func showDetail(
+    _ inputs: SearchRestaurantViewModelInput,
+    _ restaurants: BehaviorRelay<[RestModel]>
+) -> Driver<RestaModel> {
+    inputs.indexSelected
+        .withLatestFrom(restaurants) { ($0, $1 )}
+        .map{ $1[$0.item].restaurant }
+        .asDriver(onErrorDriveWith: .never())
+}

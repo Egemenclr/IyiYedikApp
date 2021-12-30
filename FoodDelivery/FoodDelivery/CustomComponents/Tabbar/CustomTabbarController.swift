@@ -32,7 +32,7 @@ class CustomTabbarController: UITabBarController {
         let discoverVC = SearchVC()
         discoverVC.title = "Ara"
         discoverVC.tabBarItem = UITabBarItem(title: "Ara", image: SFSymbols.magnifyingglass, tag: 1)
-        discoverVC.viewModel = RestaurantsViewModel()
+
         return UINavigationController(rootViewController: discoverVC)
     }
     

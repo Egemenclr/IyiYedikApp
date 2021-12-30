@@ -71,12 +71,5 @@ class CategoriesViewController: UIViewController {
         view.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate(containerView.alignFitEdges())
-//        containerView.translatesAutoresizingMaskIntoConstraints = false
-//        NSLayoutConstraint.activate([
-//            containerView.topAnchor.constraint(equalTo: view.topAnchor),
-//            containerView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
-//            containerView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
-//            containerView.bottomAnchor.constraint(equalTo: view.bottomAnchor)
-//        ])
     }
 }

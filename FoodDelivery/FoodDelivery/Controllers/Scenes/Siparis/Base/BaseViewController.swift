@@ -26,8 +26,12 @@ class BaseViewController: UIViewController {
     
     private func configureViewStackView() {
         [
-            pageViewController.view,
-            categories.view
-        ].forEach {viewSource.stackView.addArrangedSubview($0)}
+            pageViewController,
+            categories
+        ].forEach {
+            addChildController(controller: $0) {
+                viewSource.stackView.addArrangedSubview($0)
+            }
+        }
     }
 }

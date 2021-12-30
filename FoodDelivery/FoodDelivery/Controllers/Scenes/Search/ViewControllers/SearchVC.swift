@@ -2,21 +2,16 @@ import UIKit
 import RxSwift
 import RxCocoa
 
-class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
+class SearchVC: UIViewController {
     
     private let bag = DisposeBag()
-    
+    private let loadingView = LoadingView()
     private let searchController = UISearchController(searchResultsController: nil)
     var comeFromSiparisVC: String?
     
     private var viewSource = SearchListView(with: .home)
     
-    var viewModel: SearchRestaurantViewProtocol!{
-        didSet{
-            viewModel.delegate = self
-        }
-    }
-    
+    // MARK: - Lifecycle
     override func loadView() {
         configureViewSource()
     }
@@ -26,39 +21,33 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
         hideKeyboardWhenTappedAround()
         view.backgroundColor = .systemBackground
         
+        loadingView.startLoading()
         configureSearchController()
         
-        let restaurants = viewModel.restaurants.share(replay: 1)
+        let itemSelected = viewSource.collectionView.rx.itemSelected.asObservable()
         
-        let searchString = searchController.searchBar.rx.text
-        let filteredUsers = Observable
-            .combineLatest(searchString, restaurants) { str, restaurants in
-            return restaurants.filter { $0.restaurant.name.hasPrefix(str!)}
-            }
+        let searchString = searchController.searchBar.rx.text.orEmpty
+            .debounce(RxTimeInterval.microseconds(300), scheduler: MainScheduler.instance)
+            .asObservable()
+        let inputs = SearchRestaurantViewModelInput(indexSelected: itemSelected,
+                                                    searchString: searchString)
+        let viewModel = SearchRestaurantViewModel(inputs)
+        let outputs = viewModel.outputs(inputs)
         
-        filteredUsers
-            .bind(to: self.viewSource.collectionView.rx
-                    .items(cellIdentifier: SearchRestaurantsCell.identifier,
-                                   cellType: SearchRestaurantsCell.self)) { row, restaurant, cell in
-            cell.configureUI(rest: restaurant)
-        }.disposed(by: self.bag)
+        outputs.restaurant
+            .drive(viewSource.collectionView.rx.items(cellIdentifier: SearchRestaurantsCell.identifier, cellType: SearchRestaurantsCell.self)) { indexPath, restaurant, cell in
+                cell.configureUI(rest: restaurant)
+            }.disposed(by: bag)
         
-        viewSource.collectionView.rx
-            .itemSelected.subscribe { indexPath in
-                 guard let index = indexPath.element?.row else { return }
-                 
-                 filteredUsers.subscribe { temp in
-                     guard temp.element!.count > 0,
-                        let restaurant = temp.element?[index].restaurant else { return }
-                     let restaurantVC = RestaurantDetailVC(restaurant: restaurant)
-                     self.present(restaurantVC, animated: true)
-                 }.dispose()
-             }.disposed(by: bag)
-        
-    }
-    
-    private func configureViewSource(){
-        view = viewSource
+        outputs.isLoading
+            .filter { !$0 }
+            .do(onNext: { _ in self.loadingView.hideLoading() })
+            .drive(loadingView.activityIndicator.rx.isHidden)
+            .disposed(by: bag)
+                
+        outputs.showRestaurantDetail
+                .drive(rx.showRestaurantDetail)
+                .disposed(by: bag)
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -66,19 +55,20 @@ class SearchVC: UIViewController, SearchRestaurantViewModelDelegate {
         self.searchController.searchBar.text = comeFromSiparisVC
     }
     
+    override func viewWillDisappear(_ animated: Bool) {
+        super.viewWillDisappear(animated)
+        comeFromSiparisVC = nil
+    }
+    
+    private func configureViewSource(){
+        view = viewSource
+    }
+
     private func configureSearchController(){
         searchController.obscuresBackgroundDuringPresentation = false
         searchController.searchBar.placeholder = "Yemek, mutfak veya restoran arayın"
         navigationItem.searchController = searchController
         definesPresentationContext = true
-    }
-    
-    func registerCell() {
-        viewSource.collectionView.register(SearchRestaurantsCell.self, forCellWithReuseIdentifier: SearchRestaurantsCell.identifier)
-    }
-    
-    func reloadData() {
-        viewSource.collectionView.reloadData()
     }
 }
 
