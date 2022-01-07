@@ -1,44 +1,47 @@
+//
+//  SearchViewModel.swift
+//  FoodDelivery
+//
+//  Created by Egemen İnceler on 4.01.2022.
+//
+
 import Foundation
 import RxSwift
-import RxRelay
 import RxCocoa
 import Common
 
-struct SearchRestaurantViewModelInput {
-    let indexSelected: Observable<IndexPath>
-    let searchString: Observable<String>
+struct SearchViewModelInput {
+    let searchText: Observable<String>
 }
 
-struct SearchRestaurantViewModelOutput {
+struct SearchViewModelOutput {
     let isLoading: Driver<Bool>
     var restaurant: Driver<[RestModel]> = .never()
-    let showRestaurantDetail: Driver<RestaModel>
 }
 
-final class SearchRestaurantViewModel {
+final class SearchViewModel {
     let isLoading = BehaviorSubject<Bool>(value: true)
     let restaurants = BehaviorRelay<[RestModel]>(value: [])
     let filteredRestaurants = BehaviorRelay<[RestModel]>(value: [])
-    init(_ inputs: SearchRestaurantViewModelInput) {
+    init(_ inputs: SearchViewModelInput) {
         
     }
     
     func outputs (
-        _ inputs: SearchRestaurantViewModelInput
-    ) -> SearchRestaurantViewModelOutput {
-        return SearchRestaurantViewModelOutput(
+        _ inputs: SearchViewModelInput
+    ) -> SearchViewModelOutput {
+        return SearchViewModelOutput(
             isLoading: isLoadingOutput(isLoading),
-            restaurant: getRestaurantList(isLoading,
-                                          restaurants,
-                                          filteredRestaurants,
-                                          inputs.searchString),
-            showRestaurantDetail: showDetail(inputs,
-                                             filteredRestaurants)
+            restaurant: getRestaurantListWithSearch(
+                isLoading,
+                restaurants,
+                filteredRestaurants,
+                inputs.searchText)
         )
     }
 }
 
-func getRestaurantList(
+func getRestaurantListWithSearch(
     _ isLoading: BehaviorSubject<Bool>,
     _ restaurants: BehaviorRelay<[RestModel]>,
     _ filteredList: BehaviorRelay<[RestModel]>,
@@ -70,14 +73,4 @@ func isLoadingOutput(
     isLoading
         .distinctUntilChanged()
         .asDriver(onErrorJustReturn: true)
-}
-
-func showDetail(
-    _ inputs: SearchRestaurantViewModelInput,
-    _ restaurants: BehaviorRelay<[RestModel]>
-) -> Driver<RestaModel> {
-    inputs.indexSelected
-        .withLatestFrom(restaurants) { ($0, $1 )}
-        .map{ $1[$0.item].restaurant }
-        .asDriver(onErrorDriveWith: .never())
 }

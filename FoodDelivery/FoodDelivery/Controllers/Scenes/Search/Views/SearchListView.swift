@@ -26,6 +26,8 @@ class SearchListView: UIView {
             SearchRestaurantsCell.self,
             forCellWithReuseIdentifier: SearchRestaurantsCell.identifier
         )
+        cView.backgroundColor = .systemBlue
+        cView.isScrollEnabled = false
         cView.translatesAutoresizingMaskIntoConstraints = false
         return cView
     }()
@@ -39,6 +41,11 @@ class SearchListView: UIView {
         addSubview(collectionView)
         NSLayoutConstraint.activate(collectionView.alignFitEdges())
         
+        let height = calculateHeight(itemCount: 9)
+        NSLayoutConstraint.activate([
+            collectionView.heightAnchor.constraint(equalToConstant: height)
+        ])
+    }
     }
     
     required init?(coder: NSCoder) {

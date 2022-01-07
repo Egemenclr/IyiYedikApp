@@ -7,7 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		5F262CE526C1BE6400F09634 /* RestaurantsViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F262CE426C1BE6400F09634 /* RestaurantsViewModel.swift */; };
+		5F262CE526C1BE6400F09634 /* SearchHomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F262CE426C1BE6400F09634 /* SearchHomeViewModel.swift */; };
 		5F262CEA26C1BF7100F09634 /* CustomRestaurant.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F262CE926C1BF7100F09634 /* CustomRestaurant.swift */; };
 		5F262CF226C1CC5700F09634 /* SearchRestaurantsCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F262CF126C1CC5700F09634 /* SearchRestaurantsCell.swift */; };
 		5F40675726C819FA00B919CC /* EmptyView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5F40675626C819FA00B919CC /* EmptyView.swift */; };
@@ -69,6 +69,11 @@
 		B5364471277C4C1B00564D31 /* CategoriesListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5364470277C4C1B00564D31 /* CategoriesListView.swift */; };
 		B5364474277D9C8000564D31 /* SearchRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5364473277D9C8000564D31 /* SearchRouter.swift */; };
 		B53765572770B7D10076B333 /* SiparisView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53765562770B7D10076B333 /* SiparisView.swift */; };
+		B53E74FA278457EC00C91D51 /* SearchBaseViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E74F9278457EC00C91D51 /* SearchBaseViewController.swift */; };
+		B53E74FC27847D3F00C91D51 /* SearchBarViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E74FB27847D3F00C91D51 /* SearchBarViewController.swift */; };
+		B53E74FE27847D8200C91D51 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E74FD27847D8200C91D51 /* SearchBarView.swift */; };
+		B53E750027848CC100C91D51 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E74FF27848CC100C91D51 /* SearchViewModel.swift */; };
+		B53E75032786E16500C91D51 /* Driver+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E75022786E16500C91D51 /* Driver+Ext.swift */; };
 		B55019CC2714320F001B92DB /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B55019CB2714320F001B92DB /* RxCocoa */; };
 		B55019CE2714320F001B92DB /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = B55019CD2714320F001B92DB /* RxRelay */; };
 		B55019D02714320F001B92DB /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B55019CF2714320F001B92DB /* RxSwift */; };
@@ -102,7 +107,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		5F262CE426C1BE6400F09634 /* RestaurantsViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RestaurantsViewModel.swift; sourceTree = "<group>"; };
+		5F262CE426C1BE6400F09634 /* SearchHomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchHomeViewModel.swift; sourceTree = "<group>"; };
 		5F262CE926C1BF7100F09634 /* CustomRestaurant.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CustomRestaurant.swift; sourceTree = "<group>"; };
 		5F262CF126C1CC5700F09634 /* SearchRestaurantsCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRestaurantsCell.swift; sourceTree = "<group>"; };
 		5F40675626C819FA00B919CC /* EmptyView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyView.swift; sourceTree = "<group>"; };
@@ -163,6 +168,11 @@
 		B5364470277C4C1B00564D31 /* CategoriesListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoriesListView.swift; sourceTree = "<group>"; };
 		B5364473277D9C8000564D31 /* SearchRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchRouter.swift; sourceTree = "<group>"; };
 		B53765562770B7D10076B333 /* SiparisView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SiparisView.swift; sourceTree = "<group>"; };
+		B53E74F9278457EC00C91D51 /* SearchBaseViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBaseViewController.swift; sourceTree = "<group>"; };
+		B53E74FB27847D3F00C91D51 /* SearchBarViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarViewController.swift; sourceTree = "<group>"; };
+		B53E74FD27847D8200C91D51 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
+		B53E74FF27848CC100C91D51 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
+		B53E75022786E16500C91D51 /* Driver+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Ext.swift"; sourceTree = "<group>"; };
 		B55019EB2714418B001B92DB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B55F4A60273DA70300068D77 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		B55F7E43271575B90079F68C /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
@@ -374,6 +384,7 @@
 				5F7FA72126BDDEDB00FF7A8B /* UIButton+Ext.swift */,
 				B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */,
 				B5F387AA276A217400477CBC /* UIView+Ext.swift */,
+				B53E75022786E16500C91D51 /* Driver+Ext.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -516,8 +527,10 @@
 		B519331B27395A4F00E786CC /* Search */ = {
 			isa = PBXGroup;
 			children = (
+				B53E74F62784578F00C91D51 /* SearchBar */,
+				B53E74F8278457B900C91D51 /* Home */,
+				B53E74F72784579600C91D51 /* Base */,
 				B5F387A7276A012F00477CBC /* Views */,
-				B519331D27395A6B00E786CC /* ViewModels */,
 				B519331C27395A5B00E786CC /* ViewControllers */,
 				B5364473277D9C8000564D31 /* SearchRouter.swift */,
 			);
@@ -527,20 +540,11 @@
 		B519331C27395A5B00E786CC /* ViewControllers */ = {
 			isa = PBXGroup;
 			children = (
-				5FCA697926B70C9300B0D192 /* SearchVC.swift */,
 				5F9D11CC26C2F30000DEFE1F /* RestaurantDetailVC.swift */,
 				5F5D43DF26C471FB00495370 /* FoodDetailVC.swift */,
 				5FCD1F7426CAE0F800FAFB04 /* MapVC.swift */,
 			);
 			path = ViewControllers;
-			sourceTree = "<group>";
-		};
-		B519331D27395A6B00E786CC /* ViewModels */ = {
-			isa = PBXGroup;
-			children = (
-				5F262CE426C1BE6400F09634 /* RestaurantsViewModel.swift */,
-			);
-			path = ViewModels;
 			sourceTree = "<group>";
 		};
 		B519331E27395B5A00E786CC /* Profile */ = {
@@ -613,6 +617,33 @@
 				5FCA693C26B705D200B0D192 /* RestaurantPageVC.swift */,
 			);
 			path = PageView;
+			sourceTree = "<group>";
+		};
+		B53E74F62784578F00C91D51 /* SearchBar */ = {
+			isa = PBXGroup;
+			children = (
+				B53E74FB27847D3F00C91D51 /* SearchBarViewController.swift */,
+				B53E74FD27847D8200C91D51 /* SearchBarView.swift */,
+				B53E74FF27848CC100C91D51 /* SearchViewModel.swift */,
+			);
+			path = SearchBar;
+			sourceTree = "<group>";
+		};
+		B53E74F72784579600C91D51 /* Base */ = {
+			isa = PBXGroup;
+			children = (
+				B53E74F9278457EC00C91D51 /* SearchBaseViewController.swift */,
+			);
+			path = Base;
+			sourceTree = "<group>";
+		};
+		B53E74F8278457B900C91D51 /* Home */ = {
+			isa = PBXGroup;
+			children = (
+				5FCA697926B70C9300B0D192 /* SearchVC.swift */,
+				5F262CE426C1BE6400F09634 /* SearchHomeViewModel.swift */,
+			);
+			path = Home;
 			sourceTree = "<group>";
 		};
 		B55F4A62273DA70C00068D77 /* ViewModels */ = {
@@ -815,6 +846,7 @@
 				B5364474277D9C8000564D31 /* SearchRouter.swift in Sources */,
 				5FCA693D26B705D200B0D192 /* RestaurantPageVC.swift in Sources */,
 				B5F387AB276A217400477CBC /* UIView+Ext.swift in Sources */,
+				B53E74FA278457EC00C91D51 /* SearchBaseViewController.swift in Sources */,
 				B5F387A9276A014900477CBC /* SearchListView.swift in Sources */,
 				B50535B82768A45A00A8A428 /* RegisterVC.swift in Sources */,
 				5FCD1F7526CAE0F800FAFB04 /* MapVC.swift in Sources */,
@@ -825,7 +857,7 @@
 				B55F4A61273DA70300068D77 /* ProfileViewModel.swift in Sources */,
 				B5364471277C4C1B00564D31 /* CategoriesListView.swift in Sources */,
 				5FC6864626D2894B00B30FB9 /* UserModel.swift in Sources */,
-				5F262CE526C1BE6400F09634 /* RestaurantsViewModel.swift in Sources */,
+				5F262CE526C1BE6400F09634 /* SearchHomeViewModel.swift in Sources */,
 				B571510227621E07001DF411 /* LoginViewModel.swift in Sources */,
 				5F262CF226C1CC5700F09634 /* SearchRestaurantsCell.swift in Sources */,
 				5FF4727326C852B100AD63CE /* AuthManager.swift in Sources */,
@@ -833,13 +865,16 @@
 				5FEEAE3426C96A8D00D020B9 /* OnboardingVC.swift in Sources */,
 				5FEEA21326B85DF2005D54D6 /* CustomSecondaryLabel.swift in Sources */,
 				5FEEA21926B85E08005D54D6 /* CustomTitleLabel.swift in Sources */,
+				B53E74FC27847D3F00C91D51 /* SearchBarViewController.swift in Sources */,
 				5FC6863426D265FE00B30FB9 /* PaymentVC.swift in Sources */,
 				5FC6864126D280F900B30FB9 /* AddressVC.swift in Sources */,
 				B5DAF43D2757708F001C30A0 /* Observable+Ext.swift in Sources */,
 				5F9D11DC26C305FC00DEFE1F /* CustomDetailView.swift in Sources */,
 				5FE5CA4D26BEFBB800F4B720 /* CategoriesCell.swift in Sources */,
 				5F9D11CD26C2F30000DEFE1F /* RestaurantDetailVC.swift in Sources */,
+				B53E75032786E16500C91D51 /* Driver+Ext.swift in Sources */,
 				B5075EFA274B883C00883C5C /* OtherVC.swift in Sources */,
+				B53E74FE27847D8200C91D51 /* SearchBarView.swift in Sources */,
 				5FEEA1FB26B85D52005D54D6 /* AlertVC.swift in Sources */,
 				5FEEA20426B85D95005D54D6 /* CustomButton.swift in Sources */,
 				5FCA694326B705D200B0D192 /* FoodDelivery.xcdatamodeld in Sources */,
@@ -862,6 +897,7 @@
 				B55F7E44271575B90079F68C /* Weather.swift in Sources */,
 				5F262CEA26C1BF7100F09634 /* CustomRestaurant.swift in Sources */,
 				5FCA697A26B70C9300B0D192 /* SearchVC.swift in Sources */,
+				B53E750027848CC100C91D51 /* SearchViewModel.swift in Sources */,
 				5F40675726C819FA00B919CC /* EmptyView.swift in Sources */,
 				5FCA699026B70D2900B0D192 /* Helper.swift in Sources */,
 				5FCA698B26B70D1500B0D192 /* Constants.swift in Sources */,

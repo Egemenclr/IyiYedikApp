@@ -29,7 +29,7 @@ class CustomTabbarController: UITabBarController {
     }
     
     func createDiscoverNC() -> UINavigationController{
-        let discoverVC = SearchVC()
+        let discoverVC = SearchBaseViewController()
         discoverVC.title = "Ara"
         discoverVC.tabBarItem = UITabBarItem(title: "Ara", image: SFSymbols.magnifyingglass, tag: 1)
 

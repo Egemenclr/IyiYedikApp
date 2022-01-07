@@ -14,7 +14,6 @@ import Common
 extension Reactive where Base: UIViewController {
     var showRestaurantDetail: Binder<RestaModel> {
         Binder(base) {target, restaurant in
-            print(restaurant)
             let restaurantVC = RestaurantDetailVC(restaurant: restaurant)
             target.present(restaurantVC, animated: true)
         }

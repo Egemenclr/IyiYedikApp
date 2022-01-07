@@ -19,7 +19,7 @@ class FoodDetailVC: UIViewController {
     private let countLabel = CustomTitleLabel(textAlignment: .left, fontSize: 14)
     private let costLabel  = CustomTitleLabel(textAlignment: .right, fontSize: 14)
     private let addBasket  = CustomButton(backgroundColor: .systemGreen, title: "Sepete Ekle")
-    
+    let disposeBag = DisposeBag()
     
     private var detail: RestaurantMenuModel?
     override func viewDidLoad() {
@@ -144,7 +144,7 @@ class FoodDetailVC: UIViewController {
     
     @objc func addBasketButton(){
         detail!.adet = Int(stepper.value)
-        NetworkLayer.updateBasket(entityName: "Basket", restaurant: detail!, bag: DisposeBag())
+        NetworkLayer.updateBasket(entityName: "Basket", restaurant: detail!, bag: disposeBag)
 
         guard let alert = returnCustomAlertOnMainThread(title: "Ürün başarıyla eklendi. 👍🏻", message: "Sepetinizi inceleyebilirsiniz.", buttonTitle: "Tamam") else { return }
         alert.actionButton.addTarget(self, action: #selector(dismissAlert), for: .touchUpInside)

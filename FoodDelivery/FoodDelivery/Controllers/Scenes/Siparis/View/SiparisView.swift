@@ -13,6 +13,7 @@ class SiparisView: UIView {
         let sView = UIScrollView()
         sView.alwaysBounceVertical = true
         sView.translatesAutoresizingMaskIntoConstraints = false
+        sView.backgroundColor = .systemBackground
         return sView
     }()
     
@@ -23,6 +24,7 @@ class SiparisView: UIView {
         sView.spacing = 5.0
         sView.axis = .vertical
         sView.translatesAutoresizingMaskIntoConstraints = false
+        sView.backgroundColor = .systemBackground
         return sView
     }()
     
