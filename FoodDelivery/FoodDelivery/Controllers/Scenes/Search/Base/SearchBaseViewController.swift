@@ -37,8 +37,10 @@ class SearchBaseViewController: UIViewController {
         
         
         let combineLoadings = combineLoadings(
-            searchBar.isLoading,
-            Driver.of(false)
+            [
+                searchBar.isLoading,
+                Driver.of(false)
+            ]
         )
         
         combineLoadings
@@ -60,14 +62,14 @@ class SearchBaseViewController: UIViewController {
     }
 }
 
-func combineLoadings(_ isLoadings: Driver<Bool>,
-                     _ isLoading2: Driver<Bool>
-) -> Driver<Bool> {
+func combineLoadings(_ isLoadings: [Driver<Bool>])
+-> Driver<Bool> {
     Observable
-        .combineLatest(isLoadings.asObservable(), isLoading2.asObservable())
-        .flatMapLatest { (a, b) -> Observable<Bool> in
-            Observable.of(a || b)
+        .combineLatest(isLoadings.map({ $0.asObservable() }))
+        .flatMapLatest { boolList -> Observable<Bool> in
+            Observable.of(boolList.contains(true))
         }
+        .filter{ !$0 }
         .asDriver(onErrorDriveWith: .never())
 }
 
