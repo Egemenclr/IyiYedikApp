@@ -13,8 +13,9 @@ class SearchBaseViewController: UIViewController {
     let disposeBag = DisposeBag()
     private let loadingView = LoadingView()
     
-    lazy var searchBar = SearchBarViewController()
     private lazy var viewSource = SiparisView()
+    lazy var searchBar = SearchBarViewController()
+    private lazy var recentSearchView = CategoryListViewController()
     private lazy var searchVC = SearchVC()
     
     
@@ -53,6 +54,7 @@ class SearchBaseViewController: UIViewController {
     private func configureViewStackView() {
         [
             searchBar,
+            recentSearchView,
             searchVC
         ].forEach {
             addChildController(controller: $0) {
@@ -69,7 +71,6 @@ func combineLoadings(_ isLoadings: [Driver<Bool>])
         .flatMapLatest { boolList -> Observable<Bool> in
             Observable.of(boolList.contains(true))
         }
-        .filter{ !$0 }
         .asDriver(onErrorDriveWith: .never())
 }
 

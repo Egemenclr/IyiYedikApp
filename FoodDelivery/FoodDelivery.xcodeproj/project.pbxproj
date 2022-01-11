@@ -74,6 +74,12 @@
 		B53E74FE27847D8200C91D51 /* SearchBarView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E74FD27847D8200C91D51 /* SearchBarView.swift */; };
 		B53E750027848CC100C91D51 /* SearchViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E74FF27848CC100C91D51 /* SearchViewModel.swift */; };
 		B53E75032786E16500C91D51 /* Driver+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E75022786E16500C91D51 /* Driver+Ext.swift */; };
+		B53E7509278C19A400C91D51 /* CategoryListViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E7508278C19A400C91D51 /* CategoryListViewController.swift */; };
+		B53E750B278C1A8200C91D51 /* CategoryListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E750A278C1A8200C91D51 /* CategoryListView.swift */; };
+		B53E750D278C202700C91D51 /* CategoryListViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E750C278C202700C91D51 /* CategoryListViewModel.swift */; };
+		B53E7510278C2DA800C91D51 /* CategoryListViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E750F278C2DA800C91D51 /* CategoryListViewCell.swift */; };
+		B53E7512278C4A0200C91D51 /* CategoryListViewHeaderCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B53E7511278C4A0200C91D51 /* CategoryListViewHeaderCell.swift */; };
+		B53E7515278C578000C91D51 /* RxDataSources in Frameworks */ = {isa = PBXBuildFile; productRef = B53E7514278C578000C91D51 /* RxDataSources */; };
 		B55019CC2714320F001B92DB /* RxCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = B55019CB2714320F001B92DB /* RxCocoa */; };
 		B55019CE2714320F001B92DB /* RxRelay in Frameworks */ = {isa = PBXBuildFile; productRef = B55019CD2714320F001B92DB /* RxRelay */; };
 		B55019D02714320F001B92DB /* RxSwift in Frameworks */ = {isa = PBXBuildFile; productRef = B55019CF2714320F001B92DB /* RxSwift */; };
@@ -173,6 +179,11 @@
 		B53E74FD27847D8200C91D51 /* SearchBarView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchBarView.swift; sourceTree = "<group>"; };
 		B53E74FF27848CC100C91D51 /* SearchViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewModel.swift; sourceTree = "<group>"; };
 		B53E75022786E16500C91D51 /* Driver+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Driver+Ext.swift"; sourceTree = "<group>"; };
+		B53E7508278C19A400C91D51 /* CategoryListViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListViewController.swift; sourceTree = "<group>"; };
+		B53E750A278C1A8200C91D51 /* CategoryListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListView.swift; sourceTree = "<group>"; };
+		B53E750C278C202700C91D51 /* CategoryListViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListViewModel.swift; sourceTree = "<group>"; };
+		B53E750F278C2DA800C91D51 /* CategoryListViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListViewCell.swift; sourceTree = "<group>"; };
+		B53E7511278C4A0200C91D51 /* CategoryListViewHeaderCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CategoryListViewHeaderCell.swift; sourceTree = "<group>"; };
 		B55019EB2714418B001B92DB /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		B55F4A60273DA70300068D77 /* ProfileViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ProfileViewModel.swift; sourceTree = "<group>"; };
 		B55F7E43271575B90079F68C /* Weather.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Weather.swift; sourceTree = "<group>"; };
@@ -199,6 +210,7 @@
 				5FEEAE5A26C99AEC00D020B9 /* Alamofire in Frameworks */,
 				5FEEAE4626C994F100D020B9 /* GoogleSignIn in Frameworks */,
 				5FEEAE5226C99A3E00D020B9 /* FirebaseAuth in Frameworks */,
+				B53E7515278C578000C91D51 /* RxDataSources in Frameworks */,
 				B55019D02714320F001B92DB /* RxSwift in Frameworks */,
 				5F9873F326CC446B00E09865 /* Kingfisher in Frameworks */,
 			);
@@ -640,10 +652,23 @@
 		B53E74F8278457B900C91D51 /* Home */ = {
 			isa = PBXGroup;
 			children = (
+				B53E7506278C14BD00C91D51 /* Category */,
 				5FCA697926B70C9300B0D192 /* SearchVC.swift */,
 				5F262CE426C1BE6400F09634 /* SearchHomeViewModel.swift */,
 			);
 			path = Home;
+			sourceTree = "<group>";
+		};
+		B53E7506278C14BD00C91D51 /* Category */ = {
+			isa = PBXGroup;
+			children = (
+				B53E750F278C2DA800C91D51 /* CategoryListViewCell.swift */,
+				B53E7508278C19A400C91D51 /* CategoryListViewController.swift */,
+				B53E750A278C1A8200C91D51 /* CategoryListView.swift */,
+				B53E750C278C202700C91D51 /* CategoryListViewModel.swift */,
+				B53E7511278C4A0200C91D51 /* CategoryListViewHeaderCell.swift */,
+			);
+			path = Category;
 			sourceTree = "<group>";
 		};
 		B55F4A62273DA70C00068D77 /* ViewModels */ = {
@@ -715,6 +740,7 @@
 				B5003DCA27382D4E00971696 /* RealmSwift */,
 				B5003DCC27382D4E00971696 /* Realm */,
 				B5F387A42769DC7000477CBC /* Common */,
+				B53E7514278C578000C91D51 /* RxDataSources */,
 			);
 			productName = FoodDelivery;
 			productReference = 5FCA693526B705D200B0D192 /* FoodDelivery.app */;
@@ -794,6 +820,7 @@
 				5F9873F126CC446B00E09865 /* XCRemoteSwiftPackageReference "Kingfisher" */,
 				B55019CA2714320F001B92DB /* XCRemoteSwiftPackageReference "RxSwift" */,
 				B5003DC927382D4E00971696 /* XCRemoteSwiftPackageReference "realm-cocoa" */,
+				B53E7513278C577F00C91D51 /* XCRemoteSwiftPackageReference "RxDataSources" */,
 			);
 			productRefGroup = 5FCA693626B705D200B0D192 /* Products */;
 			projectDirPath = "";
@@ -867,6 +894,7 @@
 				5FEEA21926B85E08005D54D6 /* CustomTitleLabel.swift in Sources */,
 				B53E74FC27847D3F00C91D51 /* SearchBarViewController.swift in Sources */,
 				5FC6863426D265FE00B30FB9 /* PaymentVC.swift in Sources */,
+				B53E7510278C2DA800C91D51 /* CategoryListViewCell.swift in Sources */,
 				5FC6864126D280F900B30FB9 /* AddressVC.swift in Sources */,
 				B5DAF43D2757708F001C30A0 /* Observable+Ext.swift in Sources */,
 				5F9D11DC26C305FC00DEFE1F /* CustomDetailView.swift in Sources */,
@@ -879,14 +907,18 @@
 				5FEEA20426B85D95005D54D6 /* CustomButton.swift in Sources */,
 				5FCA694326B705D200B0D192 /* FoodDelivery.xcdatamodeld in Sources */,
 				5F84E4D226C1A82900740DBE /* CustomTabbarController.swift in Sources */,
+				B53E7509278C19A400C91D51 /* CategoryListViewController.swift in Sources */,
 				5FEEAE3A26C96CCF00D020B9 /* OnboardingView.swift in Sources */,
 				5FCA693926B705D200B0D192 /* AppDelegate.swift in Sources */,
 				5F5D43E026C471FB00495370 /* FoodDetailVC.swift in Sources */,
+				B53E750B278C1A8200C91D51 /* CategoryListView.swift in Sources */,
 				B536446F277B2AAD00564D31 /* CategoriesViewController.swift in Sources */,
 				B5003DD027382EBA00971696 /* DatabaseManager.swift in Sources */,
 				5F5D43E826C4750F00495370 /* DividerView.swift in Sources */,
 				B53765572770B7D10076B333 /* SiparisView.swift in Sources */,
+				B53E7512278C4A0200C91D51 /* CategoryListViewHeaderCell.swift in Sources */,
 				5FCA698426B70CB600B0D192 /* ProfileVC.swift in Sources */,
+				B53E750D278C202700C91D51 /* CategoryListViewModel.swift in Sources */,
 				5FCA693B26B705D200B0D192 /* SceneDelegate.swift in Sources */,
 				B561A122271EDF190016C5CF /* SandBoxVC.swift in Sources */,
 				5F7A5A1026C019A50018868E /* CategoriesViewModel.swift in Sources */,
@@ -1276,6 +1308,14 @@
 				minimumVersion = 10.19.0;
 			};
 		};
+		B53E7513278C577F00C91D51 /* XCRemoteSwiftPackageReference "RxDataSources" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/RxSwiftCommunity/RxDataSources.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.0.0;
+			};
+		};
 		B55019CA2714320F001B92DB /* XCRemoteSwiftPackageReference "RxSwift" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/ReactiveX/RxSwift.git";
@@ -1321,6 +1361,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = B5003DC927382D4E00971696 /* XCRemoteSwiftPackageReference "realm-cocoa" */;
 			productName = Realm;
+		};
+		B53E7514278C578000C91D51 /* RxDataSources */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = B53E7513278C577F00C91D51 /* XCRemoteSwiftPackageReference "RxDataSources" */;
+			productName = RxDataSources;
 		};
 		B55019CB2714320F001B92DB /* RxCocoa */ = {
 			isa = XCSwiftPackageProductDependency;

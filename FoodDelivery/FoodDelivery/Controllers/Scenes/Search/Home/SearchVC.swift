@@ -39,6 +39,7 @@ class SearchVC: UIViewController {
 enum CollectionViewSize {
     case home
     case category
+    case popular
     
     var itemSize: CGSize {
         let screenWidth = UIScreen.main.bounds.size.width
@@ -52,6 +53,11 @@ enum CollectionViewSize {
         case .category:
             let width = (screenWidth - 4*10)/2
             let height = (screenHeight)/3
+            return CGSize(width: width, height: height)
+            
+        case .popular:
+            let width = 70.0
+            let height = 20.0
             return CGSize(width: width, height: height)
         }
     }
