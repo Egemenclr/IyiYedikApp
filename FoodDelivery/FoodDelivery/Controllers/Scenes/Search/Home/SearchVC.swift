@@ -1,12 +1,12 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import Common
+import struct Common.RestModel
 
 class SearchVC: UIViewController {
     
     private let bag = DisposeBag()
-    private var containerView = SearchListView(with: .home)
+    var containerView = SearchListView(with: .home)
     
     let (restaurantListObservable, restaurantList)  = Driver<[RestModel]>.pipe()
     
@@ -20,12 +20,19 @@ class SearchVC: UIViewController {
                                                     list: restaurantList.asObservable())
         let viewModel = SearchRestaurantViewModel(inputs)
         let outputs = viewModel.outputs(inputs)
-        
+
+        let datasource = SearchVC.datasource()
+
         restaurantList
-            .drive(containerView.collectionView.rx.items(cellIdentifier: SearchRestaurantsCell.identifier, cellType: SearchRestaurantsCell.self)) { indexPath, restaurant, cell in
-                cell.configureUI(rest: restaurant)
-            }.disposed(by: bag)
-                
+            .skip(1)
+            .map({
+                return ($0.count > 0)
+                ? $0.map { CollectionViewCellType.mainType(title: "", items: [.main(restaurant: $0)]) }
+                : [CollectionViewCellType.emptyType(title: "", items: [.empty])]
+            })
+            .drive(containerView.collectionView.rx.items(dataSource: datasource))
+            .disposed(by: bag)
+        
         outputs.showRestaurantDetail
                 .drive(rx.showRestaurantDetail)
                 .disposed(by: bag)

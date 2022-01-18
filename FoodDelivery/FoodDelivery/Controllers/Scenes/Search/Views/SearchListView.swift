@@ -26,7 +26,10 @@ class SearchListView: UIView {
             SearchRestaurantsCell.self,
             forCellWithReuseIdentifier: SearchRestaurantsCell.identifier
         )
-        cView.backgroundColor = .systemBlue
+        cView.register(
+            EmptyCollectionViewCell.self,
+            forCellWithReuseIdentifier: EmptyCollectionViewCell.identifier
+        )
         cView.isScrollEnabled = false
         cView.translatesAutoresizingMaskIntoConstraints = false
         return cView

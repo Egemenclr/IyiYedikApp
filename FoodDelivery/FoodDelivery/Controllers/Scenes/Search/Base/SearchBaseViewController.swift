@@ -49,6 +49,11 @@ class SearchBaseViewController: UIViewController {
             .do(onNext: { _ in self.loadingView.hideLoading() })
             .drive(loadingView.activityIndicator.rx.isHidden)
             .disposed(by: disposeBag)
+                
+        recentSearchView
+                .indexSelectedEvent
+                .drive(searchBar.indexSelectedObserver)
+                .disposed(by: disposeBag)
     }
 
     private func configureViewStackView() {

@@ -19,6 +19,8 @@ class SearchBarViewController: UIViewController {
         return searchView
     }()
     
+    //MARK: - Inputs
+    let (indexSelectedObserver, indexSelectedEvent) = Driver<String>.pipe()
     //MARK: - Outputs
     let (searchResultObserver, searchResult) = Driver<[RestModel]>.pipe()
     let (isLoadingObserver, isLoading) = Driver<Bool>.pipe()
@@ -45,7 +47,14 @@ class SearchBarViewController: UIViewController {
             .debounce(RxTimeInterval.microseconds(300), scheduler: MainScheduler.instance)
             .asObservable()
         
-        let inputs = SearchViewModelInput(searchText: searchString)
+        let search = Observable.of(
+            searchString,
+            indexSelectedEvent.asObservable()
+        )
+            .merge()
+            .distinctUntilChanged()
+
+        let inputs = SearchViewModelInput(searchText: search)
         let viewModel = SearchViewModel(inputs)
         
         let outputs = viewModel.outputs(inputs)
@@ -59,6 +68,13 @@ class SearchBarViewController: UIViewController {
             .drive(isLoadingObserver)
             .disposed(by: disposeBag)
         
+        indexSelectedEvent.asObservable()
+            .observe(on: MainScheduler.instance)
+            .subscribe { selected in
+                self.searchView.searchBar.text = selected.element
+            }
+            .disposed(by: disposeBag)
+
         configureSearchController()
     }
     

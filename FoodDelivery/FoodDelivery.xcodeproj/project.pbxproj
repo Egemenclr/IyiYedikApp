@@ -90,6 +90,8 @@
 		B571510227621E07001DF411 /* LoginViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = B571510127621E07001DF411 /* LoginViewModel.swift */; };
 		B5B5593B273D2DED00A8B6FD /* UserInfoView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */; };
 		B5DAF43D2757708F001C30A0 /* Observable+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */; };
+		B5ED64972791A0D600AA226B /* EmptyCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED64962791A0D600AA226B /* EmptyCollectionViewCell.swift */; };
+		B5ED649C2796FEF800AA226B /* SearchViewControllerDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5ED649B2796FEF800AA226B /* SearchViewControllerDataSource.swift */; };
 		B5F387A52769DC7000477CBC /* Common in Frameworks */ = {isa = PBXBuildFile; productRef = B5F387A42769DC7000477CBC /* Common */; };
 		B5F387A9276A014900477CBC /* SearchListView.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F387A8276A014900477CBC /* SearchListView.swift */; };
 		B5F387AB276A217400477CBC /* UIView+Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = B5F387AA276A217400477CBC /* UIView+Ext.swift */; };
@@ -191,6 +193,8 @@
 		B571510127621E07001DF411 /* LoginViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoginViewModel.swift; sourceTree = "<group>"; };
 		B5B5593A273D2DED00A8B6FD /* UserInfoView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserInfoView.swift; sourceTree = "<group>"; };
 		B5DAF43C2757708F001C30A0 /* Observable+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "Observable+Ext.swift"; sourceTree = "<group>"; };
+		B5ED64962791A0D600AA226B /* EmptyCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EmptyCollectionViewCell.swift; sourceTree = "<group>"; };
+		B5ED649B2796FEF800AA226B /* SearchViewControllerDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchViewControllerDataSource.swift; sourceTree = "<group>"; };
 		B5F387A32769DBC000477CBC /* Common */ = {isa = PBXFileReference; lastKnownFileType = folder; name = Common; path = ../../../../Desktop/Common; sourceTree = "<group>"; };
 		B5F387A8276A014900477CBC /* SearchListView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchListView.swift; sourceTree = "<group>"; };
 		B5F387AA276A217400477CBC /* UIView+Ext.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIView+Ext.swift"; sourceTree = "<group>"; };
@@ -655,6 +659,7 @@
 				B53E7506278C14BD00C91D51 /* Category */,
 				5FCA697926B70C9300B0D192 /* SearchVC.swift */,
 				5F262CE426C1BE6400F09634 /* SearchHomeViewModel.swift */,
+				B5ED649B2796FEF800AA226B /* SearchViewControllerDataSource.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -667,6 +672,7 @@
 				B53E750A278C1A8200C91D51 /* CategoryListView.swift */,
 				B53E750C278C202700C91D51 /* CategoryListViewModel.swift */,
 				B53E7511278C4A0200C91D51 /* CategoryListViewHeaderCell.swift */,
+				B5ED64962791A0D600AA226B /* EmptyCollectionViewCell.swift */,
 			);
 			path = Category;
 			sourceTree = "<group>";
@@ -909,6 +915,7 @@
 				5F84E4D226C1A82900740DBE /* CustomTabbarController.swift in Sources */,
 				B53E7509278C19A400C91D51 /* CategoryListViewController.swift in Sources */,
 				5FEEAE3A26C96CCF00D020B9 /* OnboardingView.swift in Sources */,
+				B5ED64972791A0D600AA226B /* EmptyCollectionViewCell.swift in Sources */,
 				5FCA693926B705D200B0D192 /* AppDelegate.swift in Sources */,
 				5F5D43E026C471FB00495370 /* FoodDetailVC.swift in Sources */,
 				B53E750B278C1A8200C91D51 /* CategoryListView.swift in Sources */,
@@ -924,6 +931,7 @@
 				5F7A5A1026C019A50018868E /* CategoriesViewModel.swift in Sources */,
 				5FEEA1F226B85CF7005D54D6 /* CustomAlertView.swift in Sources */,
 				5F5D43DB26C452BF00495370 /* BasketViewModel.swift in Sources */,
+				B5ED649C2796FEF800AA226B /* SearchViewControllerDataSource.swift in Sources */,
 				5F7FA71A26BDDA8900FF7A8B /* CustomLoginTextFieldView.swift in Sources */,
 				5FEEA22826B85F03005D54D6 /* OfflineVC.swift in Sources */,
 				B55F7E44271575B90079F68C /* Weather.swift in Sources */,

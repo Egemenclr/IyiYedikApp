@@ -18,8 +18,10 @@ class CategoryListViewController: UIViewController {
     }()
     private let disposeBag = DisposeBag()
     
-    // MARK: - Lifecycle
+    //MARK: - I/O
+    let (indexSelectedObserver, indexSelectedEvent) = Driver<String>.pipe()
     
+    // MARK: - Lifecycle
     override func loadView() {
         view = viewSource
     }
@@ -27,9 +29,9 @@ class CategoryListViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let inputs = CategoryListViewInput()
+        let inputs = CategoryListViewInput(indexSelected: viewSource.collectionView.rx.itemSelected.asObservable())
         let viewModel = CategoryListViewModel(inputs)
-        let outputs = viewModel.outputs()
+        let outputs = viewModel.outputs(inputs)
         
         let dataSource =
         RxCollectionViewSectionedReloadDataSource<SectionModel<String, String>>(
@@ -63,6 +65,10 @@ class CategoryListViewController: UIViewController {
             
         outputs.dataSource
             .bind(to: viewSource.collectionView.rx.items(dataSource: dataSource))
+            .disposed(by: disposeBag)
+        
+        outputs.selectedCategory
+            .drive(indexSelectedObserver)
             .disposed(by: disposeBag)
     }
 }

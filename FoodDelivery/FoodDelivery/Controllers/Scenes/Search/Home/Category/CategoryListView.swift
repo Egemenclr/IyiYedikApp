@@ -13,7 +13,7 @@ class CategoryListView: UIView {
             let layout = UICollectionViewFlowLayout()
             layout.itemSize = itemSize
             layout.minimumInteritemSpacing = 5
-            layout.sectionInset = UIEdgeInsets(top: 5, left: 5, bottom: 5, right: 5)
+            layout.sectionInset = UIEdgeInsets(top: 10, left: 5, bottom: 5, right: 5)
             layout.scrollDirection = .vertical
             layout.headerReferenceSize = CGSize(
                 width: UIScreen.main.bounds.width,
