@@ -1,0 +1,132 @@
+{
+    "Restaurants" : [ {
+        "restaurant" : {
+            "category" : "Pilav",
+            "coordinates" : {
+                "latitude" : 41.1614165,
+                "longitude" : 27.8300632
+            },
+            "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/misspilav.png?alt=media&token=3df96331-0704-4db3-a30c-295a4443f84f",
+            "menu" : [ {
+                "fiyat" : "18.0",
+                "icerik" : "Duble Tavuklu Pilav, Hayrabolu Tatlısı, Ayran",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+                "malzemeler" : "",
+                "name" : "Bol Tavuklu Pilav Menu"
+            }, {
+                "fiyat" : "25.0",
+                "icerik" : "Duble Tavuklu Pilav, Hayrabolu Tatlısı, Ayran",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+                "malzemeler" : "",
+                "name" : "Duble Tavuklu Pilav Menü"
+            }, {
+                "fiyat" : "20.0",
+                "icerik" : "Duble Tavuklu Pilav, Hayrabolu Tatlısı, Ayran",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+                "malzemeler" : "",
+                "name" : "Kavurmalı Pilav"
+            }, {
+                "fiyat" : "15.0",
+                "icerik" : "",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+                "malzemeler" : "",
+                "name" : "Tavuklu Pilav Menü"
+            } ],
+            "name" : "Miss Pilav",
+            "puan" : {
+                "hiz" : 8.9,
+                "lezzet" : 8.8,
+                "servis" : 8.8
+            },
+            "yorumlar" : ""
+        }
+    }, {
+        "restaurant" : {
+            "category" : "Egemen",
+            "coordinates" : {
+                "latitude" : 41.1614165,
+                "longitude" : 27.8300632
+            },
+            "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/misspilav.png?alt=media&token=3df96331-0704-4db3-a30c-295a4443f84f",
+            "menu" : [ {
+                "fiyat" : "18.0",
+                "icerik" : "Duble Tavuklu Pilav, Hayrabolu Tatlısı, Ayran",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+                "malzemeler" : "",
+                "name" : "Bol Tavuklu Pilav Menu"
+            }, {
+                "fiyat" : "25.0",
+                "icerik" : "Duble Tavuklu Pilav, Hayrabolu Tatlısı, Ayran",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+                "malzemeler" : "",
+                "name" : "Duble Tavuklu Pilav Menü"
+            }, {
+                "fiyat" : "20.0",
+                "icerik" : "Duble Tavuklu Pilav, Hayrabolu Tatlısı, Ayran",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+                "malzemeler" : "",
+                "name" : "Kavurmalı Pilav"
+            }, {
+                "fiyat" : "15.0",
+                "icerik" : "",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/hotdoner.jpg?alt=media&token=104340ae-7e82-4ad3-b8e5-2f809e437395",
+                "malzemeler" : "",
+                "name" : "Tavuklu Pilav Menü"
+            } ],
+            "name" : "Egemen Pilav",
+            "puan" : {
+                "hiz" : 8.9,
+                "lezzet" : 8.8,
+                "servis" : 8.8
+            },
+            "yorumlar" : ""
+        }
+    },{
+        "restaurant" : {
+            "category" : "Burger",
+            "coordinates" : {
+                "latitude" : 41.1614165,
+                "longitude" : 28.1274945
+            },
+            "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/burger1.jpg?alt=media&token=65f73970-3243-4623-bb92-c5e60dc8ced2",
+            "menu" : [ {
+                "fiyat" : "40.0",
+                "icerik" : "Barbekü Burger, Patates Kızartması, İçecek",
+                "image" : "",
+                "malzemeler" : "",
+                "name" : "Barbekü Burger Menü"
+            }, {
+                "fiyat" : "39.0",
+                "icerik" : "Cheeseburger, Patates Kızartması, İçecek",
+                "image" : "",
+                "malzemeler" : "",
+                "name" : "Cheeseburger Menü"
+            }, {
+                "fiyat" : "38.0",
+                "icerik" : "Esas Burger, Patates Kızartması, İçecek",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/burger3.jpg?alt=media&token=62093e5d-a283-41bf-b2b3-4abe289f722a",
+                "malzemeler" : "",
+                "name" : "Esas Burger Menu"
+            }, {
+                "fiyat" : "48.0",
+                "icerik" : "Kumru Burger, Patates Kızartması, İçecek",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/burger2.jpg?alt=media&token=0e7137d4-eafa-4cd9-b6c5-c39e260c8fbf",
+                "malzemeler" : "",
+                "name" : "Kumru Burger Menu"
+            }, {
+                "fiyat" : "41.0",
+                "icerik" : "Muhit Burger, Patates Kızartması, İçecek",
+                "image" : "https://firebasestorage.googleapis.com/v0/b/fooddelivery-d4d0e.appspot.com/o/burger2.jpg?alt=media&token=0e7137d4-eafa-4cd9-b6c5-c39e260c8fbf",
+                "malzemeler" : "",
+                "name" : "Muhit Burger Menu"
+            } ],
+            "name" : "Muhit Burger",
+            "puan" : {
+                "hiz" : 8.5,
+                "lezzet" : 8.7,
+                "servis" : 8.9
+            },
+            "yorumlar" : ""
+        }
+    }]
+}

@@ -2,16 +2,16 @@ import Foundation
 import RxSwift
 import RxRelay
 import RxCocoa
-import Common
 
 struct SearchRestaurantViewModelInput {
-    let indexSelected: Observable<IndexPath>
-    let list: Observable<[RestModel]>
+    var indexSelected: Observable<IndexPath> = .never()
+    var list: Observable<[RestModel]> = .never()
 }
 
 struct SearchRestaurantViewModelOutput {
     let showRestaurantDetail: Driver<RestaModel>
     let showEmptyView: Driver<Bool>
+    let sections: Driver<[CollectionViewCellType]>
 }
 
 final class SearchRestaurantViewModel {
@@ -26,7 +26,8 @@ final class SearchRestaurantViewModel {
     ) -> SearchRestaurantViewModelOutput {
         return SearchRestaurantViewModelOutput(
             showRestaurantDetail: showDetail(inputs),
-            showEmptyView: showEmptyView(inputs.list)
+            showEmptyView: showEmptyView(inputs.list),
+            sections: configureSections(inputs)
         )
     }
 }
@@ -45,6 +46,19 @@ func showEmptyView(
 ) -> Driver<Bool>{
     restaurantList
         .skip(1)
-        .map({ $0.count == 0 })
+        .map({ $0.isEmpty })
+        .asDriver(onErrorDriveWith: .never())
+}
+
+func configureSections(
+    _ inputs: SearchRestaurantViewModelInput
+) -> Driver<[CollectionViewCellType]> {
+    inputs.list
+        .map({
+            guard $0.count > 0 else {
+                return [CollectionViewCellType.emptyType(title: "", items: [.empty])]
+            }
+            return $0.map { CollectionViewCellType.mainType(title: "", items: [.main(restaurant: $0)]) }
+        })
         .asDriver(onErrorDriveWith: .never())
 }

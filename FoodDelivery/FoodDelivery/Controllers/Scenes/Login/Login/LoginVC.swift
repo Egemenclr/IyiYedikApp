@@ -44,22 +44,11 @@ class LoginVC: UIViewController {
         let viewModel = LoginViewModel(inputs)
         let outputs = viewModel.outputs(inputs)
         
-        outputs
-            .showSiparisVC
-            .skip(1)
-            .drive(rx.showSiparisVC)
-            .disposed(by: bag)
-            
-        outputs
-            .showError
-            .drive(rx.showError)
-            .disposed(by: bag)
-        
-        outputs
-            .isLoginValid
-            .drive(signInButton.rx.isEnabled)
-            .disposed(by: bag)
-       
+        bag.insert(
+            outputs.showSiparisVC.skip(1).drive(rx.showSiparisVC),
+            outputs.showError.drive(rx.showError),
+            outputs.isLoginValid.drive(signInButton.rx.isEnabled)
+        )
     }
     
     

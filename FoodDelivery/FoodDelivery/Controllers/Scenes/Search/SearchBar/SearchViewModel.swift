@@ -8,10 +8,10 @@
 import Foundation
 import RxSwift
 import RxCocoa
-import Common
 
 struct SearchViewModelInput {
-    let searchText: Observable<String>
+    var searchText: Observable<String>
+    var networkAPI: RestaurantAPIClient
 }
 
 struct SearchViewModelOutput {
@@ -33,38 +33,32 @@ final class SearchViewModel {
         return SearchViewModelOutput(
             isLoading: isLoadingOutput(isLoading),
             restaurant: getRestaurantListWithSearch(
+                inputs.networkAPI,
                 isLoading,
-                restaurants,
                 filteredRestaurants,
-                inputs.searchText)
+                inputs.searchText
+            )
         )
     }
 }
 
 func getRestaurantListWithSearch(
+    _ api: RestaurantAPIClient,
     _ isLoading: BehaviorSubject<Bool>,
-    _ restaurants: BehaviorRelay<[RestModel]>,
     _ filteredList: BehaviorRelay<[RestModel]>,
     _ text: Observable<String>
 ) -> Driver<[RestModel]> {
-    NetworkLayer.getFirebase(entityName: "Restaurants", type: RestModel.self) { (result) in
-        switch result{
-        case .success(let lists):
-            restaurants.accept(lists)
-            isLoading.on(.next(false))
-        case .failure(let error):
-            print(error)
-            restaurants.accept([])
-        }
-    }
     let filtered = Observable
-        .combineLatest(text, restaurants) { str, restaurants in
-            return restaurants.filter { $0.restaurant.name.hasPrefix(str)}
-        }.map { model -> [RestModel] in
-            filteredList.accept(model)
-            return model
-        }
-    return filtered.asDriver(onErrorJustReturn: [])
+        .combineLatest(
+            text,
+            api.restaurants().asObservable()) { str, restaurants in
+                return restaurants.filter { $0.restaurant.name.hasPrefix(str)}
+            }.map { model -> [RestModel] in
+                isLoading.onNext(false)
+                filteredList.accept(model)
+                return model
+            }
+    return filtered.asDriver(onErrorDriveWith: .never())
 }
 
 func isLoadingOutput(

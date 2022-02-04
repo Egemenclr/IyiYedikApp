@@ -8,7 +8,6 @@
 import UIKit
 import RxSwift
 import RxCocoa
-import Common
 
 class SearchBarViewController: UIViewController {
     let disposeBag = DisposeBag()
@@ -54,7 +53,10 @@ class SearchBarViewController: UIViewController {
             .merge()
             .distinctUntilChanged()
 
-        let inputs = SearchViewModelInput(searchText: search)
+        let inputs = SearchViewModelInput(
+            searchText: search,
+            networkAPI: .live
+        )
         let viewModel = SearchViewModel(inputs)
         
         let outputs = viewModel.outputs(inputs)

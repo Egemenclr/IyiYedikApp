@@ -16,26 +16,25 @@ class SearchVC: UIViewController {
         view.backgroundColor = .systemBackground
         
         let itemSelected = containerView.collectionView.rx.itemSelected.asObservable()
-        let inputs = SearchRestaurantViewModelInput(indexSelected: itemSelected,
-                                                    list: restaurantList.asObservable())
+        let inputs = SearchRestaurantViewModelInput(
+            indexSelected: itemSelected,
+            list: restaurantList.asObservable()
+        )
+//        var inputs: SearchRestaurantViewModelInput {
+//            return SearchRestaurantViewModelInput(
+//                indexSelected: itemSelected,
+//                list: restaurantList.asObservable()
+//            )
+//        }
         let viewModel = SearchRestaurantViewModel(inputs)
         let outputs = viewModel.outputs(inputs)
 
         let datasource = SearchVC.datasource()
-
-        restaurantList
-            .skip(1)
-            .map({
-                return ($0.count > 0)
-                ? $0.map { CollectionViewCellType.mainType(title: "", items: [.main(restaurant: $0)]) }
-                : [CollectionViewCellType.emptyType(title: "", items: [.empty])]
-            })
-            .drive(containerView.collectionView.rx.items(dataSource: datasource))
-            .disposed(by: bag)
         
-        outputs.showRestaurantDetail
-                .drive(rx.showRestaurantDetail)
-                .disposed(by: bag)
+        bag.insert(
+            outputs.sections.drive(containerView.collectionView.rx.items(dataSource: datasource)),
+            outputs.showRestaurantDetail.drive(rx.showRestaurantDetail)
+        )
                 
         view.addSubview(containerView)
         containerView.translatesAutoresizingMaskIntoConstraints = false

@@ -8,6 +8,7 @@ import UIKit
 
 struct SiparisViewModelInput {
     let indexSelected: Observable<IndexPath>
+    var networkAPI: CategoriesAPIClient
 }
 struct SiparisViewModelOutput {
     let isLoading: Driver<Bool>
@@ -26,27 +27,26 @@ final class SiparisViewModel {
     func outputs (_ inputs: SiparisViewModelInput) -> SiparisViewModelOutput {
         return SiparisViewModelOutput(
             isLoading: getIsLoadingOutput(isLoading),
-            restaurantList: getRestaurants(isLoading, restaurants),
+            restaurantList: getRestaurants(
+                inputs.networkAPI,
+                isLoading,
+                restaurants),
             showSearchVC: showSelectedIndex(inputs, self.restaurants)
         )
     }
 }
 
 func getRestaurants(
+    _ api: CategoriesAPIClient,
     _ isLoading: BehaviorSubject<Bool>,
     _ restaurants: BehaviorRelay<[RestaurantGenreModel]>
 ) -> Driver<[RestaurantGenreModel]> {
-    NetworkLayer.getFirebase(entityName: "Categories", type: RestaurantGenreModel.self) { (result) in
-         switch result{
-         case .success(let lists):
-             restaurants.accept(lists)
-             isLoading.on(.next(false))
-         case .failure(let error):
-             print(error)
-             restaurants.accept([])
-         }
-    }
-    return restaurants.asDriver(onErrorJustReturn: [])
+    api.categoreis()
+        .do(onSuccess: { lists in
+            restaurants.accept(lists)
+            isLoading.on(.next(false))            
+        })
+        .asDriver(onErrorDriveWith: .never())
 }
 
 func getIsLoadingOutput(

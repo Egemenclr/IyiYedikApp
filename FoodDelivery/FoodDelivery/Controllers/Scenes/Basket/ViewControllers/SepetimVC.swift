@@ -53,34 +53,28 @@ class SepetimVC: UIViewController {
             
         }.disposed(by: bag)
         
-        outputs.foods
-            .skip(1)
-            .asObservable()
-            .subscribe { order in
-                if order.element?.count == 0 {
-                    self.configureEmptyView()
-                } else {
-                    self.restoreCollectionView()
-                }
-            }.disposed(by: bag)
-        
-        outputs
-            .showAlert
-            .drive(rx.showDeleteAlert)
-            .disposed(by: bag)
-        
-        outputs
-            .showPayment
-            .drive(rx.showPaymentVC)
-            .disposed(by: bag)
+        bag.insert(
+            
+            outputs.foods
+                .skip(1)
+                .asObservable()
+                .subscribe { order in
+                    if order.element?.count == 0 {
+                        self.configureEmptyView()
+                    } else {
+                        self.restoreCollectionView()
+                    }
+                },
+            
+            outputs.showAlert.drive(rx.showDeleteAlert),
+            outputs.showPayment.drive(rx.showPaymentVC),
+            outputs.showEmptyView.filter{$0}.drive(rx.showEmptyState),
+            outputs.deleteOrderResponse.drive()
+        )
         
         setCostLabel(outputs.foods.asObservable())
         
-        outputs
-            .showEmptyView
-            .filter{$0}
-            .drive(rx.showEmptyState)
-            .disposed(by: bag)
+       
             
     }
     

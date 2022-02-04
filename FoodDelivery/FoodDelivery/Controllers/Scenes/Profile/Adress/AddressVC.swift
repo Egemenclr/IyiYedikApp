@@ -5,7 +5,8 @@
 //  Created by Egemen Inceler on 22.08.2021.
 //
 import UIKit
-import Common
+import RxSwift
+import RxCocoa
 
 class AddressVC: UIViewController {
     let containerView = UIView()
@@ -18,10 +19,43 @@ class AddressVC: UIViewController {
     let cancelButton = UIButton()
     let okButton     = UIButton()
     
+    let bag = DisposeBag()
+    let (adressUpdatedObserver, adressUpdatedEvent) = Driver<Adress>.pipe()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.75)
         configure()
+        
+        let inputs = AdressViewModelInput(
+            okButtonClicked: rx.okButtonTapped.asObservable(),
+            title: rx.title.asObservable(),
+            adres: rx.adres.asObservable(),
+            bina: rx.bina.asObservable(),
+            kat: rx.kat.asObservable(),
+            daire: rx.daire.asObservable(),
+            tarif: rx.tarif.asObservable()
+        )
+        let viewModel = AdressViewModel(inputs)
+        let outputs = viewModel.outputs(inputs)
+        
+        bag.insert(
+            outputs.updatedAdress
+                .filter{ $0 }
+                .do(onNext: { _ in
+                    self.adressUpdatedObserver.on(
+                        .next(Adress(
+                            title:  self.adresBaslik.text ?? "",
+                            adres:  self.adres.text ?? "",
+                            binaNo: self.bina.text ?? "",
+                            kat:    self.kat.text ?? "",
+                            daire:  self.daire.text ?? "",
+                            tarif:  self.tarif.text  ?? ""
+                            ))
+                    )
+                })
+                .drive()
+        )
     }
 
     private func configure(){
@@ -163,37 +197,36 @@ class AddressVC: UIViewController {
     }
 }
 
-extension AddressVC {
-    func cancelButtonClicked() { dismiss(animated: true) }
+extension Reactive where Base == AddressVC {
+    var okButtonTapped: ControlEvent<Void> {
+        base.okButton.rx.tap
+    }
     
-    func okButtonClicked(completion: @escaping (AddressModel) -> Void) {
-        guard let title = adresBaslik.text,
-              let adres = adres.text,
-              let binaNo = bina.text,
-              let kat = kat.text,
-              let daire = daire.text,
-              let tarif = tarif.text else { return }
-        
-        NetworkLayer.updateAdres(title: title,
-                                 adres: adres,
-                                 binaNo: binaNo,
-                                 kat: kat,
-                                 daire: daire,
-                                 tarif: tarif)
-        { [weak self] (success) in
-            guard let self = self else { return }
-            if success{
-                let alert = self.makeAlert(title: "", message: "Güncelleme Başarılı ✅")
-                alert.addAction(UIAlertAction(title: "Tamam", style: .default, handler: { (handler) in
-                    DispatchQueue.main.asyncAfter(deadline: .now()) {
-                        self.dismiss(animated: true)
-                        let adres = AddressModel(title: title, adressDesc: adres, buildingNumber: binaNo, flat: kat, apartmentNumber: daire, description: tarif)
-                        completion(adres)
-                    }
-                }))
-                self.present(alert, animated: true)
-                
-            }
-        }
+    var cancelButtonTapped: ControlEvent<Void> {
+        base.cancelButton.rx.tap
+    }
+    
+    var title: ControlProperty<String> {
+        base.adresBaslik.rx.text.orEmpty
+    }
+    
+    var adres: ControlProperty<String> {
+        base.adres.rx.text.orEmpty
+    }
+
+    var kat: ControlProperty<String> {
+        base.kat.rx.text.orEmpty
+    }
+    
+    var bina: ControlProperty<String> {
+        base.bina.rx.text.orEmpty
+    }
+    
+    var tarif: ControlProperty<String> {
+        base.tarif.rx.text.orEmpty
+    }
+
+    var daire: ControlProperty<String> {
+        base.daire.rx.text.orEmpty
     }
 }

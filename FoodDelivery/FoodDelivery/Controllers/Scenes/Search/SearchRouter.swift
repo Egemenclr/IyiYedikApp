@@ -9,7 +9,6 @@ import Foundation
 import RxSwift
 import RxCocoa
 import UIKit
-import Common
 
 extension Reactive where Base: UIViewController {
     var showRestaurantDetail: Binder<RestaModel> {

@@ -6,15 +6,14 @@
 //
 
 import Foundation
-import FirebaseAuth
 import RxSwift
 import RxRelay
 import RxCocoa
-import Common
 
 
 // MARK: - IO Models
 struct BasketViewModelInput {
+    var api: BasketAPIClient = .live
     let orderButtonTapped: Observable<Void>
     let orderDeleteButtonTapped: Observable<Int>
     let emptyButtonTapped: Observable<Void>
@@ -28,11 +27,13 @@ struct BasketViewModelOutput {
     let showAlert: Driver<String>
     let showPayment: Driver<[RestaurantMenuModel]>
     let showEmptyView: Driver<Bool>
+    let deleteOrderResponse: Driver<Bool>
 }
 
 final class BasketViewModel {
     let basketList = BehaviorRelay<[RestaurantMenuModel]>(value: [])
     let willDeleteIndex = BehaviorRelay<Int>(value: 0)
+    private let (shouldGetBasketObserver, shouldGetBasketEvent) = Observable<Void>.pipe()
     init(_ inputs: BasketViewModelInput) {
         
         inputs
@@ -43,16 +44,17 @@ final class BasketViewModel {
                 #warning("make alert")
             }.disposed(by: inputs.bag)
         
-        inputs
-            .viewWillAppear
+        Observable.merge(
+            inputs.viewWillAppear,
+            shouldGetBasketEvent
+        )
             .subscribe { _ in
-                getRestaurants(self.basketList, inputs.bag)
+                getRestaurants(inputs.api,
+                               self.basketList,
+                               inputs.bag)
             } onError: { err in
                 print(err)
             }.disposed(by: inputs.bag)
-        
-        deleteOrder(inputs, self.basketList, willDeleteIndex)
-        
     }
     
     func outputs(_ inputs: BasketViewModelInput) -> BasketViewModelOutput {
@@ -60,31 +62,25 @@ final class BasketViewModel {
             foods: basketList.asDriver(onErrorJustReturn: []),
             showAlert: showDeleteAlert(inputs),
             showPayment: showPaymentVC(inputs, basketList),
-            showEmptyView: showEmptyState(inputs)
+            showEmptyView: showEmptyState(inputs),
+            deleteOrderResponse: deleteOrder(inputs,
+                                             self.basketList,
+                                             willDeleteIndex,
+                                             shouldGetBasketObserver
+                                            )
         )
     }
 }
 
 func getRestaurants(
+    _ api: BasketAPIClient,
     _ orderList: BehaviorRelay<[RestaurantMenuModel]>,
     _ bag: DisposeBag) {
-        guard let uuid = Auth.auth().currentUser?.uid else { return }
-        
-        NetworkLayer.getFirebaseWithChild(entityName: "Basket",
-                                                   child: uuid,
-                                                   child2: "items",
-                                                   type: RestaurantMenuModel.self)
-            .subscribe { single in
-                switch single {
-                case .success(let lists):
-                    let filtered = lists.filter { word in
-                        return word.isDeleted == false
-                    }
-                    orderList.accept(filtered)
-                case .failure(let error):
-                    print(error)
-                }
-            }.disposed(by: bag)
+        api.basket().asObservable()
+            .subscribe { element in
+                orderList.accept(element)
+            }
+            .disposed(by: bag)
     }
 
 func showDeleteAlert(
@@ -99,15 +95,17 @@ func showDeleteAlert(
 private func deleteOrder(
     _ inputs: BasketViewModelInput,
     _ basketList: BehaviorRelay<[RestaurantMenuModel]>,
-    _ index: BehaviorRelay<Int>) {
-        inputs
-            .deleteOrder
-            .subscribe { element in
-                NetworkLayer.deleteFood(index: index.value)
-                getRestaurants(basketList, inputs.bag)
-            } onError: { err in
-                print(err)
-            }.disposed(by: inputs.bag)
+    _ index: BehaviorRelay<Int>,
+    _ shouldGetBasketObserver: AnyObserver<Void>
+) -> Driver<Bool> {
+        inputs.deleteOrder
+        .do(afterNext: { _ in
+            shouldGetBasketObserver.on(.next(()))
+        })
+        .flatMapLatest { _ -> Single<Bool> in
+            return inputs.api.deleteOrder(index.value)
+        }
+        .asDriver(onErrorDriveWith: .never())
     }
 
 private func showPaymentVC(
@@ -116,9 +114,7 @@ private func showPaymentVC(
 ) -> Driver<[RestaurantMenuModel]> {
     inputs
         .orderButtonTapped
-        .filter{
-            orderList.value.count > 0
-        }
+        .filter{ orderList.value.isEmpty }
         .map{ _ in orderList.value }
         .asDriver(onErrorJustReturn: [] )
 }

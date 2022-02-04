@@ -128,19 +128,19 @@ extension Reactive where Base == ProfileVC {
         Binder(base) { target, shouldI in
             if shouldI {
                 let alertVC = AddressVC()
-                
-                alertVC.okButton.rx.tap
-                    .subscribe(onNext: {
-                        alertVC.okButtonClicked { adres in
-                            target.userInfoView.addressTitle.textField.text = adres.title
-                            target.userInfoView.adressDesc.text = adres.toString()
-                        }
-                    }).disposed(by: target.bag)
-                
-                alertVC.cancelButton.rx.tap
-                    .subscribe(onNext: {
-                        alertVC.cancelButtonClicked()
-                    }).disposed(by: target.bag)
+                alertVC.adressUpdatedEvent
+                    .asObservable()
+                    .subscribe { adres in
+                        target.userInfoView.addressTitle.textField.text = adres.element?.title
+                        target.userInfoView.adressDesc.text = adres.element?.toString()
+                        target.dismiss(animated: true)
+                    }
+                    .disposed(by: target.bag)
+                        
+//                alertVC.cancelButton.rx.tap
+//                    .subscribe(onNext: {
+//                        alertVC.cancelButtonClicked()
+//                    }).disposed(by: target.bag)
                 
                 alertVC.modalTransitionStyle = .crossDissolve
                 alertVC.modalPresentationStyle = .overFullScreen

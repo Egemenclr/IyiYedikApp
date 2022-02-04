@@ -23,8 +23,11 @@ class CategoriesViewController: UIViewController {
         
         let indexSelected = containerView.collectionView.rx.itemSelected
             .asObservable()
-        
-        let inputs = SiparisViewModelInput(indexSelected: indexSelected)
+        let api: CategoriesAPIClient = .live
+        let inputs = SiparisViewModelInput(
+            indexSelected: indexSelected,
+            networkAPI: api
+        )
         let viewModel = SiparisViewModel(inputs)
         let outputs = viewModel.outputs(inputs)
         loadingView.startLoading()

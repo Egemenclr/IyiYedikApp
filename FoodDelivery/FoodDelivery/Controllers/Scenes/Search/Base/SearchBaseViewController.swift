@@ -32,10 +32,6 @@ class SearchBaseViewController: UIViewController {
         
         loadingView.startLoading()
         
-        searchBar.searchResult
-            .drive(searchVC.restaurantListObservable)
-            .disposed(by: disposeBag)
-        
         
         let combineLoadings = combineLoadings(
             [
@@ -44,16 +40,15 @@ class SearchBaseViewController: UIViewController {
             ]
         )
         
-        combineLoadings
-            .filter { !$0 }
-            .do(onNext: { _ in self.loadingView.hideLoading() })
-            .drive(loadingView.activityIndicator.rx.isHidden)
-            .disposed(by: disposeBag)
-                
-        recentSearchView
-                .indexSelectedEvent
-                .drive(searchBar.indexSelectedObserver)
-                .disposed(by: disposeBag)
+        disposeBag.insert(
+            recentSearchView.indexSelectedEvent.drive(searchBar.indexSelectedObserver),
+            searchBar.searchResult.drive(searchVC.restaurantListObservable),
+            
+            combineLoadings
+                .filter { !$0 }
+                .do(onNext: { _ in self.loadingView.hideLoading() })
+                .drive(loadingView.activityIndicator.rx.isHidden)
+        )
     }
 
     private func configureViewStackView() {
