@@ -152,14 +152,17 @@ extension Reactive where Base == ProfileVC {
     var logOut: Binder<Bool> {
         Binder(base) { target, shouldI in
             if shouldI {
-                AuthManager.shared.logOut { [weak target] (success) in
-                    guard let target = target else { return }
-                    if success{
-                        let loginVC = LoginVC()
-                        loginVC.modalPresentationStyle = .fullScreen
-                        target.present(loginVC, animated: true)
-                    }
-                }
+              let otherVC = OtherBuilder.start()
+              otherVC.modalPresentationStyle = .fullScreen
+              target.present(otherVC, animated: true)
+//                AuthManager.shared.logOut { [weak target] (success) in
+//                    guard let target = target else { return }
+//                    if success{
+//                        let loginVC = LoginVC()
+//                        loginVC.modalPresentationStyle = .fullScreen
+//                        target.present(loginVC, animated: true)
+//                    }
+//                }
             }
         }
     }

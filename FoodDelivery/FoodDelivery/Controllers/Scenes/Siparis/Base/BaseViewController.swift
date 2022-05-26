@@ -1,6 +1,7 @@
 import UIKit
 import RxSwift
 import RxCocoa
+import FoodDeliveryAPI
 
 class BaseViewController: UIViewController {
     
@@ -22,6 +23,8 @@ class BaseViewController: UIViewController {
         let pageViewControllerWidth = pageViewController.view.frame.size.width
         pageViewController.setUI(with: MockDatas().returnViewControllers(width: pageViewControllerWidth))
         configureViewStackView()
+      
+      FoodDeliveryAPIClient.testRun()
     }
     
     private func configureViewStackView() {
